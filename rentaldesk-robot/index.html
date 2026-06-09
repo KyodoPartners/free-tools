@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RentalDesk Robot — landlord dashboard</title>
+  <meta name="description" content="A free, open-source landlord dashboard: turn tenant messages into organized repair tickets, match warranties, track rent, run calculators, and export everything to Excel. Runs entirely in your browser." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <!-- SheetJS: reads & writes real .xlsx files, entirely in the browser -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <span class="mark">RentalDesk<span class="dot">.</span>Robot</span>
+        <span class="tag">tenant requests · repairs · warranties · rent</span>
+      </div>
+      <nav>
+        <button data-tab="dashboard" class="active">Dashboard</button>
+        <button data-tab="requests">Requests</button>
+        <button data-tab="properties">Properties</button>
+        <button data-tab="warranties">Warranties</button>
+        <button data-tab="calculators">Calculators</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="toolbar">
+      <button class="btn" id="exportBtn">⬇ Export to Excel</button>
+      <button class="btn" id="importBtn">⬆ Import from Excel</button>
+      <button class="btn ghost" id="resetBtn">Reset demo data</button>
+      <input type="file" id="importFile" class="hidden-file" accept=".xlsx,.xls,.csv" />
+      <span class="hint">Everything is saved privately in your own browser — no account, no server.</span>
+    </div>
+    <div id="view"></div>
+  </main>
+
+  <footer class="site">
+    <p>RentalDesk Robot · a free, open-source demo project · runs entirely in your browser.
+       This is a portfolio demo, not legal, tax, or financial advice.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
