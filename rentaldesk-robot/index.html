@@ -3,14 +3,21 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>RentalDesk Robot — landlord dashboard</title>
-  <meta name="description" content="A free, open-source landlord dashboard: turn tenant messages into organized repair tickets, match warranties, track rent, run calculators, and export everything to Excel. Runs entirely in your browser." />
+  <title>RentalDesk Robot — Kyodo Partners</title>
+  <meta name="description" content="A landlord dashboard that runs in your browser: turn tenant messages into organized repair tickets, match warranties, track rent, run calculators, and export to Excel. By Kyodo Partners." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
-  <!-- SheetJS: reads & writes real .xlsx files, entirely in the browser -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <!-- SheetJS — official current CDN (replaces an outdated build that had known vulnerabilities). Reads & writes real .xlsx in the browser. -->
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+  <style>
+    /* Kyodo funnel CTA — uses the app's evergreen/clay palette */
+    .kyodo-cta{background:#1f4d3f;color:#f2efe2;border-radius:14px;padding:14px 18px;margin-bottom:18px;display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;justify-content:space-between}
+    .kyodo-cta-text{font-size:.95rem;line-height:1.45}
+    .kyodo-cta-btn{background:#bf5a2b;color:#fdf6ef;text-decoration:none;font-weight:700;padding:9px 16px;border-radius:10px;white-space:nowrap}
+    .kyodo-cta-btn:hover{background:#a94c22}
+  </style>
 </head>
 <body>
   <header class="topbar">
@@ -30,10 +37,17 @@
   </header>
 
   <main class="container">
+    <!-- LAUNCH TODO: replace the store URLs below with the live Etsy/Payhip product links before publishing -->
+    <div class="kyodo-cta">
+      <div class="kyodo-cta-text">Like RentalDesk? <strong>Get the Rental Property Suite</strong> — track income, expenses, mileage &amp; taxes, with a year-end summary for your accountant.</div>
+      <a class="kyodo-cta-btn" href="https://www.etsy.com/shop/KyodoPartners">Get the Suite →</a>
+    </div>
+
     <div class="toolbar">
       <button class="btn" id="exportBtn">⬇ Export to Excel</button>
       <button class="btn" id="importBtn">⬆ Import from Excel</button>
-      <button class="btn ghost" id="resetBtn">Reset demo data</button>
+      <button class="btn primary" id="exportSuiteBtn">⬇ Export for Rental Suite</button>
+      <button class="btn ghost" id="resetBtn">Reset to sample data</button>
       <input type="file" id="importFile" class="hidden-file" accept=".xlsx,.xls,.csv" />
       <span class="hint">Everything is saved privately in your own browser — no account, no server.</span>
     </div>
@@ -41,8 +55,8 @@
   </main>
 
   <footer class="site">
-    <p>RentalDesk Robot · a free, open-source demo project · runs entirely in your browser.
-       This is a portfolio demo, not legal, tax, or financial advice.</p>
+    <p><strong>RentalDesk Robot</strong> · © 2026 Kyodo Partners LLC. A planning helper — not legal, tax, or financial advice. Your data stays in your browser.
+       <br><a href="https://www.etsy.com/shop/KyodoPartners">Get our Rental Property Suite &amp; 1099 Pack on Etsy →</a></p>
   </footer>
 
   <script src="app.js"></script>

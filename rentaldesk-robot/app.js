@@ -277,6 +277,8 @@ function renderRequests() {
         </div>
         <div><button class="btn primary" type="submit">Let the robot analyze it →</button></div>
       </form>
+      <div style="margin-top:12px"><button class="btn" type="button" id="tenantLinkBtn">📨 Get a link to share with tenants</button></div>
+      <div id="tenantLinkBox"></div>
     </section>
     <section class="panel">
       <div class="panel-head"><h3>All requests (${db.requests.length})</h3></div>
@@ -298,6 +300,7 @@ function renderRequests() {
     });
     toast("Request analyzed and saved."); go("request", id);
   };
+  { const tb = $("#tenantLinkBtn"); if (tb) tb.onclick = makeTenantLink; }
   $$("[data-view]", view()).forEach((b) => b.onclick = () => go("request", b.dataset.view));
 }
 
@@ -474,12 +477,115 @@ function importExcel(file) {
 }
 
 /* ============================================================
+   EXCEL HAND-OFF  —  export into the Kyodo Rental Property Suite format
+   Maps RentalDesk data to the Suite's exact sheet columns so a buyer can
+   move straight from the free tool into the paid spreadsheet.
+   ============================================================ */
+function exportForSuite() {
+  if (typeof XLSX === "undefined") return toast("Excel library still loading — try again in a moment.");
+  const wb = XLSX.utils.book_new();
+
+  const guide = [
+    { Step: "How to move this into the Kyodo Rental Property Suite" },
+    { Step: "1. Open your Rental Property Suite spreadsheet (Excel or Google Sheets)." },
+    { Step: "2. On the 'Expense Log' sheet here, copy the data rows and paste them into the Suite's Expense Log, below its yellow header." },
+    { Step: "3. On the 'Setup' sheet here, copy the property rows into the Suite's Setup tab." },
+    { Step: "Tip: paste as values. Don't have the Suite yet? Get it on Etsy — search 'Kyodo Partners Rental Property Suite'." },
+  ];
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(guide, { header: ["Step"] }), "How to import");
+
+  const setupHeaders = ["Address", "Type", "Purchase Price", "Purchase Date", "Down Payment", "Loan Amount", "Interest Rate (%)", "Monthly Mortgage"];
+  const setupRows = (db.properties || []).map((p) => ({
+    "Address": p.address || "", "Type": "", "Purchase Price": "", "Purchase Date": "", "Down Payment": "", "Loan Amount": "", "Interest Rate (%)": "", "Monthly Mortgage": num(p.mortgage),
+  }));
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(setupRows, { header: setupHeaders }), "Setup");
+
+  const expHeaders = ["Date", "Property", "Vendor", "Amount", "Category (Schedule E)", "Receipt?", "Notes"];
+  const expRows = (db.expenses || []).map((x) => ({
+    "Date": x.date || "", "Property": x.property || "", "Vendor": x.vendor || "", "Amount": num(x.amount), "Category (Schedule E)": x.category || "", "Receipt?": x.receipt_missing ? "No" : "Yes", "Notes": x.notes || "",
+  }));
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(expRows, { header: expHeaders }), "Expense Log");
+
+  XLSX.writeFile(wb, "rentaldesk_for_rental_suite_" + today() + ".xlsx");
+  toast("Exported in Rental Property Suite format.");
+}
+
+/* ============================================================
+   TENANT INTAKE  —  shareable "report a problem" link (no server)
+   The landlord shares a link; the tenant fills a form; it emails the
+   landlord a clean, paste-ready request via mailto (fully client-side).
+   ============================================================ */
+function getParam(name) { try { return new URLSearchParams(location.search).get(name); } catch (e) { return null; } }
+
+function makeTenantLink() {
+  let saved = "";
+  try { saved = localStorage.getItem("rentaldesk_landlord_email") || ""; } catch (e) {}
+  const email = (prompt("Your email — tenant reports will be sent here:", saved) || "").trim();
+  if (!email) return;
+  try { localStorage.setItem("rentaldesk_landlord_email", email); } catch (e) {}
+  const link = location.origin + location.pathname + "?report=1&to=" + encodeURIComponent(email);
+  const box = $("#tenantLinkBox");
+  if (box) {
+    box.innerHTML = `<div class="notice" style="margin-top:10px">Share this link with your tenants. When they submit, the request is emailed to <strong>${esc(email)}</strong>, formatted to paste straight into the box above.<br>
+      <input readonly value="${esc(link)}" style="margin-top:8px" onclick="this.select()">
+      <button class="btn small" type="button" id="copyTenantLink">Copy link</button></div>`;
+    const cb = $("#copyTenantLink"); if (cb) cb.onclick = () => { if (navigator.clipboard) navigator.clipboard.writeText(link); toast("Link copied — share it with your tenants."); };
+  }
+}
+
+function renderTenantReportMode() {
+  const isReport = getParam("report") !== null || (location.hash || "").replace("#", "") === "report";
+  if (!isReport) return false;
+  const to = getParam("to") || "";
+  const prop = getParam("p") || "";
+  ["header.topbar", ".kyodo-cta", ".toolbar", "footer.site"].forEach((sel) => { const el = document.querySelector(sel); if (el) el.style.display = "none"; });
+  document.title = "Report a problem — RentalDesk";
+  const v = view();
+  v.innerHTML = `
+    <section class="hero"><p class="eyebrow">Maintenance request</p><h2>Report a problem</h2>
+      <p class="muted">Fill this out and we'll send it straight to your landlord. Takes about a minute.</p></section>
+    <section class="panel">
+      <form class="form" id="tenantForm">
+        <div class="form-row"><label>Your name<input name="name" required></label><label>Unit / property<input name="unit" value="${esc(prop)}"></label></div>
+        <label>Best way to reach you (phone or email)<input name="contact"></label>
+        <label>How urgent is it?<select name="urgency"><option>Not urgent</option><option selected>Soon</option><option>Emergency (no heat, flooding, safety)</option></select></label>
+        <label>What's wrong?<textarea name="message" required placeholder="Describe the problem — what, where, and since when."></textarea></label>
+        <div><button class="btn primary" type="submit">Send to my landlord →</button></div>
+      </form>
+      <div id="tenantDone" style="display:none;margin-top:14px">
+        <div class="reply"><strong>Your email app should have opened.</strong> If it didn't, copy the text below and email it to your landlord:</div>
+        <textarea id="tenantCopy" readonly style="margin-top:8px;min-height:140px"></textarea>
+      </div>
+    </section>
+    <footer class="site" style="display:block"><p>Powered by RentalDesk Robot · © 2026 Kyodo Partners LLC</p></footer>`;
+  const f = $("#tenantForm");
+  f.onsubmit = (e) => {
+    e.preventDefault();
+    const name = fval(f, "name").trim() || "Tenant";
+    const unit = fval(f, "unit").trim() || prop;
+    const contact = fval(f, "contact").trim();
+    const urgency = fval(f, "urgency");
+    const msg = fval(f, "message").trim();
+    if (!msg) return;
+    const subject = "Maintenance request — " + (unit || "my unit") + " — " + name;
+    const body = "Tenant: " + name + "\nProperty/Unit: " + unit + "\nBest contact: " + contact + "\nUrgency: " + urgency + "\n\nIssue:\n" + msg + "\n\n— Sent via RentalDesk";
+    if (to) location.href = "mailto:" + encodeURIComponent(to) + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+    $("#tenantCopy").value = subject + "\n\n" + body;
+    $("#tenantDone").style.display = "block";
+    toast("Opening your email app…");
+  };
+  return true;
+}
+
+/* ============================================================
    INIT
    ============================================================ */
 function init() {
+  if (renderTenantReportMode()) return;   // tenant-facing "report a problem" link
   load();
   $$(".topbar nav button").forEach((b) => b.onclick = () => go(b.dataset.tab));
   $("#exportBtn").onclick = exportExcel;
+  { const esb = $("#exportSuiteBtn"); if (esb) esb.onclick = exportForSuite; }
   $("#importBtn").onclick = () => $("#importFile").click();
   $("#importFile").onchange = (e) => { if (e.target.files[0]) importExcel(e.target.files[0]); e.target.value = ""; };
   $("#resetBtn").onclick = () => { if (confirm("Reset everything back to the demo data? This clears your changes in this browser.")) { localStorage.removeItem(STORE_KEY); load(); render(); toast("Demo data restored."); } };
