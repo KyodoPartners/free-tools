@@ -15,42 +15,42 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>TCO Toolkit — Multi-Department Total Cost of Ownership Calculator</title>
+<title>Kyodo TCO Assistant — Total Cost of Ownership Calculator</title>
 <style>
-:root{--navy:#1F3864;--accent:#2E75B6;--accent2:#1D9E75;--bg:#eef2f7;--card:#fff;--text:#1a2330;--muted:#6b7280;--line:#e2e8f0;}
+:root{--navy:#166534;--accent:#15803D;--accent2:#166534;--bg:#FFFFFF;--card:#fff;--text:#1a2330;--muted:#6b7280;--line:#e2e8f0;}
 *{box-sizing:border-box;}
 body{margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);}
-header{background:var(--navy);color:#fff;padding:16px 24px;display:flex;align-items:center;gap:14px;}
-.mono{width:42px;height:42px;border-radius:9px;background:#fff;color:var(--navy);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex-shrink:0;}
+header{background:#166534;color:#fff;padding:16px 24px;display:flex;align-items:center;gap:14px;}
+.mono{width:42px;height:42px;border-radius:9px;background:#fff;color:#166534;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex-shrink:0;}
 header h1{margin:0;font-size:19px;font-weight:600;}
-header p{margin:3px 0 0;font-size:12.5px;color:#c8d3e6;}
-.tag{margin-left:auto;font-size:11px;background:#33507e;color:#dbe6f7;padding:5px 12px;border-radius:20px;}
+header p{margin:3px 0 0;font-size:12.5px;color:#bbf7d0;}
+.tag{margin-left:auto;font-size:11px;background:#14532D;color:#DCFCE7;padding:5px 12px;border-radius:20px;}
 .wrap{display:flex;min-height:calc(100vh - 76px);}
-nav{width:226px;background:#fff;border-right:1px solid var(--line);padding:12px 0;flex-shrink:0;}
+nav{width:226px;background:#F8FAFC;border-right:1px solid var(--line);padding:12px 0;flex-shrink:0;}
 nav button{display:block;width:100%;text-align:left;background:none;border:none;border-left:3px solid transparent;padding:11px 20px;font-size:13.5px;color:var(--text);cursor:pointer;}
 nav button:hover{background:#f3f6fb;}
-nav button.active{border-left-color:var(--accent);background:#eaf1fb;color:var(--navy);font-weight:600;}
+nav button.active{border-left-color:#166534;background:#DCFCE7;color:#14532D;font-weight:600;}
 main{flex:1;padding:20px 28px;max-width:940px;}
 .sizebar{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin-bottom:16px;}
 .sizebar span{font-size:12px;color:var(--muted);}
 .panel{display:none;}.panel.active{display:block;}
-h2{font-size:21px;color:var(--navy);margin:0 0 4px;}
+h2{font-size:21px;color:#166534;margin:0 0 4px;}
 .desc{color:var(--muted);font-size:14px;margin:0 0 18px;}
 .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-bottom:18px;}
-.card h3{margin:0 0 14px;font-size:15px;color:var(--navy);}
+.card h3{margin:0 0 14px;font-size:15px;color:#166534;}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 22px;}
 .fld{display:flex;flex-direction:column;gap:4px;}
 .fld label{font-size:12px;color:var(--muted);}
 .fld input{padding:8px 10px;border:1px solid var(--line);border-radius:7px;font-size:14px;width:100%;}
-.fld input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 2px rgba(46,117,182,.15);}
-.opt{margin-bottom:12px;padding:10px 12px;background:#f6f9fd;border:1px solid #d6e3f3;border-radius:8px;}
+.fld input:focus{outline:none;border-color:#166534;box-shadow:0 0 0 2px rgba(22,101,52,.15);}
+.opt{margin-bottom:12px;padding:10px 12px;background:#F8FAFC;border:1px solid var(--line);border-radius:8px;}
 .opt label{font-size:13px;color:var(--text);}
 .opt .hint{font-size:11px;color:var(--muted);margin-top:3px;}
 .opt input[type=number]{width:74px;padding:5px 8px;border:1px solid var(--line);border-radius:6px;font-size:13px;}
 .cols2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
 .result{background:#f6f9fd;border:1px solid #d6e3f3;border-radius:10px;padding:16px;}
 .result .lbl{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;}
-.result .big{font-size:25px;font-weight:700;color:var(--navy);margin-top:4px;}
+.result .big{font-size:25px;font-weight:700;color:#166534;margin-top:4px;}
 .result .sub{font-size:13px;color:var(--muted);margin-top:2px;}
 .win{border-color:var(--accent2);box-shadow:0 0 0 2px rgba(29,158,117,.18);}
 .barrow{display:flex;align-items:center;gap:10px;margin:7px 0;font-size:13px;}
@@ -59,19 +59,19 @@ h2{font-size:21px;color:var(--navy);margin:0 0 4px;}
 .fill{height:100%;border-radius:6px;background:var(--accent);transition:width .2s;}
 .fill.g{background:var(--accent2);}
 .bv{width:96px;text-align:right;font-variant-numeric:tabular-nums;}
-.callout{font-size:14px;margin-top:8px;padding:10px 14px;background:#eafaf3;border:1px solid #b9e7d3;border-radius:8px;color:#0f6e56;}
+.callout{font-size:14px;margin-top:8px;padding:10px 14px;background:#DCFCE7;border:1px solid #bbf7d0;border-radius:8px;color:#14532D;}
 .prose{font-size:14px;line-height:1.7;color:#2a3340;}
 .prose h3{color:var(--navy);margin:16px 0 6px;}
 code{background:#eef2f7;padding:1px 6px;border-radius:5px;font-size:13px;}
 .mods{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:6px 0 4px;}
 .modc{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:#fbfdff;}
 .modc b{color:var(--navy);font-size:14px;}.modc p{margin:4px 0 0;font-size:12.5px;color:var(--muted);}
-.hero{background:linear-gradient(180deg,#f4f8fd,#fff);border:1px solid var(--line);border-radius:12px;padding:22px 24px;margin-bottom:18px;}
+.hero{background:#F8FAFC;border:1px solid var(--line);border-radius:12px;padding:22px 24px;margin-bottom:18px;}
 .hero h2{font-size:24px;margin:0 0 6px;}.hero p{font-size:15px;color:#3a4453;margin:0;max-width:680px;}
 table.ref{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:10px;}
 table.ref td{padding:5px 8px;border-bottom:1px solid var(--line);}
-table.ref tr.h td{background:var(--navy);color:#fff;border:none;}
-footer{padding:14px 28px;color:var(--muted);font-size:12px;border-top:1px solid var(--line);background:#fff;}
+table.ref tr.h td{background:#166534;color:#fff;border:none;}
+footer{padding:14px 28px;color:var(--muted);font-size:12px;border-top:1px solid var(--line);background:#F8FAFC;}
 /* ---- Mobile / responsive (added June 2026) — scoped to phones/tablets; desktop layout unchanged ---- */
 @media (max-width:768px){
   header{padding:12px 16px;}
@@ -97,11 +97,11 @@ footer{padding:14px 28px;color:var(--muted);font-size:12px;border-top:1px solid 
 <body>
 <header>
   <div class="mono">TCO</div>
-  <div><h1>TCO Toolkit</h1><p>Multi-Department Total Cost of Ownership Calculator</p></div>
+  <div><h1>Kyodo TCO Assistant</h1><p>Total Cost of Ownership — Multi-Department Calculator</p></div>
   <span class="tag">Source included · editable in any browser, Replit, or Cursor</span>
 </header>
 <!-- LAUNCH TODO: replace href with the live product URL before publishing -->
-<div style="background:#1F3864;color:#fff;padding:9px 14px;text-align:center;font:600 .85rem/1.4 -apple-system,Segoe UI,Arial,sans-serif">Free tool from Kyodo Partners · Get the full <strong>TCO Toolkit</strong> ($39) <a href="https://payhip.com/KyodoPartners" style="color:#fff;text-decoration:underline">here &rarr;</a></div>
+<div style="background:#166534;color:#fff;padding:9px 14px;text-align:center;font:600 .85rem/1.4 -apple-system,Segoe UI,Arial,sans-serif">Free tool from Kyodo Partners · Get the full <strong>Kyodo TCO Assistant</strong> ($39) <a href="https://payhip.com/KyodoPartners" style="color:#fff;text-decoration:underline">here &rarr;</a></div>
 <div class="wrap">
   <nav id="nav">
     <button data-t="about" class="active">Start here</button>
@@ -415,8 +415,8 @@ footer{padding:14px 28px;color:var(--muted);font-size:12px;border-top:1px solid 
   </main>
 </div>
 <!-- LAUNCH TODO: replace href with the live product URL before publishing -->
-<div style="max-width:1040px;margin:18px auto;padding:0 18px"><div style="background:#1F3864;color:#fff;border-radius:12px;padding:20px 22px;font-family:-apple-system,Segoe UI,Arial,sans-serif"><div style="font-size:1.15rem;font-weight:700;margin-bottom:6px">Want the full toolkit, not just the online calculator?</div><div style="font-size:.92rem;opacity:.95;margin-bottom:12px">The <strong>TCO Toolkit</strong> adds the editable Excel TCO model (locked formulas, your data), the playbook guide, and full included source. Pay once — no subscription.</div><a href="https://payhip.com/KyodoPartners" style="display:inline-block;background:#fff;color:#1F3864;font-weight:700;text-decoration:none;padding:11px 20px;border-radius:9px">Get the TCO Toolkit — $39 &rarr;</a></div></div>
-<footer>TCO Toolkit · © 2026 Kyodo Partners LLC · all rights reserved · sold as-is, source included; licensed for your own / organization's use, not for resale or redistribution · build your own modules in Replit or Cursor</footer>
+<div style="max-width:1040px;margin:18px auto;padding:0 18px"><div style="background:#166534;color:#fff;border-radius:12px;padding:20px 22px;font-family:-apple-system,Segoe UI,Arial,sans-serif"><div style="font-size:1.15rem;font-weight:700;margin-bottom:6px">Want the full toolkit, not just the online calculator?</div><div style="font-size:.92rem;opacity:.95;margin-bottom:12px">The <strong>Kyodo TCO Assistant</strong> adds the editable Excel TCO model (locked formulas, your data), the playbook guide, and full included source. Pay once — no subscription.</div><a href="https://payhip.com/KyodoPartners" style="display:inline-block;background:#fff;color:#166534;font-weight:700;text-decoration:none;padding:11px 20px;border-radius:9px">Get the Kyodo TCO Assistant — $39 &rarr;</a></div></div>
+<footer>Kyodo TCO Assistant · © 2026 Kyodo Partners LLC · all rights reserved · sold as-is, source included; licensed for your own / organization's use, not for resale or redistribution · build your own modules in Replit or Cursor</footer>
 <script>
 /* ===========================================================================
    TCO Toolkit - calculation engine

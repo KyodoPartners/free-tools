@@ -6,7 +6,7 @@
 <title>Short-Term Rental (Airbnb) Deal Analyzer — Kyodo Partners</title>
 <style>
   :root{ --ink:#1c2733; --muted:#5b6b7b; --line:#e2e8ef; --bg:#f4f7fa; --card:#fff;
-         --brand:#1f6f54; --brand2:#26845f; --green:#1f8a4c; --amber:#b9851b; --red:#c0392b; }
+         --brand:#166534; --brand2:#15803D; --green:#1f8a4c; --amber:#b9851b; --red:#c0392b; }
   *{ box-sizing:border-box; }
   body{ margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
         color:var(--ink); background:var(--bg); line-height:1.45; -webkit-text-size-adjust:100%; }
@@ -23,17 +23,17 @@
                 border:1px solid var(--line); border-radius:9px; background:#fff; }
   .field input:focus{ outline:2px solid var(--brand2); border-color:var(--brand2); }
   .two{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-  .verdict{ border-radius:12px; padding:16px; color:#fff; margin-bottom:14px; }
+  .verdict{ border-radius:12px; padding:16px; margin-bottom:14px; }
   .verdict .tag{ font-size:1.35rem; font-weight:700; }
-  .verdict .why{ font-size:.9rem; opacity:.95; margin-top:3px; }
-  .v-green{ background:var(--green); } .v-amber{ background:var(--amber); } .v-red{ background:var(--red); }
+  .verdict .why{ font-size:.9rem; margin-top:3px; }
+  .v-green{ background:#DCFCE7; color:#14532D; } .v-amber{ background:#FEF3C7; color:#78350F; } .v-red{ background:#FEE2E2; color:#7F1D1D; }
   .metrics{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
   .metric{ border:1px solid var(--line); border-radius:10px; padding:11px; }
   .metric .k{ font-size:.74rem; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); }
   .metric .v{ font-size:1.26rem; font-weight:700; margin-top:2px; }
   .metric .sub{ font-size:.74rem; color:var(--muted); margin-top:1px; }
   .pass{ color:var(--green); } .warn{ color:var(--amber); } .bad{ color:var(--red); }
-  .big{ background:var(--brand); color:#fff; border-radius:12px; padding:16px; }
+  .big{ background:#166534; color:#fff; border-radius:12px; padding:16px; }
   .big .k{ font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; opacity:.9; }
   .big .v{ font-size:2rem; font-weight:700; margin-top:2px; }
   .big .sub{ font-size:.82rem; opacity:.92; margin-top:3px; }
@@ -53,7 +53,7 @@
     <p>Will this place actually make money as a short-term rental? Revenue from your nightly rate &amp; occupancy, the occupancy you need to break even, RevPAR, cash flow, and return — live as you type.</p>
   </header>
 <!-- LAUNCH TODO: replace href with the live product URL before publishing -->
-<div style="background:#1f6f54;color:#fff;padding:9px 14px;text-align:center;font:600 .85rem/1.4 -apple-system,Segoe UI,Arial,sans-serif">Free tool from Kyodo Partners · Get the full <strong>Airbnb / STR Host Tracker</strong> ($24) <a href="https://payhip.com/KyodoPartners" style="color:#fff;text-decoration:underline">here &rarr;</a></div>
+<div style="background:#166534;color:#fff;padding:9px 14px;text-align:center;font:600 .85rem/1.4 -apple-system,Segoe UI,Arial,sans-serif">Free tool from Kyodo Partners · Get the full <strong>Kyodo Airbnb Assistant</strong> ($24) <a href="https://payhip.com/KyodoPartners" style="color:#fff;text-decoration:underline">here &rarr;</a></div>
 
   <div class="grid">
     <div>
@@ -138,10 +138,10 @@
   </div>
 
 <!-- LAUNCH TODO: replace href with the live product URL before publishing -->
-<div style="max-width:1040px;margin:18px auto;padding:0 18px"><div style="background:#1f6f54;color:#fff;border-radius:12px;padding:20px 22px;font-family:-apple-system,Segoe UI,Arial,sans-serif"><div style="font-size:1.15rem;font-weight:700;margin-bottom:6px">Want to track the real numbers, not just estimate them?</div><div style="font-size:.92rem;opacity:.95;margin-bottom:12px">The <strong>Airbnb / STR Host Tracker</strong> adds booking & expense logs, the occupancy / ADR / RevPAR dashboard, year-end summary, and this analyzer. Pay once — no subscription, no bank linking, your data stays on your device.</div><a href="https://payhip.com/KyodoPartners" style="display:inline-block;background:#fff;color:#1f6f54;font-weight:700;text-decoration:none;padding:11px 20px;border-radius:9px">Get the Airbnb / STR Host Tracker — $24 &rarr;</a></div></div>
+<div style="max-width:1040px;margin:18px auto;padding:0 18px"><div style="background:#166534;color:#fff;border-radius:12px;padding:20px 22px;font-family:-apple-system,Segoe UI,Arial,sans-serif"><div style="font-size:1.15rem;font-weight:700;margin-bottom:6px">Want to track the real numbers, not just estimate them?</div><div style="font-size:.92rem;opacity:.95;margin-bottom:12px">The <strong>Kyodo Airbnb Assistant</strong> adds booking & expense logs, the occupancy / ADR / RevPAR dashboard, year-end summary, and this analyzer. Pay once — no subscription, no bank linking, your data stays on your device.</div><a href="https://payhip.com/KyodoPartners" style="display:inline-block;background:#fff;color:#166534;font-weight:700;text-decoration:none;padding:11px 20px;border-radius:9px">Get the Kyodo Airbnb Assistant — $24 &rarr;</a></div></div>
   <footer>
     <p class="disc"><strong>Estimates for planning only — not investment or tax advice.</strong> Short-term-rental income is seasonal and platform-dependent; actual occupancy and nightly rates vary widely by market. Cap rate uses operating expenses only (excludes mortgage). "Other income" and lodging taxes collected from guests are not counted as revenue here. Verify your market's real numbers (AirDNA, local comps) before buying.</p>
-    <p>Part of the Kyodo Partners Airbnb / Short-Term Rental Host Suite &middot; &copy; 2026 Kyodo Partners LLC</p>
+    <p>Part of the Kyodo Airbnb Assistant &middot; &copy; 2026 Kyodo Partners LLC</p>
   </footer>
 </div>
 
