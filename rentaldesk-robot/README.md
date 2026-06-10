@@ -37,7 +37,7 @@ A landlord dashboard that runs entirely in your web browser. Paste a tenant's me
 ## Quick Start
 
 1. Open `index.html` in Chrome, Safari, Firefox, or Edge — nothing to install.
-2. On the **Requests** tab, paste a tenant's message and let the robot analyze it.
+2. On the **Requests** tab, paste a tenant's message and let the assistant analyze it.
 3. Add your **Properties** and **Warranties** so matches and calculators use your real numbers.
 4. Use **Export to Excel** to back up your data or hand it to your accountant.
 

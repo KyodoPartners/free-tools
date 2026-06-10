@@ -1,4 +1,4 @@
-# How to Open RentalDesk Robot on Your Phone
+# How to Open Kyodo Landlord Assistant on Your Phone
 
 RentalDesk is a small set of files that run in your browser — no app store, no install, no account.
 

@@ -1,8 +1,8 @@
 /* ============================================================
-   RentalDesk Robot  —  application logic
+   Kyodo Landlord Assistant  —  application logic
    A 100% client-side single-page app. No server, no build step.
    - Data lives in the browser (localStorage), so it survives refreshes.
-   - The "robot" reads a tenant message and classifies it (whole-word
+   - The assistant reads a tenant message and classifies it (whole-word
      matching, so "back door lock" is NOT read as an A/C emergency).
    - Data can be exported to / imported from real Excel (.xlsx) via SheetJS.
    ============================================================ */
@@ -37,7 +37,7 @@ function toast(msg) {
 }
 
 /* ============================================================
-   THE ROBOT  —  message understanding
+   THE ASSISTANT  —  message understanding
    Whole-word matching avoids the classic bug where "ac" matches
    inside "bACk", "replACe" or "contACt".
    ============================================================ */
@@ -116,7 +116,7 @@ function suggestedReply(tenant, category, label) {
 function repairVsReplace(repair, replace, priorRepairs = 0, warrantyActive = false) {
   repair = num(repair); replace = num(replace);
   if (warrantyActive) return ["Check warranty first", "A warranty appears active, so call the warranty company or installer before paying out of pocket."];
-  if (replace <= 0) return ["Need a replacement estimate", "Add a replacement estimate so the robot can compare repair vs replacement."];
+  if (replace <= 0) return ["Need a replacement estimate", "Add a replacement estimate so the assistant can compare repair vs replacement."];
   const pct = (repair / replace) * 100;
   if (pct >= 50 || priorRepairs >= 2) return ["Consider replacement", `Repair is about ${pct.toFixed(0)}% of replacement cost, and repeated repairs may make replacement smarter.`];
   return ["Repair may make sense", `Repair is about ${pct.toFixed(0)}% of replacement cost.`];
@@ -265,7 +265,7 @@ function propertyOptions(selected = "") {
 function renderRequests() {
   view().innerHTML = `
     <section class="hero"><p class="eyebrow">Tenant requests</p><h2>Paste a tenant email or text</h2>
-      <p class="muted">The robot reads it, figures out what's broken, checks warranties, and drafts a reply.</p></section>
+      <p class="muted">The assistant reads it, figures out what's broken, checks warranties, and drafts a reply.</p></section>
     <section class="panel">
       <form class="form" id="reqForm">
         <label>Tenant name<input name="tenant" value="Tenant"></label>
@@ -275,7 +275,7 @@ function renderRequests() {
           <label>Repair estimate (optional)<input name="repair_estimate" placeholder="$0"></label>
           <label>Replacement estimate (optional)<input name="replacement_estimate" placeholder="$0"></label>
         </div>
-        <div><button class="btn primary" type="submit">Let the robot analyze it →</button></div>
+        <div><button class="btn primary" type="submit">Let the assistant analyze it →</button></div>
       </form>
       <div style="margin-top:12px"><button class="btn" type="button" id="tenantLinkBtn">📨 Get a link to share with tenants</button></div>
       <div id="tenantLinkBox"></div>
@@ -319,7 +319,7 @@ function renderRequestDetail() {
     <section class="grid-two">
       <div class="panel">
         <h3>Original message</h3><blockquote>${esc(r.message)}</blockquote>
-        <h3 style="margin-top:14px">Robot summary</h3>
+        <h3 style="margin-top:14px">Assistant summary</h3>
         <dl class="kv"><dt>Likely issue</dt><dd>${esc(r.summary)}</dd><dt>Category</dt><dd>${esc(CATEGORY_LABEL[r.category] || r.category)}</dd><dt>Priority</dt><dd>${pill(r.priority)}</dd><dt>Next step</dt><dd>${esc(r.next_step)}</dd></dl>
         <h3 style="margin-top:14px">Suggested tenant reply</h3>
         <div class="reply">${esc(r.reply)}</div>
@@ -557,7 +557,7 @@ function renderTenantReportMode() {
         <textarea id="tenantCopy" readonly style="margin-top:8px;min-height:140px"></textarea>
       </div>
     </section>
-    <footer class="site" style="display:block"><p>Powered by RentalDesk Robot · © 2026 Kyodo Partners LLC</p></footer>`;
+    <footer class="site" style="display:block"><p>Powered by Kyodo Landlord Assistant · © 2026 Kyodo Partners LLC</p></footer>`;
   const f = $("#tenantForm");
   f.onsubmit = (e) => {
     e.preventDefault();
