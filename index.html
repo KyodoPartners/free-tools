@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kyodo Partners — Practical tools for landlords, freelancers &amp; small businesses</title>
+<meta name="description" content="Pay-once calculators, trackers, and dashboards for landlords, freelancers, and small businesses. No subscriptions, no accounts — your data stays on your device.">
+<style>
+  :root{ --ink:#1c2733; --muted:#5b6b7b; --line:#e4e9ef; --bg:#f5f8fa; --card:#fff;
+         --brand:#1f6f54; --brand2:#176046; --accent:#bf5a2b; }
+  *{ box-sizing:border-box; }
+  body{ margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+        color:var(--ink); background:var(--bg); line-height:1.55; -webkit-text-size-adjust:100%; }
+  a{ color:var(--brand); }
+  .wrap{ max-width:1040px; margin:0 auto; padding:0 18px; }
+
+  /* top bar */
+  .top{ background:var(--brand); color:#fff; }
+  .top .wrap{ display:flex; align-items:center; justify-content:space-between; padding:13px 18px; flex-wrap:wrap; gap:8px; }
+  .brand{ font-weight:700; font-size:1.18rem; letter-spacing:.01em; }
+  .top nav a{ color:#e8f1ec; text-decoration:none; font-size:.92rem; margin-left:18px; }
+  .top nav a:hover{ color:#fff; }
+
+  /* hero */
+  .hero{ padding:46px 0 30px; }
+  .hero h1{ font-size:2.05rem; line-height:1.18; margin:0 0 12px; max-width:18ch; }
+  .hero p{ font-size:1.06rem; color:var(--muted); margin:0 0 20px; max-width:60ch; }
+  .btn{ display:inline-block; background:var(--accent); color:#fff; text-decoration:none; font-weight:700;
+        padding:11px 20px; border-radius:10px; }
+  .btn:hover{ background:#a94c22; }
+
+  section{ padding:14px 0 30px; }
+  h2.sec{ font-size:1.35rem; margin:18px 0 4px; }
+  .sec-sub{ color:var(--muted); margin:0 0 16px; max-width:62ch; }
+
+  .grid{ display:grid; grid-template-columns:1fr; gap:15px; }
+  @media(min-width:640px){ .grid{ grid-template-columns:1fr 1fr; } }
+  @media(min-width:920px){ .grid{ grid-template-columns:1fr 1fr 1fr; } }
+
+  .card{ background:var(--card); border:1px solid var(--line); border-radius:13px; padding:17px 18px;
+         text-decoration:none; color:inherit; display:block; position:relative; }
+  a.card:hover{ border-color:var(--brand); box-shadow:0 3px 14px rgba(0,0,0,.06); transform:translateY(-2px); }
+  .card{ transition:transform .15s, box-shadow .15s, border-color .15s; }
+  .card h3{ margin:0 0 5px; font-size:1.04rem; color:var(--brand); }
+  .card p{ margin:0; font-size:.9rem; color:var(--muted); }
+  .tag{ display:inline-block; font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em;
+        padding:2px 8px; border-radius:999px; margin-bottom:8px; }
+  .tag.free{ background:#e2efe8; color:var(--brand2); }
+  .tag.soon{ background:#f6ece1; color:var(--accent); }
+  .price{ font-weight:700; color:var(--ink); }
+
+  .note{ background:#fff; border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:10px;
+         padding:13px 16px; color:var(--muted); font-size:.9rem; margin-top:6px; }
+
+  footer{ border-top:1px solid var(--line); margin-top:24px; }
+  footer .wrap{ padding:22px 18px 40px; color:var(--muted); font-size:.85rem; }
+  footer a{ color:var(--brand); }
+</style>
+</head>
+<body>
+  <div class="top">
+    <div class="wrap">
+      <span class="brand">Kyodo Partners</span>
+      <nav><a href="#tools">Free tools</a><a href="#products">Products</a><a href="mailto:sales@kyodopartners.com">Contact</a></nav>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <section class="hero">
+      <h1>Practical tools that do the work for you.</h1>
+      <p>Calculators, trackers, and dashboards for landlords, freelancers, and small businesses. Pay once — no subscriptions, no accounts, and your data stays on your own device.</p>
+      <a class="btn" href="#tools">Try the free tools ↓</a>
+    </section>
+
+    <section id="tools">
+      <h2 class="sec">Free tools</h2>
+      <p class="sec-sub">Use them right in your browser — nothing to install, no sign-up, your numbers never leave your device.</p>
+      <div class="grid">
+        <a class="card" href="rentaldesk-robot/"><span class="tag free">Free</span><h3>RentalDesk Robot →</h3><p>Paste a tenant's message and it sorts the issue, checks warranties, drafts a reply, and tracks rent — a whole landlord dashboard in your browser.</p></a>
+        <a class="card" href="rental-deal-analyzer.html"><span class="tag free">Free</span><h3>Rental Deal Analyzer →</h3><p>Should you buy this rental? Cap rate, cash flow, the highest smart offer, a stress test, and a multi-year return.</p></a>
+        <a class="card" href="str-deal-analyzer.html"><span class="tag free">Free</span><h3>Airbnb / STR Deal Analyzer →</h3><p>Will it make money as a short-term rental? Revenue, the occupancy you need to break even, RevPAR, and cash flow.</p></a>
+        <a class="card" href="quarterly-tax-estimator.html"><span class="tag free">Free</span><h3>1099 Quarterly Tax Estimator →</h3><p>Self-employed? See how much to set aside and what to send the IRS each quarter — using 2026 figures.</p></a>
+        <a class="card" href="tco-calculator.html"><span class="tag free">Free</span><h3>TCO Calculator →</h3><p>Total cost of ownership across IT endpoints, cloud vs on-prem, fleet, equipment, and HR turnover.</p></a>
+      </div>
+    </section>
+
+    <section id="products">
+      <h2 class="sec">Spreadsheet suites &amp; toolkits</h2>
+      <p class="sec-sub">Pay-once spreadsheets and toolkits that pick up where the free tools leave off — full tracking, dashboards, and year-end summaries built for your accountant.</p>
+      <div class="grid">
+        <div class="card"><span class="tag soon">Coming soon</span><h3>Rental Property Suite</h3><p>Income, expenses, mileage, dashboard &amp; year-end tax summary — plus the Deal Analyzer. <span class="price">$24</span></p></div>
+        <div class="card"><span class="tag soon">Coming soon</span><h3>Freelancer 1099 Pack</h3><p>Income &amp; expense tracker, quarterly + year-end summaries — plus the Tax Estimator. <span class="price">$19</span></p></div>
+        <div class="card"><span class="tag soon">Coming soon</span><h3>Airbnb / STR Host Tracker</h3><p>Booking &amp; expense logs with an occupancy / ADR / RevPAR dashboard. <span class="price">$24</span></p></div>
+        <div class="card"><span class="tag soon">Coming soon</span><h3>TCO Toolkit</h3><p>The full editable cost model, a playbook guide, and the calculator app. <span class="price">$39</span></p></div>
+        <div class="card"><span class="tag soon">Coming soon</span><h3>RentalDesk Robot (full)</h3><p>Own it offline, plus the shareable tenant-intake form and one-click hand-off into the Rental Suite. <span class="price">$19</span></p></div>
+      </div>
+      <p class="note">Our store is launching shortly. Want a heads-up the moment these go live? Email <a href="mailto:sales@kyodopartners.com?subject=Notify%20me%20when%20products%20launch">sales@kyodopartners.com</a>.</p>
+    </section>
+  </div>
+
+  <footer>
+    <div class="wrap">
+      © 2026 Kyodo Partners LLC · Questions? <a href="mailto:sales@kyodopartners.com">sales@kyodopartners.com</a><br>
+      Our tools are planning and organization helpers — not legal, tax, accounting, or financial advice.
+    </div>
+  </footer>
+</body>
+</html>

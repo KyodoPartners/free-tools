@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Short-Term Rental (Airbnb) Deal Analyzer — Kyodo Partners</title>
+<style>
+  :root{ --ink:#1c2733; --muted:#5b6b7b; --line:#e2e8ef; --bg:#f4f7fa; --card:#fff;
+         --brand:#1f6f54; --brand2:#26845f; --green:#1f8a4c; --amber:#b9851b; --red:#c0392b; }
+  *{ box-sizing:border-box; }
+  body{ margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+        color:var(--ink); background:var(--bg); line-height:1.45; -webkit-text-size-adjust:100%; }
+  .wrap{ max-width:1040px; margin:0 auto; padding:18px; }
+  header h1{ margin:0 0 4px; font-size:1.55rem; }
+  header p{ margin:0 0 14px; color:var(--muted); font-size:.95rem; }
+  .grid{ display:grid; grid-template-columns:1fr; gap:16px; }
+  @media(min-width:820px){ .grid{ grid-template-columns:1fr 1fr; align-items:start; } }
+  .card{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px; margin-bottom:16px; }
+  .card h2{ margin:0 0 10px; font-size:.78rem; letter-spacing:.06em; text-transform:uppercase; color:var(--brand); }
+  .field{ margin-bottom:11px; }
+  .field label{ display:block; font-size:.85rem; color:var(--muted); margin-bottom:4px; }
+  .field input{ width:100%; min-height:44px; padding:9px 11px; font-size:1rem; color:var(--ink);
+                border:1px solid var(--line); border-radius:9px; background:#fff; }
+  .field input:focus{ outline:2px solid var(--brand2); border-color:var(--brand2); }
+  .two{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .verdict{ border-radius:12px; padding:16px; color:#fff; margin-bottom:14px; }
+  .verdict .tag{ font-size:1.35rem; font-weight:700; }
+  .verdict .why{ font-size:.9rem; opacity:.95; margin-top:3px; }
+  .v-green{ background:var(--green); } .v-amber{ background:var(--amber); } .v-red{ background:var(--red); }
+  .metrics{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .metric{ border:1px solid var(--line); border-radius:10px; padding:11px; }
+  .metric .k{ font-size:.74rem; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); }
+  .metric .v{ font-size:1.26rem; font-weight:700; margin-top:2px; }
+  .metric .sub{ font-size:.74rem; color:var(--muted); margin-top:1px; }
+  .pass{ color:var(--green); } .warn{ color:var(--amber); } .bad{ color:var(--red); }
+  .big{ background:var(--brand); color:#fff; border-radius:12px; padding:16px; }
+  .big .k{ font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; opacity:.9; }
+  .big .v{ font-size:2rem; font-weight:700; margin-top:2px; }
+  .big .sub{ font-size:.82rem; opacity:.92; margin-top:3px; }
+  table{ width:100%; border-collapse:collapse; font-size:.88rem; }
+  th,td{ text-align:right; padding:7px 6px; border-bottom:1px solid var(--line); }
+  th:first-child,td:first-child{ text-align:left; }
+  th{ font-size:.72rem; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); }
+  td.pos{ color:var(--green); } td.neg{ color:var(--red); }
+  footer{ margin-top:8px; font-size:.78rem; color:var(--muted); }
+  .disc{ background:#fffaf0; border:1px solid #f0e3c5; border-radius:9px; padding:10px 12px; font-size:.8rem; color:#6b5a33; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Short-Term Rental (Airbnb) Deal Analyzer</h1>
+    <p>Will this place actually make money as a short-term rental? Revenue from your nightly rate &amp; occupancy, the occupancy you need to break even, RevPAR, cash flow, and return — live as you type.</p>
+  </header>
+<!-- LAUNCH TODO: replace href with the live product URL before publishing -->
+<div style="background:#1f6f54;color:#fff;padding:9px 14px;text-align:center;font:600 .85rem/1.4 -apple-system,Segoe UI,Arial,sans-serif">Free tool from Kyodo Partners · Get the full <strong>Airbnb / STR Host Tracker</strong> ($24) <a href="https://payhip.com/KyodoPartners" style="color:#fff;text-decoration:underline">here &rarr;</a></div>
+
+  <div class="grid">
+    <div>
+      <div class="card">
+        <h2>Property &amp; Financing <span style="text-transform:none;color:var(--muted);font-weight:400">(set price to 0 if you already own it)</span></h2>
+        <div class="field"><label>Purchase price ($)</label><input id="price" type="number" inputmode="decimal" value="300000"></div>
+        <div class="two">
+          <div class="field"><label>Down payment (%)</label><input id="downpct" type="number" inputmode="decimal" value="20"></div>
+          <div class="field"><label>Closing + furnishing ($)</label><input id="closing" type="number" inputmode="decimal" value="20000"></div>
+        </div>
+        <div class="two">
+          <div class="field"><label>Interest rate (%)</label><input id="rate" type="number" inputmode="decimal" value="6.5"></div>
+          <div class="field"><label>Loan term (years)</label><input id="term" type="number" inputmode="decimal" value="30"></div>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Booking &amp; Revenue</h2>
+        <div class="two">
+          <div class="field"><label>Average nightly rate ($)</label><input id="adr" type="number" inputmode="decimal" value="185"></div>
+          <div class="field"><label>Occupancy (%)</label><input id="occ" type="number" inputmode="decimal" value="65"></div>
+        </div>
+        <div class="two">
+          <div class="field"><label>Cleaning fee charged ($/stay)</label><input id="cleanfee" type="number" inputmode="decimal" value="85"></div>
+          <div class="field"><label>Avg. nights per stay</label><input id="stay" type="number" inputmode="decimal" value="3"></div>
+        </div>
+        <div class="field"><label>Other income ($/mo)</label><input id="other_inc" type="number" inputmode="decimal" value="0"></div>
+      </div>
+      <div class="card">
+        <h2>Operating Expenses</h2>
+        <div class="two">
+          <div class="field"><label>Property tax ($/yr)</label><input id="tax" type="number" inputmode="decimal" value="3300"></div>
+          <div class="field"><label>Insurance ($/yr)</label><input id="ins" type="number" inputmode="decimal" value="2200"></div>
+        </div>
+        <div class="two">
+          <div class="field"><label>Utilities ($/mo)</label><input id="util" type="number" inputmode="decimal" value="160"></div>
+          <div class="field"><label>Internet/TV ($/mo)</label><input id="net" type="number" inputmode="decimal" value="75"></div>
+        </div>
+        <div class="two">
+          <div class="field"><label>Supplies/consumables ($/mo)</label><input id="supp" type="number" inputmode="decimal" value="80"></div>
+          <div class="field"><label>HOA + other ($/mo)</label><input id="hoa" type="number" inputmode="decimal" value="0"></div>
+        </div>
+        <div class="two">
+          <div class="field"><label>Cleaning cost paid ($/stay)</label><input id="cleancost" type="number" inputmode="decimal" value="75"></div>
+          <div class="field"><label>Repairs/maint. (% of revenue)</label><input id="maint" type="number" inputmode="decimal" value="4"></div>
+        </div>
+        <div class="two">
+          <div class="field"><label>Management (% of revenue)</label><input id="mgmt" type="number" inputmode="decimal" value="0"></div>
+          <div class="field"><label>Platform/host fee (% of revenue)</label><input id="plat" type="number" inputmode="decimal" value="3"></div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <h2>Verdict — Year 1</h2>
+        <div id="verdict" class="verdict v-amber"><div class="tag" id="v-tag">—</div><div class="why" id="v-why"></div></div>
+        <div class="metrics">
+          <div class="metric"><div class="k">Monthly cash flow</div><div class="v" id="m-mcf">—</div><div class="sub">after mortgage</div></div>
+          <div class="metric"><div class="k">Break-even occupancy</div><div class="v" id="m-be">—</div><div class="sub">to cover all costs</div></div>
+          <div class="metric"><div class="k">Cash-on-cash</div><div class="v" id="m-coc">—</div><div class="sub">year 1</div></div>
+          <div class="metric"><div class="k">Cap rate</div><div class="v" id="m-cap">—</div><div class="sub">operating only</div></div>
+          <div class="metric"><div class="k">RevPAR</div><div class="v" id="m-revpar">—</div><div class="sub">rev / available night</div></div>
+          <div class="metric"><div class="k">Mortgage (P&amp;I)</div><div class="v" id="m-pi">—</div><div class="sub">per month</div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Annual Revenue</h2>
+        <div class="big"><div class="k">Gross rental revenue</div><div class="v" id="m-gross">—</div><div class="sub" id="m-gross-sub"></div></div>
+      </div>
+
+      <div class="card">
+        <h2>Money In &amp; Out (per year)</h2>
+        <table><tbody id="pnl-body"></tbody></table>
+      </div>
+
+      <div class="card">
+        <h2>Occupancy Stress Test</h2>
+        <table><thead><tr><th>Occupancy</th><th>Cash flow/mo</th><th>Verdict</th></tr></thead><tbody id="stress-body"></tbody></table>
+      </div>
+    </div>
+  </div>
+
+<!-- LAUNCH TODO: replace href with the live product URL before publishing -->
+<div style="max-width:1040px;margin:18px auto;padding:0 18px"><div style="background:#1f6f54;color:#fff;border-radius:12px;padding:20px 22px;font-family:-apple-system,Segoe UI,Arial,sans-serif"><div style="font-size:1.15rem;font-weight:700;margin-bottom:6px">Want to track the real numbers, not just estimate them?</div><div style="font-size:.92rem;opacity:.95;margin-bottom:12px">The <strong>Airbnb / STR Host Tracker</strong> adds booking & expense logs, the occupancy / ADR / RevPAR dashboard, year-end summary, and this analyzer. Pay once — no subscription, no bank linking, your data stays on your device.</div><a href="https://payhip.com/KyodoPartners" style="display:inline-block;background:#fff;color:#1f6f54;font-weight:700;text-decoration:none;padding:11px 20px;border-radius:9px">Get the Airbnb / STR Host Tracker — $24 &rarr;</a></div></div>
+  <footer>
+    <p class="disc"><strong>Estimates for planning only — not investment or tax advice.</strong> Short-term-rental income is seasonal and platform-dependent; actual occupancy and nightly rates vary widely by market. Cap rate uses operating expenses only (excludes mortgage). "Other income" and lodging taxes collected from guests are not counted as revenue here. Verify your market's real numbers (AirDNA, local comps) before buying.</p>
+    <p>Part of the Kyodo Partners Airbnb / Short-Term Rental Host Suite &middot; &copy; 2026 Kyodo Partners LLC</p>
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var ids=["price","downpct","closing","rate","term","adr","occ","cleanfee","stay","other_inc",
+           "tax","ins","util","net","supp","hoa","cleancost","maint","mgmt","plat"];
+  function n(id){ var v=parseFloat(document.getElementById(id).value); return isFinite(v)?v:0; }
+  function money(x){ return (x<0?"-$":"$")+Math.abs(Math.round(x)).toLocaleString(); }
+  function pct(x){ return (Math.round(x*100)/100).toFixed(1)+"%"; }
+  function set(id,t){ document.getElementById(id).textContent=t; }
+
+  function pmt(loan,annualRate,years){
+    var r=(annualRate/100)/12, m=years*12;
+    if(loan<=0||m<=0) return 0;
+    return r>0 ? loan*r*Math.pow(1+r,m)/(Math.pow(1+r,m)-1) : loan/m;
+  }
+
+  // Full-year picture at a given occupancy %
+  function model(I, occOverride){
+    var occ=(occOverride!=null?occOverride:I.occ)/100;
+    var nights=365*occ;
+    var stays=I.stay>0 ? nights/I.stay : 0;
+    var nightlyRev=I.adr*nights;
+    var cleanRev=I.cleanfee*stays;
+    var otherRev=I.other_inc*12;
+    var bookingRev=nightlyRev+cleanRev;            // revenue-share costs apply to this
+    var gross=bookingRev+otherRev;
+
+    var mgmt=bookingRev*I.mgmt/100;
+    var plat=bookingRev*I.plat/100;
+    var maint=gross*I.maint/100;
+    var cleanCost=I.cleancost*stays;
+    var fixed=I.tax + I.ins + (I.util+I.net+I.supp+I.hoa)*12;
+    var opEx=mgmt+plat+maint+cleanCost+fixed;
+
+    var down=I.price*I.downpct/100, loan=Math.max(I.price-down,0), cashIn=down+I.closing;
+    var pi=pmt(loan,I.rate,I.term);
+    var noiY=gross-opEx, mcf=noiY/12-pi, acf=mcf*12;
+    return {
+      occ:occ, nights:nights, stays:stays, nightlyRev:nightlyRev, cleanRev:cleanRev, otherRev:otherRev,
+      gross:gross, mgmt:mgmt, plat:plat, maint:maint, cleanCost:cleanCost, fixed:fixed, opEx:opEx,
+      pi:pi, noiY:noiY, mcf:mcf, acf:acf, cashIn:cashIn, price:I.price,
+      cap: I.price>0?noiY/I.price*100:0, coc: cashIn>0?acf/cashIn*100:0,
+      revpar: I.adr*occ
+    };
+  }
+  function verdict(m, hasPrice){
+    if(m.mcf<0) return {k:"red",t:"🔴 Pass",w:"Negative cash flow — it costs you money each month at this occupancy."};
+    var strong = hasPrice ? m.coc>=8 : (m.gross>0 && m.noiY/m.gross>=0.35);
+    if(m.mcf>=0 && strong) return {k:"green",t:"🟢 Strong",w:hasPrice?"Positive cash flow with a healthy cash-on-cash return.":"Positive cash flow with a healthy operating margin."};
+    return {k:"amber",t:"🟡 Thin",w:"Cash flow is positive but the margin or return is slim — little room for a soft season."};
+  }
+
+  function breakEvenOcc(I){
+    function cf(o){ return model(I,o).mcf; }
+    if(cf(100)<0) return null;            // never breaks even, even fully booked
+    if(cf(0)>=0) return 0;
+    var lo=0, hi=100;
+    for(var i=0;i<60;i++){ var mid=(lo+hi)/2; if(cf(mid)>=0) hi=mid; else lo=mid; }
+    return hi;
+  }
+
+  function calc(){
+    var I={}; ids.forEach(function(k){ I[k]=n(k); });
+    var hasPrice=I.price>0;
+    var m=model(I);
+
+    var v=verdict(m,hasPrice), box=document.getElementById("verdict");
+    box.className="verdict v-"+v.k; set("v-tag",v.t); set("v-why",v.w);
+
+    set("m-mcf",money(m.mcf)); document.getElementById("m-mcf").className="v "+(m.mcf>=0?"pass":"bad");
+    var be=breakEvenOcc(I);
+    set("m-be", be==null?"never":be<=0?"0%":pct(be));
+    set("m-coc", m.cashIn>0?pct(m.coc):"—");
+    set("m-cap", hasPrice?pct(m.cap):"—");
+    set("m-revpar", money(m.revpar));
+    set("m-pi", money(m.pi));
+
+    set("m-gross", money(m.gross));
+    set("m-gross-sub", Math.round(m.nights)+" nights booked/yr · "+Math.round(m.stays)+" stays · "+pct(I.occ)+" occupancy");
+
+    var rows=[
+      ["Nightly revenue", m.nightlyRev, 1],
+      ["Cleaning fees collected", m.cleanRev, 1],
+      ["Other income", m.otherRev, 1],
+      ["Management fee", -m.mgmt, 0],
+      ["Platform / host fee", -m.plat, 0],
+      ["Repairs &amp; maintenance", -m.maint, 0],
+      ["Cleaning paid out", -m.cleanCost, 0],
+      ["Taxes, insurance, utilities, supplies", -m.fixed, 0],
+      ["Net operating income", m.noiY, 2],
+      ["Mortgage (P&amp;I)", -m.pi*12, 0],
+      ["Annual cash flow", m.acf, 2]
+    ];
+    var html=""; rows.forEach(function(r){
+      var cls=r[1]>=0?"pos":"neg", strong=(r[2]===2);
+      html+="<tr><td>"+(strong?"<strong>"+r[0]+"</strong>":r[0])+"</td><td class='"+cls+"'>"+(strong?"<strong>"+money(r[1])+"</strong>":money(r[1]))+"</td></tr>";
+    });
+    document.getElementById("pnl-body").innerHTML=html;
+
+    var scn=[I.occ-15, I.occ-7, I.occ, I.occ+7].filter(function(o){return o>=0&&o<=100;});
+    var sb=""; scn.forEach(function(o){
+      var mm=model(I,o), vv=verdict(mm,hasPrice), col=vv.k==="green"?"var(--green)":vv.k==="amber"?"var(--amber)":"var(--red)";
+      sb+="<tr><td>"+pct(o)+(Math.abs(o-I.occ)<0.01?" (yours)":"")+"</td><td>"+money(mm.mcf)+"</td><td style='color:"+col+";font-weight:600'>"+vv.t.replace(/^[^ ]+ /,"")+"</td></tr>";
+    });
+    document.getElementById("stress-body").innerHTML=sb;
+  }
+  ids.forEach(function(id){ document.getElementById(id).addEventListener("input",calc); });
+  calc();
+})();
+</script>
+</body>
+</html>
