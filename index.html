@@ -39,8 +39,9 @@
 
   .card{ background:var(--card); border:1px solid var(--line); border-radius:13px; padding:17px 18px;
          text-decoration:none; color:inherit; display:block; position:relative; }
-  a.card:hover{ border-color:var(--brand); box-shadow:0 3px 14px rgba(0,0,0,.06); transform:translateY(-2px); }
+  a.card:hover,.card-link:hover{ border-color:var(--brand); box-shadow:0 3px 14px rgba(0,0,0,.06); transform:translateY(-2px); }
   .card{ transition:transform .15s, box-shadow .15s, border-color .15s; }
+  .card-link{ cursor:pointer; }
   .card h3{ margin:0 0 5px; font-size:1.04rem; color:var(--brand); }
   .card p{ margin:0; font-size:.9rem; color:var(--muted); }
   .tag{ display:inline-block; font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em;
@@ -77,7 +78,7 @@
       <h2 class="sec">Free tools</h2>
       <p class="sec-sub">Use them right in your browser — nothing to install, no sign-up, your numbers never leave your device.</p>
       <div class="grid">
-        <a class="card" href="rentaldesk-robot/"><span class="tag free">Free</span><h3>Kyodo Landlord Assistant →</h3><p>Paste a tenant's message and it sorts the issue, checks warranties, drafts a reply, and tracks rent — a whole landlord dashboard in your browser.</p></a>
+        <div class="card card-link" onclick="location.href='rentaldesk-robot/'"><span class="tag free">Free</span><h3>Kyodo Landlord Assistant →</h3><p>Paste a tenant's message and it sorts the issue, checks warranties, drafts a reply, and tracks rent — a whole landlord dashboard in your browser.</p><a href="https://youtu.be/fTgB6WxCXdo" onclick="event.stopPropagation()" style="font-size:.82rem;display:inline-block;margin-top:7px;color:var(--brand)">▶ Watch the 90-second demo</a></div>
         <a class="card" href="rental-deal-analyzer.html"><span class="tag free">Free</span><h3>Rental Deal Analyzer →</h3><p>Should you buy this rental? Cap rate, cash flow, the highest smart offer, a stress test, and a multi-year return.</p></a>
         <a class="card" href="str-deal-analyzer.html"><span class="tag free">Free</span><h3>Airbnb / STR Deal Analyzer →</h3><p>Will it make money as a short-term rental? Revenue, the occupancy you need to break even, RevPAR, and cash flow.</p></a>
         <a class="card" href="quarterly-tax-estimator.html"><span class="tag free">Free</span><h3>1099 Quarterly Tax Estimator →</h3><p>Self-employed? See how much to set aside and what to send the IRS each quarter — using 2026 figures.</p></a>
