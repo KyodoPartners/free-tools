@@ -490,7 +490,7 @@ function exportForSuite() {
     { Step: "1. Open your Rental Property Suite spreadsheet (Excel or Google Sheets)." },
     { Step: "2. On the 'Expense Log' sheet here, copy the data rows and paste them into the Suite's Expense Log, below its yellow header." },
     { Step: "3. On the 'Setup' sheet here, copy the property rows into the Suite's Setup tab." },
-    { Step: "Tip: paste as values. Don't have the Suite yet? Get it on Etsy — search 'Kyodo Partners Rental Property Suite'." },
+    { Step: "Tip: paste as values. Don't have the Suite yet? Get it at kyodopartners.gumroad.com." },
   ];
   XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(guide, { header: ["Step"] }), "How to import");
 
