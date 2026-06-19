@@ -164,22 +164,23 @@ footer{padding:14px 28px;color:var(--muted);font-size:12px;border-top:1px solid 
     <section class="panel" data-p="it">
       <h2>IT Endpoints — Mac vs Windows</h2><p class="desc">Per-device and full-fleet cost of Mac and Windows laptops/desktops.</p>
       <div class="card"><h3>Inputs</h3>
-        <div class="fld" style="max-width:220px;margin-bottom:12px;"><label>Analysis period (years)</label><input type="number" id="it_y" value="3"></div>
-        <div class="opt"><label><input type="checkbox" id="it_dep" checked> Estimate residual from straight-line depreciation &nbsp;·&nbsp; Useful life (years): <input type="number" id="it_life" value="5"></label><div class="hint">On: residual = purchase × (useful life − analysis period) ÷ useful life. Untick to type your own residual values below.</div></div>
+        <div class="fld" style="max-width:220px;margin-bottom:12px;"><label>Analysis period (years)</label><input type="number" min="0" id="it_y" value="3"></div>
+        <div class="opt"><label><input type="checkbox" id="it_dep" checked> Estimate residual (book value) from straight-line depreciation &nbsp;·&nbsp; Useful life (years): <input type="number" min="0" id="it_life" value="5"></label><div class="hint">On: residual = purchase × (useful life − analysis period) ÷ useful life. Untick to type your own residual values below.</div></div>
+        <div class="opt"><label><input type="checkbox" id="it_refresh"> Replace devices at end of useful life (refresh cycle)</label><div class="hint">On: if the analysis period is longer than the useful life, the model buys replacement devices (e.g. a 6-year period with a 5-year life = 2 purchases). Off = single-lifecycle (one purchase).</div></div>
         <div class="opt"><label><input type="checkbox" id="it_vd"> Apply volume discount on hardware</label><div class="hint">Tier auto-set by device count (5,000+ = Enterprise). Apple (Mac): under-5k 5% / 5k+ 10%. Windows: under-5k 8% / 5k+ 25%. Off = flat pricing.</div></div>
         <div class="cols2">
           <div><h3 style="color:var(--accent);">Mac</h3><div class="grid">
-            <div class="fld"><label>Hardware purchase ($)</label><input type="number" id="it_macP" value="2200"></div>
-            <div class="fld"><label>Residual / resale at end ($, used if depreciation off)</label><input type="number" id="it_macR" value="500"></div>
-            <div class="fld"><label>Software / device / yr ($)</label><input type="number" id="it_macSw" value="365"></div>
-            <div class="fld"><label>Support + labor / device / yr ($)</label><input type="number" id="it_macSup" value="1900"></div>
-            <div class="fld"><label># of Mac devices</label><input type="number" id="it_macN" value="1000"></div></div></div>
+            <div class="fld"><label>Hardware purchase ($)</label><input type="number" min="0" id="it_macP" value="2200"></div>
+            <div class="fld"><label>Residual / resale at end ($, used if depreciation off)</label><input type="number" min="0" id="it_macR" value="500"></div>
+            <div class="fld"><label>Software / device / yr ($)</label><input type="number" min="0" id="it_macSw" value="365"></div>
+            <div class="fld"><label>Support + labor / device / yr ($)</label><input type="number" min="0" id="it_macSup" value="1900"></div>
+            <div class="fld"><label># of Mac devices</label><input type="number" min="0" id="it_macN" value="1000"></div></div></div>
           <div><h3 style="color:var(--accent);">Windows</h3><div class="grid">
-            <div class="fld"><label>Hardware purchase ($)</label><input type="number" id="it_winP" value="1400"></div>
-            <div class="fld"><label>Residual / resale at end ($, used if depreciation off)</label><input type="number" id="it_winR" value="200"></div>
-            <div class="fld"><label>Software / device / yr ($)</label><input type="number" id="it_winSw" value="410"></div>
-            <div class="fld"><label>Support + labor / device / yr ($)</label><input type="number" id="it_winSup" value="2600"></div>
-            <div class="fld"><label># of Windows devices</label><input type="number" id="it_winN" value="1000"></div></div></div>
+            <div class="fld"><label>Hardware purchase ($)</label><input type="number" min="0" id="it_winP" value="1400"></div>
+            <div class="fld"><label>Residual / resale at end ($, used if depreciation off)</label><input type="number" min="0" id="it_winR" value="200"></div>
+            <div class="fld"><label>Software / device / yr ($)</label><input type="number" min="0" id="it_winSw" value="410"></div>
+            <div class="fld"><label>Support + labor / device / yr ($)</label><input type="number" min="0" id="it_winSup" value="2600"></div>
+            <div class="fld"><label># of Windows devices</label><input type="number" min="0" id="it_winN" value="1000"></div></div></div>
         </div></div>
       <div class="card"><h3>Results</h3>
         <div class="cols2">
@@ -194,20 +195,20 @@ footer{padding:14px 28px;color:var(--muted);font-size:12px;border-top:1px solid 
     <section class="panel" data-p="cloud">
       <h2>Cloud vs On-Premises</h2><p class="desc">Multi-year cost of running workloads in the cloud vs. on your own servers.</p>
       <div class="card"><h3>Inputs</h3>
-        <div class="fld" style="max-width:220px;margin-bottom:12px;"><label>Analysis period (years)</label><input type="number" id="cl_y" value="3"></div>
+        <div class="fld" style="max-width:220px;margin-bottom:12px;"><label>Analysis period (years)</label><input type="number" min="0" id="cl_y" value="3"></div>
         <div class="opt"><label><input type="checkbox" id="cl_vd"> Apply committed-use / reserved discount to cloud spend</label><div class="hint">Applies a 40% committed-use / reserved discount (reflects reserved-instance &amp; enterprise-agreement savings; editable in source). Off = on-demand pricing.</div></div>
         <div class="cols2">
           <div><h3 style="color:var(--accent);">Cloud</h3><div class="grid">
-            <div class="fld"><label>Monthly cloud spend ($)</label><input type="number" id="cl_mo" value="18000"></div>
-            <div class="fld"><label>One-time migration ($)</label><input type="number" id="cl_mig" value="60000"></div>
-            <div class="fld"><label>Cloud mgmt labor / yr ($)</label><input type="number" id="cl_mgmt" value="120000"></div></div></div>
+            <div class="fld"><label>Monthly cloud spend ($)</label><input type="number" min="0" id="cl_mo" value="18000"></div>
+            <div class="fld"><label>One-time migration ($)</label><input type="number" min="0" id="cl_mig" value="60000"></div>
+            <div class="fld"><label>Cloud mgmt labor / yr ($)</label><input type="number" min="0" id="cl_mgmt" value="120000"></div></div></div>
           <div><h3 style="color:var(--accent);">On-Premises</h3><div class="grid">
-            <div class="fld"><label>Hardware capex (one-time $)</label><input type="number" id="cl_capex" value="450000"></div>
-            <div class="fld"><label>Residual value at end ($)</label><input type="number" id="cl_resid" value="45000"></div>
-            <div class="fld"><label>Power + cooling / yr ($)</label><input type="number" id="cl_power" value="40000"></div>
-            <div class="fld"><label>Data-center space / yr ($)</label><input type="number" id="cl_space" value="30000"></div>
-            <div class="fld"><label>Admin labor / yr ($)</label><input type="number" id="cl_admin" value="160000"></div>
-            <div class="fld"><label>Maintenance / yr ($)</label><input type="number" id="cl_maint" value="35000"></div></div></div>
+            <div class="fld"><label>Hardware capex (one-time $)</label><input type="number" min="0" id="cl_capex" value="450000"></div>
+            <div class="fld"><label>Residual value at end ($)</label><input type="number" min="0" id="cl_resid" value="45000"></div>
+            <div class="fld"><label>Power + cooling / yr ($)</label><input type="number" min="0" id="cl_power" value="40000"></div>
+            <div class="fld"><label>Data-center space / yr ($)</label><input type="number" min="0" id="cl_space" value="30000"></div>
+            <div class="fld"><label>Admin labor / yr ($)</label><input type="number" min="0" id="cl_admin" value="160000"></div>
+            <div class="fld"><label>Maintenance / yr ($)</label><input type="number" min="0" id="cl_maint" value="35000"></div></div></div>
         </div></div>
       <div class="card"><h3>Results</h3>
         <div class="cols2">
@@ -223,21 +224,21 @@ footer{padding:14px 28px;color:var(--muted);font-size:12px;border-top:1px solid 
       <h2>Fleet — Electric vs Gas (per vehicle)</h2><p class="desc">Lifetime cost of an electric vehicle vs. a gas/diesel vehicle.</p>
       <div class="card"><h3>Inputs</h3>
         <div class="grid" style="max-width:480px;margin-bottom:14px;">
-          <div class="fld"><label>Analysis period (years)</label><input type="number" id="fl_y" value="5"></div>
-          <div class="fld"><label>Annual miles per vehicle</label><input type="number" id="fl_mi" value="15000"></div></div>
+          <div class="fld"><label>Analysis period (years)</label><input type="number" min="0" id="fl_y" value="5"></div>
+          <div class="fld"><label>Annual miles per vehicle</label><input type="number" min="0" id="fl_mi" value="15000"></div></div>
         <div class="cols2">
           <div><h3 style="color:var(--accent);">Electric (EV)</h3><div class="grid">
-            <div class="fld"><label>Purchase price ($)</label><input type="number" id="fl_evP" value="42000"></div>
-            <div class="fld"><label>Residual at end ($)</label><input type="number" id="fl_evR" value="14000"></div>
-            <div class="fld"><label>Energy cost / mile ($)</label><input type="number" id="fl_evMi" value="0.05"></div>
-            <div class="fld"><label>Maintenance / yr ($)</label><input type="number" id="fl_evMaint" value="600"></div>
-            <div class="fld"><label>Insurance / yr ($)</label><input type="number" id="fl_evIns" value="1800"></div></div></div>
+            <div class="fld"><label>Purchase price ($)</label><input type="number" min="0" id="fl_evP" value="42000"></div>
+            <div class="fld"><label>Residual at end ($)</label><input type="number" min="0" id="fl_evR" value="14000"></div>
+            <div class="fld"><label>Energy cost / mile ($)</label><input type="number" min="0" id="fl_evMi" value="0.05"></div>
+            <div class="fld"><label>Maintenance / yr ($)</label><input type="number" min="0" id="fl_evMaint" value="600"></div>
+            <div class="fld"><label>Insurance / yr ($)</label><input type="number" min="0" id="fl_evIns" value="1800"></div></div></div>
           <div><h3 style="color:var(--accent);">Gas / Diesel</h3><div class="grid">
-            <div class="fld"><label>Purchase price ($)</label><input type="number" id="fl_gP" value="35000"></div>
-            <div class="fld"><label>Residual at end ($)</label><input type="number" id="fl_gR" value="11000"></div>
-            <div class="fld"><label>Fuel cost / mile ($)</label><input type="number" id="fl_gMi" value="0.18"></div>
-            <div class="fld"><label>Maintenance / yr ($)</label><input type="number" id="fl_gMaint" value="1200"></div>
-            <div class="fld"><label>Insurance / yr ($)</label><input type="number" id="fl_gIns" value="1700"></div></div></div>
+            <div class="fld"><label>Purchase price ($)</label><input type="number" min="0" id="fl_gP" value="35000"></div>
+            <div class="fld"><label>Residual at end ($)</label><input type="number" min="0" id="fl_gR" value="11000"></div>
+            <div class="fld"><label>Fuel cost / mile ($)</label><input type="number" min="0" id="fl_gMi" value="0.18"></div>
+            <div class="fld"><label>Maintenance / yr ($)</label><input type="number" min="0" id="fl_gMaint" value="1200"></div>
+            <div class="fld"><label>Insurance / yr ($)</label><input type="number" min="0" id="fl_gIns" value="1700"></div></div></div>
         </div></div>
       <div class="card"><h3>Results</h3>
         <div class="cols2">
@@ -254,15 +255,15 @@ footer{padding:14px 28px;color:var(--muted);font-size:12px;border-top:1px solid 
       <div class="card"><h3>Inputs</h3>
         <div class="opt"><label><input type="checkbox" id="eq_vd"> Apply volume discount on purchase price</label><div class="hint">Tier auto-set by quantity (5,000+ = Enterprise). Equipment: under-5k 8% / 5k+ 22%. Off = flat pricing.</div></div>
         <div class="grid">
-        <div class="fld"><label>Analysis period (years)</label><input type="number" id="eq_y" value="5"></div>
-        <div class="fld"><label>Quantity (units)</label><input type="number" id="eq_qty" value="10"></div>
-        <div class="fld"><label>Purchase price / unit ($)</label><input type="number" id="eq_p" value="12000"></div>
-        <div class="fld"><label>Installation / setup, one-time ($)</label><input type="number" id="eq_inst" value="1500"></div>
-        <div class="fld"><label>Operating / unit / yr ($)</label><input type="number" id="eq_op" value="2000"></div>
-        <div class="fld"><label>Maintenance / unit / yr ($)</label><input type="number" id="eq_maint" value="1200"></div>
-        <div class="fld"><label>Energy / unit / yr ($)</label><input type="number" id="eq_energy" value="900"></div>
-        <div class="fld"><label>Downtime cost / unit / yr ($)</label><input type="number" id="eq_down" value="600"></div>
-        <div class="fld"><label>Resale value / unit at end ($)</label><input type="number" id="eq_resale" value="2000"></div></div></div>
+        <div class="fld"><label>Analysis period (years)</label><input type="number" min="0" id="eq_y" value="5"></div>
+        <div class="fld"><label>Quantity (units)</label><input type="number" min="0" id="eq_qty" value="10"></div>
+        <div class="fld"><label>Purchase price / unit ($)</label><input type="number" min="0" id="eq_p" value="12000"></div>
+        <div class="fld"><label>Installation / setup, one-time ($)</label><input type="number" min="0" id="eq_inst" value="1500"></div>
+        <div class="fld"><label>Operating / unit / yr ($)</label><input type="number" min="0" id="eq_op" value="2000"></div>
+        <div class="fld"><label>Maintenance / unit / yr ($)</label><input type="number" min="0" id="eq_maint" value="1200"></div>
+        <div class="fld"><label>Energy / unit / yr ($)</label><input type="number" min="0" id="eq_energy" value="900"></div>
+        <div class="fld"><label>Downtime cost / unit / yr ($)</label><input type="number" min="0" id="eq_down" value="600"></div>
+        <div class="fld"><label>Resale value / unit at end ($)</label><input type="number" min="0" id="eq_resale" value="2000"></div></div></div>
       <div class="card"><h3>Results</h3>
         <div class="cols2">
           <div class="result"><div class="lbl">Per-unit TCO</div><div class="big" id="eq_unit">—</div><div class="sub" id="eq_unitYr"></div></div>
@@ -273,12 +274,12 @@ footer{padding:14px 28px;color:var(--muted);font-size:12px;border-top:1px solid 
     <section class="panel" data-p="hr">
       <h2>HR — Cost of Employee Turnover</h2><p class="desc">What churn really costs each year — recruiting, onboarding, and lost productivity. (Based on employee headcount, not units.)</p>
       <div class="card"><h3>Inputs</h3><div class="grid">
-        <div class="fld"><label>Number of employees (headcount)</label><input type="number" id="hr_head" value="200"></div>
-        <div class="fld"><label>Average salary ($)</label><input type="number" id="hr_salary" value="95000"></div>
-        <div class="fld"><label>Annual turnover rate (%)</label><input type="number" id="hr_turn" value="15"></div>
-        <div class="fld"><label>Recruiting cost / departure ($)</label><input type="number" id="hr_recruit" value="6000"></div>
-        <div class="fld"><label>Onboarding + training / departure ($)</label><input type="number" id="hr_onboard" value="8000"></div>
-        <div class="fld"><label>Lost productivity / departure ($)</label><input type="number" id="hr_prod" value="15000"></div></div></div>
+        <div class="fld"><label>Number of employees (headcount)</label><input type="number" min="0" id="hr_head" value="200"></div>
+        <div class="fld"><label>Average salary ($)</label><input type="number" min="0" id="hr_salary" value="95000"></div>
+        <div class="fld"><label>Annual turnover rate (%)</label><input type="number" min="0" id="hr_turn" value="15"></div>
+        <div class="fld"><label>Recruiting cost / departure ($)</label><input type="number" min="0" id="hr_recruit" value="6000"></div>
+        <div class="fld"><label>Onboarding + training / departure ($)</label><input type="number" min="0" id="hr_onboard" value="8000"></div>
+        <div class="fld"><label>Lost productivity / departure ($)</label><input type="number" min="0" id="hr_prod" value="15000"></div></div></div>
       <div class="card"><h3>Results</h3>
         <div class="cols2">
           <div class="result win"><div class="lbl">Annual cost of turnover</div><div class="big" id="hr_annual">—</div><div class="sub" id="hr_pct"></div></div>
@@ -291,19 +292,19 @@ footer{padding:14px 28px;color:var(--muted);font-size:12px;border-top:1px solid 
       <h2>Software — Build vs Buy</h2><p class="desc">Subscribe to SaaS or build it in-house? Compare the multi-year cost.</p>
       <div class="card"><h3>Inputs</h3>
         <div class="grid" style="max-width:480px;margin-bottom:12px;">
-          <div class="fld"><label>Analysis period (years)</label><input type="number" id="sb_y" value="3"></div>
-          <div class="fld"><label>Number of users</label><input type="number" id="sb_users" value="100"></div></div>
+          <div class="fld"><label>Analysis period (years)</label><input type="number" min="0" id="sb_y" value="3"></div>
+          <div class="fld"><label>Number of users</label><input type="number" min="0" id="sb_users" value="100"></div></div>
         <div class="opt"><label><input type="checkbox" id="sb_vd"> Apply volume discount on SaaS price</label><div class="hint">Tier auto-set by user count (5,000+ = Enterprise). Software/SaaS: under-5k 7% / 5k+ 22%. Off = list pricing.</div></div>
         <div class="cols2">
           <div><h3 style="color:var(--accent);">Buy (SaaS)</h3><div class="grid">
-            <div class="fld"><label>Subscription / user / month ($)</label><input type="number" id="sb_perUserMo" value="40"></div>
-            <div class="fld"><label>Implementation, one-time ($)</label><input type="number" id="sb_impl" value="25000"></div>
-            <div class="fld"><label>Admin / config / yr ($)</label><input type="number" id="sb_admin" value="30000"></div></div></div>
+            <div class="fld"><label>Subscription / user / month ($)</label><input type="number" min="0" id="sb_perUserMo" value="40"></div>
+            <div class="fld"><label>Implementation, one-time ($)</label><input type="number" min="0" id="sb_impl" value="25000"></div>
+            <div class="fld"><label>Admin / config / yr ($)</label><input type="number" min="0" id="sb_admin" value="30000"></div></div></div>
           <div><h3 style="color:var(--accent);">Build (in-house)</h3><div class="grid">
-            <div class="fld"><label>Initial build cost, one-time ($)</label><input type="number" id="sb_dev" value="220000"></div>
-            <div class="fld"><label>Hosting / infrastructure / yr ($)</label><input type="number" id="sb_host" value="24000"></div>
-            <div class="fld"><label>Maintenance (devs) / yr ($)</label><input type="number" id="sb_maint" value="90000"></div>
-            <div class="fld"><label>Support / yr ($)</label><input type="number" id="sb_support" value="40000"></div></div></div>
+            <div class="fld"><label>Initial build cost, one-time ($)</label><input type="number" min="0" id="sb_dev" value="220000"></div>
+            <div class="fld"><label>Hosting / infrastructure / yr ($)</label><input type="number" min="0" id="sb_host" value="24000"></div>
+            <div class="fld"><label>Maintenance (devs) / yr ($)</label><input type="number" min="0" id="sb_maint" value="90000"></div>
+            <div class="fld"><label>Support / yr ($)</label><input type="number" min="0" id="sb_support" value="40000"></div></div></div>
         </div></div>
       <div class="card"><h3>Results</h3>
         <div class="cols2">
@@ -320,15 +321,15 @@ footer{padding:14px 28px;color:var(--muted);font-size:12px;border-top:1px solid 
       <div class="card"><h3>Inputs</h3>
         <div class="opt"><label><input type="checkbox" id="fac_vd"> Apply volume discount on purchase price</label><div class="hint">Tier auto-set by quantity (5,000+ = Enterprise). Facilities: under-5k 5% / 5k+ 15%. Off = flat pricing.</div></div>
         <div class="grid">
-        <div class="fld"><label>Analysis period (years)</label><input type="number" id="fac_y" value="10"></div>
-        <div class="fld"><label>Quantity (assets / buildings)</label><input type="number" id="fac_qty" value="1"></div>
-        <div class="fld"><label>Purchase / acquisition ($)</label><input type="number" id="fac_purchase" value="250000"></div>
-        <div class="fld"><label>Installation, one-time ($)</label><input type="number" id="fac_install" value="40000"></div>
-        <div class="fld"><label>Operating / yr ($)</label><input type="number" id="fac_op" value="20000"></div>
-        <div class="fld"><label>Maintenance / yr ($)</label><input type="number" id="fac_maint" value="18000"></div>
-        <div class="fld"><label>Energy / utilities / yr ($)</label><input type="number" id="fac_energy" value="26000"></div>
-        <div class="fld"><label>Compliance / yr ($)</label><input type="number" id="fac_comp" value="6000"></div>
-        <div class="fld"><label>Resale / salvage at end ($)</label><input type="number" id="fac_resale" value="50000"></div></div></div>
+        <div class="fld"><label>Analysis period (years)</label><input type="number" min="0" id="fac_y" value="10"></div>
+        <div class="fld"><label>Quantity (assets / buildings)</label><input type="number" min="0" id="fac_qty" value="1"></div>
+        <div class="fld"><label>Purchase / acquisition ($)</label><input type="number" min="0" id="fac_purchase" value="250000"></div>
+        <div class="fld"><label>Installation, one-time ($)</label><input type="number" min="0" id="fac_install" value="40000"></div>
+        <div class="fld"><label>Operating / yr ($)</label><input type="number" min="0" id="fac_op" value="20000"></div>
+        <div class="fld"><label>Maintenance / yr ($)</label><input type="number" min="0" id="fac_maint" value="18000"></div>
+        <div class="fld"><label>Energy / utilities / yr ($)</label><input type="number" min="0" id="fac_energy" value="26000"></div>
+        <div class="fld"><label>Compliance / yr ($)</label><input type="number" min="0" id="fac_comp" value="6000"></div>
+        <div class="fld"><label>Resale / salvage at end ($)</label><input type="number" min="0" id="fac_resale" value="50000"></div></div></div>
       <div class="card"><h3>Results</h3>
         <div class="cols2">
           <div class="result"><div class="lbl">Per-asset lifecycle TCO</div><div class="big" id="fac_unit">—</div><div class="sub" id="fac_unitYr"></div></div>
@@ -339,19 +340,19 @@ footer{padding:14px 28px;color:var(--muted);font-size:12px;border-top:1px solid 
     <section class="panel" data-p="lease">
       <h2>Lease vs Buy</h2><p class="desc">Own an asset outright or lease/finance it — the multi-year cost of each.</p>
       <div class="card"><h3>Inputs</h3>
-        <div class="fld" style="max-width:220px;margin-bottom:12px;"><label>Analysis period (years)</label><input type="number" id="lb_y" value="4"></div>
+        <div class="fld" style="max-width:220px;margin-bottom:12px;"><label>Analysis period (years)</label><input type="number" min="0" id="lb_y" value="4"></div>
         <div class="cols2">
           <div><h3 style="color:var(--accent);">Buy</h3><div class="grid">
-            <div class="fld"><label>Purchase price ($)</label><input type="number" id="lb_buyP" value="40000"></div>
-            <div class="fld"><label>Residual / resale at end ($)</label><input type="number" id="lb_buyR" value="12000"></div>
-            <div class="fld"><label>Maintenance / yr ($)</label><input type="number" id="lb_buyMaint" value="1500"></div>
-            <div class="fld"><label>Insurance / yr ($)</label><input type="number" id="lb_buyIns" value="1200"></div></div></div>
+            <div class="fld"><label>Purchase price ($)</label><input type="number" min="0" id="lb_buyP" value="40000"></div>
+            <div class="fld"><label>Residual / resale at end ($)</label><input type="number" min="0" id="lb_buyR" value="12000"></div>
+            <div class="fld"><label>Maintenance / yr ($)</label><input type="number" min="0" id="lb_buyMaint" value="1500"></div>
+            <div class="fld"><label>Insurance / yr ($)</label><input type="number" min="0" id="lb_buyIns" value="1200"></div></div></div>
           <div><h3 style="color:var(--accent);">Lease / Finance</h3><div class="grid">
-            <div class="fld"><label>Down payment / first cost ($)</label><input type="number" id="lb_leaseDown" value="3000"></div>
-            <div class="fld"><label>Monthly payment ($)</label><input type="number" id="lb_leaseMo" value="650"></div>
-            <div class="fld"><label>End-of-lease buyout ($, 0 if returned)</label><input type="number" id="lb_leaseBuyout" value="0"></div>
-            <div class="fld"><label>Maintenance / yr ($)</label><input type="number" id="lb_leaseMaint" value="500"></div>
-            <div class="fld"><label>Insurance / yr ($)</label><input type="number" id="lb_leaseIns" value="1200"></div></div></div>
+            <div class="fld"><label>Down payment / first cost ($)</label><input type="number" min="0" id="lb_leaseDown" value="3000"></div>
+            <div class="fld"><label>Monthly payment ($)</label><input type="number" min="0" id="lb_leaseMo" value="650"></div>
+            <div class="fld"><label>End-of-lease buyout ($, 0 if returned)</label><input type="number" min="0" id="lb_leaseBuyout" value="0"></div>
+            <div class="fld"><label>Maintenance / yr ($)</label><input type="number" min="0" id="lb_leaseMaint" value="500"></div>
+            <div class="fld"><label>Insurance / yr ($)</label><input type="number" min="0" id="lb_leaseIns" value="1200"></div></div></div>
         </div></div>
       <div class="card"><h3>Results</h3>
         <div class="cols2">
@@ -366,18 +367,18 @@ footer{padding:14px 28px;color:var(--muted);font-size:12px;border-top:1px solid 
     <section class="panel" data-p="io">
       <h2>Insource vs Outsource</h2><p class="desc">Run a function with your own staff or pay an outside provider — the multi-year cost of each.</p>
       <div class="card"><h3>Inputs</h3>
-        <div class="fld" style="max-width:220px;margin-bottom:12px;"><label>Analysis period (years)</label><input type="number" id="io_y" value="3"></div>
+        <div class="fld" style="max-width:220px;margin-bottom:12px;"><label>Analysis period (years)</label><input type="number" min="0" id="io_y" value="3"></div>
         <div class="cols2">
           <div><h3 style="color:var(--accent);">In-house (insource)</h3><div class="grid">
-            <div class="fld"><label>Number of staff (FTEs)</label><input type="number" id="io_fte" value="3"></div>
-            <div class="fld"><label>Loaded salary / FTE / yr ($)</label><input type="number" id="io_sal" value="95000"></div>
-            <div class="fld"><label>Tools &amp; software / yr ($)</label><input type="number" id="io_tools" value="12000"></div>
-            <div class="fld"><label>Overhead (space, mgmt) / yr ($)</label><input type="number" id="io_oh" value="18000"></div>
-            <div class="fld"><label>One-time setup / hiring ($)</label><input type="number" id="io_setup" value="20000"></div></div></div>
+            <div class="fld"><label>Number of staff (FTEs)</label><input type="number" min="0" id="io_fte" value="3"></div>
+            <div class="fld"><label>Loaded salary / FTE / yr ($)</label><input type="number" min="0" id="io_sal" value="95000"></div>
+            <div class="fld"><label>Tools &amp; software / yr ($)</label><input type="number" min="0" id="io_tools" value="12000"></div>
+            <div class="fld"><label>Overhead (space, mgmt) / yr ($)</label><input type="number" min="0" id="io_oh" value="18000"></div>
+            <div class="fld"><label>One-time setup / hiring ($)</label><input type="number" min="0" id="io_setup" value="20000"></div></div></div>
           <div><h3 style="color:var(--accent);">Outsource (provider)</h3><div class="grid">
-            <div class="fld"><label>Monthly fee ($)</label><input type="number" id="io_moFee" value="22000"></div>
-            <div class="fld"><label>One-time onboarding / transition ($)</label><input type="number" id="io_onboard" value="15000"></div>
-            <div class="fld"><label>Internal oversight / yr ($)</label><input type="number" id="io_oversight" value="30000"></div></div></div>
+            <div class="fld"><label>Monthly fee ($)</label><input type="number" min="0" id="io_moFee" value="22000"></div>
+            <div class="fld"><label>One-time onboarding / transition ($)</label><input type="number" min="0" id="io_onboard" value="15000"></div>
+            <div class="fld"><label>Internal oversight / yr ($)</label><input type="number" min="0" id="io_oversight" value="30000"></div></div></div>
         </div></div>
       <div class="card"><h3>Results</h3>
         <div class="cols2">
@@ -392,16 +393,16 @@ footer{padding:14px 28px;color:var(--muted);font-size:12px;border-top:1px solid 
     <section class="panel" data-p="solar">
       <h2>Solar / Energy vs Grid</h2><p class="desc">Install solar or keep buying grid power — multi-year cost, savings, and simple payback.</p>
       <div class="card"><h3>Inputs</h3>
-        <div class="fld" style="max-width:220px;margin-bottom:12px;"><label>Analysis period (years)</label><input type="number" id="so_y" value="10"></div>
+        <div class="fld" style="max-width:220px;margin-bottom:12px;"><label>Analysis period (years)</label><input type="number" min="0" id="so_y" value="10"></div>
         <div class="cols2">
           <div><h3 style="color:var(--accent);">Solar</h3><div class="grid">
-            <div class="fld"><label>Net install cost after incentives ($)</label><input type="number" id="so_install" value="22000"></div>
-            <div class="fld"><label>Maintenance / yr ($)</label><input type="number" id="so_maint" value="200"></div>
-            <div class="fld"><label>Inverter / parts replacement, one-time ($)</label><input type="number" id="so_inverter" value="2000"></div>
-            <div class="fld"><label>Grid power still bought / yr ($)</label><input type="number" id="so_remain" value="300"></div></div></div>
+            <div class="fld"><label>Net install cost after incentives ($)</label><input type="number" min="0" id="so_install" value="22000"></div>
+            <div class="fld"><label>Maintenance / yr ($)</label><input type="number" min="0" id="so_maint" value="200"></div>
+            <div class="fld"><label>Inverter / parts replacement, one-time ($)</label><input type="number" min="0" id="so_inverter" value="2000"></div>
+            <div class="fld"><label>Grid power still bought / yr ($)</label><input type="number" min="0" id="so_remain" value="300"></div></div></div>
           <div><h3 style="color:var(--accent);">Grid (do nothing)</h3><div class="grid">
-            <div class="fld"><label>Current annual electricity bill ($)</label><input type="number" id="so_bill" value="3600"></div>
-            <div class="fld"><label>Annual utility rate increase (%)</label><input type="number" id="so_rate" value="4"></div></div></div>
+            <div class="fld"><label>Current annual electricity bill ($)</label><input type="number" min="0" id="so_bill" value="3600"></div>
+            <div class="fld"><label>Annual utility rate increase (%)</label><input type="number" min="0" id="so_rate" value="4"></div></div></div>
         </div></div>
       <div class="card"><h3>Results</h3>
         <div class="cols2">
@@ -432,17 +433,30 @@ footer{padding:14px 28px;color:var(--muted);font-size:12px;border-top:1px solid 
                                Small/Mid. Cloud uses a flat committed-use rate.
      calcIT, calcCloud, calcFleet, calcEquip, calcHR, calcSaaS, calcFac,
      calcLease, calcOutsource, calcSolar  - one function per module. Each reads
-                               its own inputs, computes the TCO (cash basis:
-                               acquisition - residual + operating x years), and
-                               writes the result tiles, comparison bars, and the
-                               plain-English callout.
+                               its own inputs and computes a CASH-BASIS planning
+                               estimate (acquisition - residual + operating x years).
+                               Default is SINGLE-LIFECYCLE; the IT endpoint module
+                               has an optional refresh-cycle toggle that buys
+                               replacements when the analysis period exceeds useful
+                               life. It does NOT model financing/interest, taxes, or
+                               the time-value of money (no NPV). Then it writes the
+                               result tiles, comparison bars, and the callout.
      calcAll()  - re-runs every module; wired to fire on any input/change event.
    =========================================================================== */
 function num(id){var v=parseFloat(document.getElementById(id).value);return isNaN(v)?0:v;}
-function money(x){return '$'+Math.round(x).toLocaleString();}
+function money(x){return (x<0?'-$':'$')+Math.abs(Math.round(x)).toLocaleString();}
 function setbar(id,val,max){document.getElementById(id).style.width=(max>0?Math.min(100,val/max*100):0)+'%';}
 function winhi(a,b,ca,cb){var A=document.getElementById(ca),B=document.getElementById(cb);A.classList.remove('win');B.classList.remove('win');if(a<b)A.classList.add('win');else if(b<a)B.classList.add('win');}
-function bars(el,cats){var mx=Math.max.apply(null,cats.map(function(c){return c[1];}).concat([1]));var h='';cats.forEach(function(c){h+='<div class="barrow"><span class="bl">'+c[0]+'</span><div class="track"><div class="fill" style="width:'+Math.min(100,c[1]/mx*100)+'%"></div></div><span class="bv">'+money(c[1])+'</span></div>';});document.getElementById(el).innerHTML=h;}
+function bars(el,cats){var mx=Math.max.apply(null,cats.map(function(c){return c[1];}).concat([1]));
+  var host=document.getElementById(el); while(host.firstChild) host.removeChild(host.firstChild);   // DOM build, no innerHTML
+  cats.forEach(function(c){
+    var row=document.createElement('div'); row.className='barrow';
+    var bl=document.createElement('span'); bl.className='bl'; bl.textContent=c[0];
+    var track=document.createElement('div'); track.className='track';
+    var fill=document.createElement('div'); fill.className='fill'; fill.style.width=Math.min(100,c[1]/mx*100)+'%'; track.appendChild(fill);
+    var bv=document.createElement('span'); bv.className='bv'; bv.textContent=money(c[1]);
+    row.appendChild(bl); row.appendChild(track); row.appendChild(bv); host.appendChild(row);
+  });}
 /* Volume-discount defaults [Small/Mid, Enterprise] — editable. Typical negotiated ranges. */
 var DISC={appleMac:[0.05,0.10],winHW:[0.08,0.25],equipment:[0.08,0.22],facilities:[0.05,0.15],software:[0.07,0.22]};
 var CLOUD_COMMIT=0.40; /* committed-use / enterprise-agreement cloud discount (editable) */
@@ -452,16 +466,21 @@ function disc(cat,n){var d=DISC[cat]||[0,0];return d[tier(n)];}
 function calcIT(){var y=num('it_y');var vd=document.getElementById('it_vd').checked;var dM=vd?disc('appleMac',num('it_macN')):0,dW=vd?disc('winHW',num('it_winN')):0;
   var dep=document.getElementById('it_dep').checked,life=num('it_life');
   var macP=num('it_macP')*(1-dM),winP=num('it_winP')*(1-dW);
-  var macR=dep?(life>0?macP*Math.max(life-y,0)/life:0):num('it_macR');
-  var winR=dep?(life>0?winP*Math.max(life-y,0)/life:0):num('it_winR');
-  var mu=macP-macR+y*(num('it_macSw')+num('it_macSup'));
-  var wu=winP-winR+y*(num('it_winSw')+num('it_winSup'));
+  var refresh=document.getElementById('it_refresh').checked;
+  var buys=(refresh&&life>0)?Math.ceil(y/life):1;                       // purchases over the period (refresh cycle); off = 1
+  var lastUsed=(refresh&&life>0)?(y-(buys-1)*life):y;                   // years the FINAL device is in service
+  var macR=dep?(life>0?macP*Math.max(life-lastUsed,0)/life:0):num('it_macR'); // residual on the final device
+  var winR=dep?(life>0?winP*Math.max(life-lastUsed,0)/life:0):num('it_winR');
+  var mu=buys*macP-macR+y*(num('it_macSw')+num('it_macSup'));
+  var wu=buys*winP-winR+y*(num('it_winSw')+num('it_winSup'));
+  var macN=num('it_macN'),winN=num('it_winN');
   document.getElementById('it_macUnit').textContent=money(mu);document.getElementById('it_winUnit').textContent=money(wu);
-  document.getElementById('it_macFleet').textContent='Fleet: '+money(mu*num('it_macN'));document.getElementById('it_winFleet').textContent='Fleet: '+money(wu*num('it_winN'));
+  document.getElementById('it_macFleet').textContent=macN>0?('Fleet: '+money(mu*macN)):'Fleet: enter a quantity';
+  document.getElementById('it_winFleet').textContent=winN>0?('Fleet: '+money(wu*winN)):'Fleet: enter a quantity';
   var mx=Math.max(mu,wu);setbar('it_bm',mu,mx);setbar('it_bw',wu,mx);
   document.getElementById('it_vm').textContent=money(mu);document.getElementById('it_vw').textContent=money(wu);winhi(mu,wu,'it_macCard','it_winCard');
   var d=Math.abs(mu-wu),lo=mu<wu?'Mac':'Windows';
-  document.getElementById('it_call').textContent=lo+' is the lower per-device TCO by '+money(d)+' over '+y+' years.'+(vd?'  (Volume discount: Mac '+Math.round(dM*100)+'%, Windows '+Math.round(dW*100)+'%.)':'')+(dep?'  Residual via depreciation ('+life+'-yr life).':'');}
+  document.getElementById('it_call').textContent=lo+' is the lower per-device TCO by '+money(d)+' over '+y+' years.'+(vd?'  (Volume discount: Mac '+Math.round(dM*100)+'%, Windows '+Math.round(dW*100)+'%.)':'')+(dep?'  Book-value residual via straight-line depreciation ('+life+'-yr life).':'')+(refresh&&buys>1?'  Refresh cycle: '+buys+' purchases over '+y+' yrs.':'');}
 function calcCloud(){var y=num('cl_y');var cld=document.getElementById('cl_vd').checked?CLOUD_COMMIT:0;
   var cloud=num('cl_mig')+y*12*num('cl_mo')*(1-cld)+y*num('cl_mgmt');
   var op=num('cl_capex')-num('cl_resid')+y*(num('cl_power')+num('cl_space')+num('cl_admin')+num('cl_maint'));
@@ -539,7 +558,7 @@ function calcSolar(){var y=num('so_y'),rate=num('so_rate')/100,bill=num('so_bill
   document.getElementById('so_solarYr').textContent=money(solar/(y||1))+' / year';document.getElementById('so_gridYr').textContent=money(grid/(y||1))+' / year';
   var mx=Math.max(solar,grid);setbar('so_bs',solar,mx);setbar('so_bg',grid,mx);
   document.getElementById('so_vs').textContent=money(solar);document.getElementById('so_vg').textContent=money(grid);winhi(solar,grid,'so_solarCard','so_gridCard');
-  var save=grid-solar,yr1=bill-(num('so_maint')+num('so_remain')),pay=yr1>0?num('so_install')/yr1:0;
+  var save=grid-solar,yr1=bill-(num('so_maint')+num('so_remain')),pay=yr1>0?(num('so_install')+num('so_inverter'))/yr1:0;
   var msg=save>0?'Solar saves about '+money(save)+' over '+y+' years.':'Grid is cheaper by '+money(-save)+' over '+y+' years.';
   if(pay>0)msg+='  Simple payback: about '+pay.toFixed(1)+' years.';
   document.getElementById('so_call').textContent=msg;}

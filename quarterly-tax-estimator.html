@@ -52,7 +52,7 @@
 <div class="wrap">
   <header>
     <h1>1099 Set-Aside &amp; Quarterly Tax Estimator</h1>
-    <p>Self-employed? See roughly how much of your freelance income to set aside for taxes — and what to send the IRS each quarter. Uses 2026 federal figures.</p>
+    <p>Self-employed? See roughly how much of your freelance income to set aside for taxes — and what to send the IRS each quarter. Uses <strong>tax-year 2026</strong> federal figures — verify the current year before you file.</p>
   </header>
 <!-- LAUNCH TODO: replace href with the live product URL before publishing -->
 <div style="background:#166534;color:#fff;padding:9px 14px;text-align:center;font:600 .85rem/1.4 -apple-system,Segoe UI,Arial,sans-serif">Free tool from Kyodo Partners · Get the full <strong>Kyodo 1099 Assistant</strong> ($19) <a href="https://kyodopartners.gumroad.com" style="color:#fff;text-decoration:underline">here &rarr;</a></div>
@@ -63,7 +63,7 @@
         <h2>Your Income</h2>
         <div class="field">
           <label>Expected net self-employment profit ($/yr)</label>
-          <input id="profit" type="number" inputmode="decimal" value="60000">
+          <input id="profit" type="number" min="0" inputmode="decimal" value="60000">
           <div class="hint">Your 1099 / business income <em>after</em> business expenses — not gross.</div>
         </div>
         <div class="field">
@@ -76,12 +76,12 @@
         </div>
         <div class="field">
           <label>Other taxable income ($/yr) — optional</label>
-          <input id="other" type="number" inputmode="decimal" value="0">
+          <input id="other" type="number" min="0" inputmode="decimal" value="0">
           <div class="hint">W-2 wages, a spouse's income, etc. Used to estimate your tax bracket.</div>
         </div>
         <div class="field">
           <label>W-2 wages already taxed for Social Security ($/yr) — optional</label>
-          <input id="w2ss" type="number" inputmode="decimal" value="0">
+          <input id="w2ss" type="number" min="0" inputmode="decimal" value="0">
           <div class="hint">Only matters if you also have a high-paying W-2 job (caps Social Security tax).</div>
         </div>
       </div>
@@ -89,7 +89,7 @@
         <h2>Options</h2>
         <div class="check">
           <input id="qbi" type="checkbox" checked>
-          <label for="qbi">Apply the 20% Qualified Business Income (QBI) deduction. Most sole proprietors and freelancers qualify; turn off if unsure to set aside a little extra.</label>
+          <label for="qbi">Apply the 20% Qualified Business Income (QBI) deduction. Most sole proprietors and freelancers qualify; turn off if unsure to set aside a little extra. <em>(Simplified estimate — eligibility &amp; phase-outs vary; confirm with a tax pro.)</em></label>
         </div>
       </div>
     </div>
@@ -133,6 +133,16 @@
 </div>
 
 <script>
+/*
+  1099 Set-Aside & Quarterly Tax Estimator — Kyodo Partners
+  ------------------------------------------------------------------
+  Offline, no tracking. A PLANNING estimate of federal self-employment + income
+  tax on freelance profit, and what to set aside each quarter. We compute the
+  household's tax with and without the freelance income and treat the difference
+  as what the freelance income "adds" — so the set-aside reflects the real
+  marginal burden, not a flat rate. Federal only; no state/local, credits, or
+  safe-harbor. Tax-year 2026 figures (IRS Rev. Proc. 2025-32) — verify each year.
+*/
 (function(){
   "use strict";
   // ---- 2026 federal constants (IRS Rev. Proc. 2025-32) ----
@@ -149,6 +159,10 @@
   function money(x){ return (x<0?"-$":"$")+Math.abs(Math.round(x)).toLocaleString(); }
   function pct(x){ return (Math.round(x*100)/100).toFixed(1)+"%"; }
   function set(id,t){ document.getElementById(id).textContent=t; }
+  // ---- safe table rendering: DOM nodes only, no innerHTML ----
+  function clearKids(e){ while(e&&e.firstChild) e.removeChild(e.firstChild); }
+  function fillRows(id,rows){ var tb=document.getElementById(id); if(!tb) return; clearKids(tb);
+    rows.forEach(function(r){ var tr=document.createElement("tr"); r.forEach(function(t){ var td=document.createElement("td"); td.textContent=t; tr.appendChild(td); }); tb.appendChild(tr); }); }
 
   function incomeTax(taxable,status){
     if(taxable<=0) return 0;
@@ -165,11 +179,14 @@
   function compute(profit, other, status, w2ss, useQBI){
     profit=Math.max(0,profit);
     var netSE=profit*0.9235;
-    var ssRoom=Math.max(0, SS_BASE-Math.max(0,w2ss));
-    var ssTaxable=Math.min(netSE, ssRoom);
-    var seReg=ssTaxable*0.124 + netSE*0.029;          // the 15.3% self-employment tax
-    var halfSE=seReg/2;                                // deductible half
-    var addlMed=Math.max(0, netSE-ADDL_MED[status])*0.009;
+    var seReg=0, halfSE=0, addlMed=0;
+    if(netSE>=400){                                    // IRS rule: no self-employment tax if net SE earnings are under $400
+      var ssRoom=Math.max(0, SS_BASE-Math.max(0,w2ss));
+      var ssTaxable=Math.min(netSE, ssRoom);
+      seReg=ssTaxable*0.124 + netSE*0.029;             // regular SE tax: 12.4% Social Security up to the remaining wage base + 2.9% Medicare on all net SE earnings
+      halfSE=seReg/2;                                  // half of SE tax is deductible against income
+      addlMed=Math.max(0, (netSE+Math.max(0,w2ss))-ADDL_MED[status])*0.009; // 0.9% extra Medicare above the threshold, counting W-2 wages already earned
+    }
     var agi=profit + other - halfSE;
     var taxBeforeQBI=Math.max(0, agi-STD[status]);
     var qbi=useQBI ? Math.min(0.20*profit, 0.20*taxBeforeQBI) : 0;
@@ -180,7 +197,7 @@
   }
 
   function calc(){
-    var profit=n("profit"), other=n("other"), w2ss=n("w2ss");
+    var profit=Math.max(0,n("profit")), other=Math.max(0,n("other")), w2ss=Math.max(0,n("w2ss"));
     var status=document.getElementById("status").value;
     var useQBI=document.getElementById("qbi").checked;
 
@@ -201,23 +218,25 @@
 
     // Quarterly schedule (tax year 2026)
     var dates=["April 15, 2026","June 15, 2026","September 15, 2026","January 15, 2027"];
-    var sb=""; dates.forEach(function(d,i){
-      sb+="<tr><td>Q"+(i+1)+"</td><td>"+d+"</td><td>"+money(quarter)+"</td></tr>";
-    });
-    document.getElementById("sched-body").innerHTML=sb;
+    fillRows("sched-body", dates.map(function(d,i){ return ["Q"+(i+1), d, money(quarter)]; }));
 
     // Transparency breakdown
-    var b=document.getElementById("break");
-    b.innerHTML=
-      "<div><span>Net profit entered</span><span>"+money(profit)+"</span></div>"+
-      "<div><span>Net earnings for SE tax (&times; 0.9235)</span><span>"+money(withF.netSE)+"</span></div>"+
-      "<div><span>Self-employment tax</span><span>"+money(burdenSE)+"</span></div>"+
-      "<div><span>Deduct &frac12; of SE tax from income</span><span>-"+money(withF.halfSE)+"</span></div>"+
-      "<div><span>QBI deduction (20%)</span><span>"+(useQBI?"-"+money(withF.qbi):"off")+"</span></div>"+
-      "<div><span>Standard deduction ("+(status==="mfj"?"joint":status==="hoh"?"HoH":"single")+")</span><span>-"+money(STD[status])+"</span></div>"+
-      "<div><span>Taxable income</span><span>"+money(withF.taxable)+"</span></div>"+
-      "<div><span>Federal income tax (added by freelance)</span><span>"+money(burdenInc)+"</span></div>"+
-      "<div><span><strong>Total to set aside</strong></span><span><strong>"+money(setAside)+"</strong></span></div>";
+    var bd=[
+      ["Net profit entered", money(profit), false],
+      ["Net earnings for SE tax (× 0.9235)", money(withF.netSE), false],
+      ["Self-employment tax", money(burdenSE), false],
+      ["Deduct ½ of SE tax from income", "-"+money(withF.halfSE), false],
+      ["QBI deduction (20%)", (useQBI?"-"+money(withF.qbi):"off"), false],
+      ["Standard deduction ("+(status==="mfj"?"joint":status==="hoh"?"HoH":"single")+")", "-"+money(STD[status]), false],
+      ["Taxable income", money(withF.taxable), false],
+      ["Federal income tax (added by freelance)", money(burdenInc), false],
+      ["Total to set aside", money(setAside), true]
+    ];
+    var be=document.getElementById("break"); clearKids(be);
+    bd.forEach(function(r){ var div=document.createElement("div"), s1=document.createElement("span"), s2=document.createElement("span");
+      if(r[2]){ var a=document.createElement("strong"); a.textContent=r[0]; s1.appendChild(a); var c=document.createElement("strong"); c.textContent=r[1]; s2.appendChild(c); }
+      else { s1.textContent=r[0]; s2.textContent=r[1]; }
+      div.appendChild(s1); div.appendChild(s2); be.appendChild(div); });
   }
 
   ["profit","other","w2ss"].forEach(function(id){ document.getElementById(id).addEventListener("input",calc); });

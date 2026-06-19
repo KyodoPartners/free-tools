@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Short-Term Rental (Airbnb) Deal Analyzer — Kyodo Partners</title>
+<title>Airbnb / Short-Term Rental Analyzer — Kyodo Partners</title>
 <style>
   :root{ --ink:#1c2733; --muted:#5b6b7b; --line:#e2e8ef; --bg:#f4f7fa; --card:#fff;
          --brand:#166534; --brand2:#15803D; --green:#1f8a4c; --amber:#b9851b; --red:#c0392b; }
@@ -13,25 +13,28 @@
   .wrap{ max-width:1040px; margin:0 auto; padding:18px; }
   header h1{ margin:0 0 4px; font-size:1.55rem; }
   header p{ margin:0 0 14px; color:var(--muted); font-size:.95rem; }
+  .modes{ display:flex; flex-wrap:wrap; gap:8px; margin:0 0 16px; }
+  .modes button{ flex:1 1 auto; min-height:46px; padding:9px 12px; font-size:.9rem; font-weight:600; cursor:pointer;
+                 border:1px solid var(--line); border-radius:10px; background:#fff; color:var(--muted); }
+  .modes button.active{ background:var(--brand); color:#fff; border-color:var(--brand); }
+  .modes button .d{ display:block; font-size:.68rem; font-weight:500; opacity:.8; margin-top:1px; }
   .grid{ display:grid; grid-template-columns:1fr; gap:16px; }
   @media(min-width:820px){ .grid{ grid-template-columns:1fr 1fr; align-items:start; } }
   .card{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px; margin-bottom:16px; }
   .card h2{ margin:0 0 10px; font-size:.78rem; letter-spacing:.06em; text-transform:uppercase; color:var(--brand); }
   .field{ margin-bottom:11px; }
   .field label{ display:block; font-size:.85rem; color:var(--muted); margin-bottom:4px; }
+  .field .hint{ font-size:.72rem; color:var(--muted); opacity:.85; margin-top:3px; }
+  .field .dol{ font-size:.74rem; color:var(--brand2); font-weight:600; margin-top:3px; }
   .field input{ width:100%; min-height:44px; padding:9px 11px; font-size:1rem; color:var(--ink);
                 border:1px solid var(--line); border-radius:9px; background:#fff; }
   .field input:focus{ outline:2px solid var(--brand2); border-color:var(--brand2); }
   .two{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-  .verdict{ border-radius:12px; padding:16px; margin-bottom:14px; }
-  .verdict .tag{ font-size:1.35rem; font-weight:700; }
-  .verdict .why{ font-size:.9rem; margin-top:3px; }
-  .v-green{ background:#DCFCE7; color:#14532D; } .v-amber{ background:#FEF3C7; color:#78350F; } .v-red{ background:#FEE2E2; color:#7F1D1D; }
-  .metrics{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
   .metric{ border:1px solid var(--line); border-radius:10px; padding:11px; }
   .metric .k{ font-size:.74rem; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); }
   .metric .v{ font-size:1.26rem; font-weight:700; margin-top:2px; }
   .metric .sub{ font-size:.74rem; color:var(--muted); margin-top:1px; }
+  .metrics{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
   .pass{ color:var(--green); } .warn{ color:var(--amber); } .bad{ color:var(--red); }
   .big{ background:#166534; color:#fff; border-radius:12px; padding:16px; }
   .big .k{ font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; opacity:.9; }
@@ -41,218 +44,227 @@
   th,td{ text-align:right; padding:7px 6px; border-bottom:1px solid var(--line); }
   th:first-child,td:first-child{ text-align:left; }
   th{ font-size:.72rem; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); }
-  td.pos{ color:var(--green); } td.neg{ color:var(--red); }
+  .note{ font-size:.78rem; color:var(--muted); margin-top:6px; }
   footer{ margin-top:8px; font-size:.78rem; color:var(--muted); }
-  .disc{ background:#fffaf0; border:1px solid #f0e3c5; border-radius:9px; padding:10px 12px; font-size:.8rem; color:#6b5a33; }
+  .disc{ background:#fffaf0; border:1px solid #f0e3c5; border-radius:9px; padding:10px 12px; font-size:.8rem; color:#6b5a33; margin-bottom:8px; }
+  .disc b{ color:#5b4a23; }
+  .hidden{ display:none !important; }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <h1>Short-Term Rental (Airbnb) Deal Analyzer</h1>
-    <p>Will this place actually make money as a short-term rental? Revenue from your nightly rate &amp; occupancy, the occupancy you need to break even, RevPAR, cash flow, and return — live as you type.</p>
+    <h1>Airbnb / Short-Term Rental Analyzer</h1>
+    <p>What does short-term renting really net after platform fees, cleaning, management and supplies — and does it actually beat a normal long-term lease? Pick your situation:</p>
+    <div class="modes" id="modes">
+      <button data-m="primary" class="active">Primary home<span class="d">you STR your own home</span></button>
+      <button data-m="secondary">Dedicated STR<span class="d">a separate STR property</span></button>
+      <button data-m="room">Room / ADU<span class="d">STR a room while you live there</span></button>
+    </div>
   </header>
-<!-- LAUNCH TODO: replace href with the live product URL before publishing -->
-<div style="background:#166534;color:#fff;padding:9px 14px;text-align:center;font:600 .85rem/1.4 -apple-system,Segoe UI,Arial,sans-serif">Free tool from Kyodo Partners · Get the full <strong>Kyodo Airbnb Assistant</strong> ($24) <a href="https://kyodopartners.gumroad.com" style="color:#fff;text-decoration:underline">here &rarr;</a></div>
+<div style="background:#166534;color:#fff;padding:9px 14px;text-align:center;font:600 .85rem/1.4 -apple-system,Segoe UI,Arial,sans-serif">Free tool from Kyodo Partners · Get the full <strong>Kyodo Airbnb Assistant</strong> — Excel tracker with 3 STR scenarios &amp; booking log <a href="https://kyodopartners.gumroad.com" style="color:#fff;text-decoration:underline">here &rarr;</a></div>
+
 
   <div class="grid">
+    <!-- INPUTS -->
     <div>
       <div class="card">
-        <h2>Property &amp; Financing <span style="text-transform:none;color:var(--muted);font-weight:400">(set price to 0 if you already own it)</span></h2>
-        <div class="field"><label>Purchase price ($)</label><input id="price" type="number" inputmode="decimal" value="300000"></div>
+        <h2>Short-term income</h2>
         <div class="two">
-          <div class="field"><label>Down payment (%)</label><input id="downpct" type="number" inputmode="decimal" value="20"></div>
-          <div class="field"><label>Closing + furnishing ($)</label><input id="closing" type="number" inputmode="decimal" value="20000"></div>
+          <div class="field"><label>Average nightly rate, ADR ($)</label><input id="adr" type="number" min="0" inputmode="decimal" value="268"></div>
+          <div class="field"><label>Occupancy (%)</label><input id="occ" type="number" min="0" max="100" inputmode="decimal" value="60"><div class="dol" id="r-nights"></div></div>
         </div>
         <div class="two">
-          <div class="field"><label>Interest rate (%)</label><input id="rate" type="number" inputmode="decimal" value="6.5"></div>
-          <div class="field"><label>Loan term (years)</label><input id="term" type="number" inputmode="decimal" value="30"></div>
+          <div class="field"><label>Average stay (nights)</label><input id="stay" type="number" min="0" inputmode="decimal" value="3"><div class="dol" id="r-turns"></div></div>
+          <div class="field"><label id="lbl-sqft">Square footage</label><input id="sqft" type="number" min="0" inputmode="decimal" value="1800"></div>
         </div>
+        <p class="hint">Check AirDNA, AirROI or recent local listings for realistic ADR &amp; occupancy in your area and season.</p>
       </div>
+
       <div class="card">
-        <h2>Booking &amp; Revenue</h2>
+        <h2>Short-term costs</h2>
         <div class="two">
-          <div class="field"><label>Average nightly rate ($)</label><input id="adr" type="number" inputmode="decimal" value="185"></div>
-          <div class="field"><label>Occupancy (%)</label><input id="occ" type="number" inputmode="decimal" value="65"></div>
+          <div class="field"><label>Platform fee (% of gross)</label><input id="plat" type="number" min="0" max="100" inputmode="decimal" value="3"><div class="dol" id="r-plat"></div></div>
+          <div class="field"><label>STR management (% of gross)</label><input id="smgmt" type="number" min="0" max="100" inputmode="decimal" value="20"><div class="dol" id="r-smgmt"></div></div>
         </div>
         <div class="two">
-          <div class="field"><label>Cleaning fee charged ($/stay)</label><input id="cleanfee" type="number" inputmode="decimal" value="85"></div>
-          <div class="field"><label>Avg. nights per stay</label><input id="stay" type="number" inputmode="decimal" value="3"></div>
+          <div class="field"><label>Cleaning cost / turn ($)</label><input id="clncost" type="number" min="0" inputmode="decimal" value="120"></div>
+          <div class="field"><label>Cleaning fee to guest ($)</label><input id="clnfee" type="number" min="0" inputmode="decimal" value="120"><div class="dol" id="r-cln"></div></div>
         </div>
-        <div class="field"><label>Other income ($/mo)</label><input id="other_inc" type="number" inputmode="decimal" value="0"></div>
+        <div class="field"><label>Supplies + utilities ($/mo)</label><input id="util" type="number" min="0" inputmode="decimal" value="400"><span class="hint">STR hosts usually pay all utilities, internet, restocking, linens.</span></div>
       </div>
+
       <div class="card">
-        <h2>Operating Expenses</h2>
+        <h2>Advanced costs (optional)</h2>
         <div class="two">
-          <div class="field"><label>Property tax ($/yr)</label><input id="tax" type="number" inputmode="decimal" value="3300"></div>
-          <div class="field"><label>Insurance ($/yr)</label><input id="ins" type="number" inputmode="decimal" value="2200"></div>
+          <div class="field"><label>Lodging / occupancy tax (% of gross)</label><input id="lodgtax" type="number" min="0" max="100" inputmode="decimal" value="0"><div class="dol" id="r-lodgtax"></div></div>
+          <div class="field"><label>Permits / license ($/mo)</label><input id="permits" type="number" min="0" inputmode="decimal" value="0"></div>
         </div>
         <div class="two">
-          <div class="field"><label>Utilities ($/mo)</label><input id="util" type="number" inputmode="decimal" value="160"></div>
-          <div class="field"><label>Internet/TV ($/mo)</label><input id="net" type="number" inputmode="decimal" value="75"></div>
+          <div class="field"><label>Furnishing + capex reserve ($/mo)</label><input id="reserve" type="number" min="0" inputmode="decimal" value="0"></div>
+          <div class="field"><label id="lbl-ownerlodge">Your lodging while booked ($/mo)</label><input id="ownerlodge" type="number" min="0" inputmode="decimal" value="0"><span class="hint" id="hint-ownerlodge"></span></div>
         </div>
+        <p class="hint">All default to 0. Many cities charge a lodging/occupancy tax and require a permit; furniture and linens wear out (a reserve covers that); and if you short-term rent your <b>own home</b>, you pay to stay elsewhere while it's booked.</p>
+      </div>
+
+      <div class="card">
+        <h2 id="lt-title">Compare: long-term lease</h2>
+        <div class="field"><label id="lbl-ltrent">Long-term rent ($/mo)</label><input id="ltrent" type="number" min="0" inputmode="decimal" value="5000"></div>
         <div class="two">
-          <div class="field"><label>Supplies/consumables ($/mo)</label><input id="supp" type="number" inputmode="decimal" value="80"></div>
-          <div class="field"><label>HOA + other ($/mo)</label><input id="hoa" type="number" inputmode="decimal" value="0"></div>
+          <div class="field"><label>LT vacancy (%)</label><input id="ltvac" type="number" min="0" max="100" inputmode="decimal" value="5"></div>
+          <div class="field"><label>LT management (%)</label><input id="ltmgmt" type="number" min="0" max="100" inputmode="decimal" value="8"></div>
         </div>
-        <div class="two">
-          <div class="field"><label>Cleaning cost paid ($/stay)</label><input id="cleancost" type="number" inputmode="decimal" value="75"></div>
-          <div class="field"><label>Repairs/maint. (% of revenue)</label><input id="maint" type="number" inputmode="decimal" value="4"></div>
-        </div>
-        <div class="two">
-          <div class="field"><label>Management (% of revenue)</label><input id="mgmt" type="number" inputmode="decimal" value="0"></div>
-          <div class="field"><label>Platform/host fee (% of revenue)</label><input id="plat" type="number" inputmode="decimal" value="3"></div>
-        </div>
+        <p class="hint">The honest question: after all the extra STR work and cost, does it actually beat just leasing it?</p>
+      </div>
+
+      <div class="card">
+        <h2>Carrying cost (optional)</h2>
+        <div class="field"><label>Mortgage + tax + ins + maintenance ($/mo)</label><input id="carry" type="number" min="0" inputmode="decimal" value="0"><span class="hint">enter your monthly carrying cost to see true cash flow under each option. Leave 0 to compare operating income only.</span></div>
       </div>
     </div>
 
+    <!-- RESULTS -->
     <div>
       <div class="card">
-        <h2>Verdict — Year 1</h2>
-        <div id="verdict" class="verdict v-amber"><div class="tag" id="v-tag">—</div><div class="why" id="v-why"></div></div>
+        <h2>Short-term net income</h2>
+        <div class="big"><div class="k">After platform, management, cleaning &amp; supplies</div><div class="v" id="m-net">—</div><div class="sub" id="m-net-sub"></div></div>
+      </div>
+      <div class="card">
+        <h2>Key numbers</h2>
         <div class="metrics">
-          <div class="metric"><div class="k">Monthly cash flow</div><div class="v" id="m-mcf">—</div><div class="sub">after mortgage</div></div>
-          <div class="metric"><div class="k">Break-even occupancy</div><div class="v" id="m-be">—</div><div class="sub">to cover all costs</div></div>
-          <div class="metric"><div class="k">Cash-on-cash</div><div class="v" id="m-coc">—</div><div class="sub">year 1</div></div>
-          <div class="metric"><div class="k">Cap rate</div><div class="v" id="m-cap">—</div><div class="sub">operating only</div></div>
+          <div class="metric"><div class="k">Gross / mo</div><div class="v" id="m-gross">—</div><div class="sub">before costs</div></div>
+          <div class="metric"><div class="k">Booked nights / mo</div><div class="v" id="m-nights">—</div><div class="sub" id="m-turns-sub">turns/mo</div></div>
           <div class="metric"><div class="k">RevPAR</div><div class="v" id="m-revpar">—</div><div class="sub">rev / available night</div></div>
-          <div class="metric"><div class="k">Mortgage (P&amp;I)</div><div class="v" id="m-pi">—</div><div class="sub">per month</div></div>
+          <div class="metric"><div class="k">Revenue / sq ft</div><div class="v" id="m-revsqft">—</div><div class="sub">monthly gross ÷ sqft</div></div>
         </div>
       </div>
-
       <div class="card">
-        <h2>Annual Revenue</h2>
-        <div class="big"><div class="k">Gross rental revenue</div><div class="v" id="m-gross">—</div><div class="sub" id="m-gross-sub"></div></div>
-      </div>
-
-      <div class="card">
-        <h2>Money In &amp; Out (per year)</h2>
-        <table><tbody id="pnl-body"></tbody></table>
-      </div>
-
-      <div class="card">
-        <h2>Occupancy Stress Test</h2>
-        <table><thead><tr><th>Occupancy</th><th>Cash flow/mo</th><th>Verdict</th></tr></thead><tbody id="stress-body"></tbody></table>
+        <h2>Short-term vs long-term</h2>
+        <table><thead><tr><th>Line</th><th>Short-term</th><th>Long-term</th></tr></thead><tbody id="cmp-body"></tbody></table>
+        <p class="note" id="cmp-note"></p>
       </div>
     </div>
   </div>
 
-<!-- LAUNCH TODO: replace href with the live product URL before publishing -->
-<div style="max-width:1040px;margin:18px auto;padding:0 18px"><div style="background:#166534;color:#fff;border-radius:12px;padding:20px 22px;font-family:-apple-system,Segoe UI,Arial,sans-serif"><div style="font-size:1.15rem;font-weight:700;margin-bottom:6px">Want to track the real numbers, not just estimate them?</div><div style="font-size:.92rem;opacity:.95;margin-bottom:12px">The <strong>Kyodo Airbnb Assistant</strong> adds booking & expense logs, the occupancy / ADR / RevPAR dashboard, year-end summary, and this analyzer. Pay once — no subscription, no bank linking, your data stays on your device.</div><a href="https://kyodopartners.gumroad.com" style="display:inline-block;background:#fff;color:#166534;font-weight:700;text-decoration:none;padding:11px 20px;border-radius:9px">Get the Kyodo Airbnb Assistant — $24 &rarr;</a></div></div>
   <footer>
-    <p class="disc"><strong>Estimates for planning only — not investment or tax advice.</strong> Short-term-rental income is seasonal and platform-dependent; actual occupancy and nightly rates vary widely by market. Cap rate uses operating expenses only (excludes mortgage). "Other income" and lodging taxes collected from guests are not counted as revenue here. Verify your market's real numbers (AirDNA, local comps) before buying.</p>
+    <p class="disc"><strong>Estimates for planning only — not investment, tax or legal advice.</strong> Figures depend on the numbers you enter; verify ADR/occupancy locally.</p>
+    <p class="disc" id="mode-note"></p>
+    <p class="disc"><b>How to read it:</b> <b>RevPAR</b> (revenue per available night = ADR × occupancy) is the cleanest way to compare STR performance — it blends rate and how full you stay. <b>Booked nights/mo</b> = 30.4 × occupancy; <b>turns/mo</b> = booked nights ÷ average stay (more turns = more cleaning &amp; more work). The big caveat STR calculators hide: after the <b>3% platform fee, 20–25% management, cleaning, supplies and full utilities</b>, a busy short-term rental often nets close to — or even below — a simple long-term lease, while taking far more work and carrying more vacancy and regulatory risk. <b>Check your city's STR rules</b> (permits, night caps, bans) before counting on this income.</p>
     <p>Part of the Kyodo Airbnb Assistant &middot; &copy; 2026 Kyodo Partners LLC</p>
   </footer>
 </div>
 
 <script>
+/*
+  Airbnb / Short-Term-Rental Analyzer — Kyodo Partners
+  ------------------------------------------------------------------
+  Runs in the browser, no tracking. Three scenarios (primary home, dedicated STR,
+  room/ADU) each net out the platform fee, management cut, cleaning, supplies and
+  utilities, then compare honestly to what a plain long-term lease would net.
+  DPM = average days per month (365.25/12) so monthly figures are accurate.
+*/
 (function(){
   "use strict";
-  var ids=["price","downpct","closing","rate","term","adr","occ","cleanfee","stay","other_inc",
-           "tax","ins","util","net","supp","hoa","cleancost","maint","mgmt","plat"];
-  function n(id){ var v=parseFloat(document.getElementById(id).value); return isFinite(v)?v:0; }
+  var mode="primary", DPM=30.4167;   // 30.4167 = average days in a month
+  function el(id){ return document.getElementById(id); }
+  function n(id){ var e=el(id); if(!e) return 0; var v=parseFloat(e.value); return isFinite(v)?v:0; }
   function money(x){ return (x<0?"-$":"$")+Math.abs(Math.round(x)).toLocaleString(); }
-  function pct(x){ return (Math.round(x*100)/100).toFixed(1)+"%"; }
-  function set(id,t){ document.getElementById(id).textContent=t; }
+  function set(id,t){ var e=el(id); if(e) e.textContent=t; }
+  // ---- safe rendering: DOM nodes only, no innerHTML ----
+  function clearKids(e){ while(e&&e.firstChild) e.removeChild(e.firstChild); }
+  function mkTd(c){ var td=document.createElement("td");
+    td.textContent=(c&&c.t!=null)?c.t:(c==null?"":c); if(c&&c.bold) td.style.fontWeight="600"; return td; }
+  function fillRows(id,rows){ var tb=el(id); if(!tb) return; clearKids(tb);
+    rows.forEach(function(r){ var tr=document.createElement("tr"); r.forEach(function(c){ tr.appendChild(mkTd(c)); }); tb.appendChild(tr); }); }
+  // Render a SAFE developer-authored string that may contain <b>…</b> (never user input): only <b> is honored, everything else is text.
+  function setRich(id,html){ var e=el(id); if(!e) return; clearKids(e); var bold=false;
+    html.split(/(<b>|<\/b>)/).forEach(function(p){ if(p==="<b>"){bold=true;return;} if(p==="</b>"){bold=false;return;} if(!p) return;
+      var t=document.createTextNode(p); if(bold){ var b=document.createElement("b"); b.appendChild(t); e.appendChild(b); } else e.appendChild(t); }); }
 
-  function pmt(loan,annualRate,years){
-    var r=(annualRate/100)/12, m=years*12;
-    if(loan<=0||m<=0) return 0;
-    return r>0 ? loan*r*Math.pow(1+r,m)/(Math.pow(1+r,m)-1) : loan/m;
-  }
+  // Each scenario starts from sensible defaults (and its own framing note). Switching
+  // scenario buttons loads these; the owner then adjusts the numbers for their property.
+  var presets={
+    primary:{adr:268,occ:60,stay:3,sqft:1800,ltrent:5000,note:"<b>Primary home:</b> you'd short-term rent the home you live in (common if you travel often). If you'll pay to stay elsewhere while it's booked, enter it under 'Your lodging while booked' below (default $0). Compared against leasing the whole home long-term."},
+    secondary:{adr:268,occ:62,stay:3,sqft:1800,ltrent:5000,note:"<b>Dedicated STR:</b> a separate property run purely as a short-term rental. Enter your monthly carrying cost to see real cash flow, and compare it to simply leasing the property long-term."},
+    room:{adr:120,occ:65,stay:3,sqft:300,ltrent:1500,note:"<b>Room / ADU:</b> you live on-site and short-term rent a room or the ADU. Lower ADR but you keep your residence. Compared against renting that same room/ADU to a long-term tenant."}
+  };
 
-  // Full-year picture at a given occupancy %
-  function model(I, occOverride){
-    var occ=(occOverride!=null?occOverride:I.occ)/100;
-    var nights=365*occ;
-    var stays=I.stay>0 ? nights/I.stay : 0;
-    var nightlyRev=I.adr*nights;
-    var cleanRev=I.cleanfee*stays;
-    var otherRev=I.other_inc*12;
-    var bookingRev=nightlyRev+cleanRev;            // revenue-share costs apply to this
-    var gross=bookingRev+otherRev;
-
-    var mgmt=bookingRev*I.mgmt/100;
-    var plat=bookingRev*I.plat/100;
-    var maint=gross*I.maint/100;
-    var cleanCost=I.cleancost*stays;
-    var fixed=I.tax + I.ins + (I.util+I.net+I.supp+I.hoa)*12;
-    var opEx=mgmt+plat+maint+cleanCost+fixed;
-
-    var down=I.price*I.downpct/100, loan=Math.max(I.price-down,0), cashIn=down+I.closing;
-    var pi=pmt(loan,I.rate,I.term);
-    var noiY=gross-opEx, mcf=noiY/12-pi, acf=mcf*12;
-    return {
-      occ:occ, nights:nights, stays:stays, nightlyRev:nightlyRev, cleanRev:cleanRev, otherRev:otherRev,
-      gross:gross, mgmt:mgmt, plat:plat, maint:maint, cleanCost:cleanCost, fixed:fixed, opEx:opEx,
-      pi:pi, noiY:noiY, mcf:mcf, acf:acf, cashIn:cashIn, price:I.price,
-      cap: I.price>0?noiY/I.price*100:0, coc: cashIn>0?acf/cashIn*100:0,
-      revpar: I.adr*occ
-    };
-  }
-  function verdict(m, hasPrice){
-    if(m.mcf<0) return {k:"red",t:"🔴 Pass",w:"Negative cash flow — it costs you money each month at this occupancy."};
-    var strong = hasPrice ? m.coc>=8 : (m.gross>0 && m.noiY/m.gross>=0.35);
-    if(m.mcf>=0 && strong) return {k:"green",t:"🟢 Strong",w:hasPrice?"Positive cash flow with a healthy cash-on-cash return.":"Positive cash flow with a healthy operating margin."};
-    return {k:"amber",t:"🟡 Thin",w:"Cash flow is positive but the margin or return is slim — little room for a soft season."};
-  }
-
-  function breakEvenOcc(I){
-    function cf(o){ return model(I,o).mcf; }
-    if(cf(100)<0) return null;            // never breaks even, even fully booked
-    if(cf(0)>=0) return 0;
-    var lo=0, hi=100;
-    for(var i=0;i<60;i++){ var mid=(lo+hi)/2; if(cf(mid)>=0) hi=mid; else lo=mid; }
-    return hi;
-  }
-
+  // Works out booked nights, gross, every STR cost, the net, and the long-term comparison.
   function calc(){
-    var I={}; ids.forEach(function(k){ I[k]=n(k); });
-    var hasPrice=I.price>0;
-    var m=model(I);
+    // Clamp the abusable inputs: occupancy can't exceed 100% or go negative; nothing here is negative.
+    var adr=Math.max(0,n("adr")), occ=Math.max(0,Math.min(100,n("occ"))), stay=Math.max(0,n("stay")), sqft=Math.max(0,n("sqft"));
+    var nights=DPM*occ/100, turns=stay>0?nights/stay:0;   // booked nights & number of stays (turns) per month
+    var gross=adr*nights;
+    var plat=gross*n("plat")/100, smgmt=gross*n("smgmt")/100;
+    var clnNet=(n("clncost")-n("clnfee"))*turns, util=n("util");
+    var lodgtax=gross*Math.min(100,n("lodgtax"))/100, permits=n("permits"), reserve=n("reserve");
+    var ownerLodge=(mode==="primary")?n("ownerlodge"):0;   // your "stay elsewhere" cost only applies when you STR your own home
+    var strNet=gross-plat-smgmt-clnNet-util-lodgtax-permits-reserve-ownerLodge;
+    var revpar=adr*occ/100;
 
-    var v=verdict(m,hasPrice), box=document.getElementById("verdict");
-    box.className="verdict v-"+v.k; set("v-tag",v.t); set("v-why",v.w);
+    var ltr=n("ltrent"), ltNet=ltr-ltr*n("ltvac")/100-ltr*n("ltmgmt")/100;
+    var carry=n("carry");
 
-    set("m-mcf",money(m.mcf)); document.getElementById("m-mcf").className="v "+(m.mcf>=0?"pass":"bad");
-    var be=breakEvenOcc(I);
-    set("m-be", be==null?"never":be<=0?"0%":pct(be));
-    set("m-coc", m.cashIn>0?pct(m.coc):"—");
-    set("m-cap", hasPrice?pct(m.cap):"—");
-    set("m-revpar", money(m.revpar));
-    set("m-pi", money(m.pi));
+    set("r-nights", (Math.round(nights*10)/10)+" nights/mo");
+    set("r-turns", turns>0?((Math.round(turns*10)/10)+" turns/mo"):"");
+    set("r-plat", money(plat)+"/mo"); set("r-smgmt", money(smgmt)+"/mo");
+    set("r-cln", "net "+money(clnNet)+"/mo");
+    set("r-lodgtax", money(lodgtax)+"/mo");
 
-    set("m-gross", money(m.gross));
-    set("m-gross-sub", Math.round(m.nights)+" nights booked/yr · "+Math.round(m.stays)+" stays · "+pct(I.occ)+" occupancy");
+    set("m-net", money(strNet));
+    var adv=strNet-ltNet;
+    set("m-net-sub", (adv>=0? "+"+money(adv)+"/mo more than a long-term lease ("+money(ltNet)+")" : money(adv)+"/mo — LESS than a long-term lease ("+money(ltNet)+")"));
+    set("m-gross", money(gross));
+    set("m-nights", (Math.round(nights*10)/10));
+    set("m-turns-sub", (Math.round(turns*10)/10)+" turns/mo");
+    set("m-revpar", money(revpar));
+    set("m-revsqft", sqft>0?("$"+(gross/sqft).toFixed(2)):"—");
 
     var rows=[
-      ["Nightly revenue", m.nightlyRev, 1],
-      ["Cleaning fees collected", m.cleanRev, 1],
-      ["Other income", m.otherRev, 1],
-      ["Management fee", -m.mgmt, 0],
-      ["Platform / host fee", -m.plat, 0],
-      ["Repairs &amp; maintenance", -m.maint, 0],
-      ["Cleaning paid out", -m.cleanCost, 0],
-      ["Taxes, insurance, utilities, supplies", -m.fixed, 0],
-      ["Net operating income", m.noiY, 2],
-      ["Mortgage (P&amp;I)", -m.pi*12, 0],
-      ["Annual cash flow", m.acf, 2]
+      ["Gross income/mo", gross, ltr],
+      ["− Vacancy / unbooked", 0, -ltr*n("ltvac")/100],
+      ["− Platform fee", -plat, 0],
+      ["− Management", -smgmt, -ltr*n("ltmgmt")/100],
+      ["− Cleaning (net)", -clnNet, 0],
+      ["− Supplies/utilities", -util, 0]
     ];
-    var html=""; rows.forEach(function(r){
-      var cls=r[1]>=0?"pos":"neg", strong=(r[2]===2);
-      html+="<tr><td>"+(strong?"<strong>"+r[0]+"</strong>":r[0])+"</td><td class='"+cls+"'>"+(strong?"<strong>"+money(r[1])+"</strong>":money(r[1]))+"</td></tr>";
-    });
-    document.getElementById("pnl-body").innerHTML=html;
-
-    var scn=[I.occ-15, I.occ-7, I.occ, I.occ+7].filter(function(o){return o>=0&&o<=100;});
-    var sb=""; scn.forEach(function(o){
-      var mm=model(I,o), vv=verdict(mm,hasPrice), col=vv.k==="green"?"var(--green)":vv.k==="amber"?"var(--amber)":"var(--red)";
-      sb+="<tr><td>"+pct(o)+(Math.abs(o-I.occ)<0.01?" (yours)":"")+"</td><td>"+money(mm.mcf)+"</td><td style='color:"+col+";font-weight:600'>"+vv.t.replace(/^[^ ]+ /,"")+"</td></tr>";
-    });
-    document.getElementById("stress-body").innerHTML=sb;
+    if(lodgtax>0) rows.push(["− Lodging / occupancy tax", -lodgtax, 0]);
+    if(permits>0) rows.push(["− Permits / license", -permits, 0]);
+    if(reserve>0) rows.push(["− Furnishing + capex reserve", -reserve, 0]);
+    if(ownerLodge>0) rows.push(["− Your lodging while booked", -ownerLodge, 0]);
+    var crows=[];
+    rows.forEach(function(r){ crows.push([r[0], money(r[1]), money(r[2])]); });
+    crows.push([{t:"Net income/mo",bold:true},{t:money(strNet),bold:true},{t:money(ltNet),bold:true}]);
+    crows.push(["Revenue / sq ft", (sqft>0?"$"+(gross/sqft).toFixed(2):"—"), (sqft>0?"$"+(ltr/sqft).toFixed(2):"—")]);
+    if(carry>0){
+      crows.push(["− Carrying cost", money(-carry), money(-carry)]);
+      crows.push([{t:"Cash flow/mo",bold:true},{t:money(strNet-carry),bold:true},{t:money(ltNet-carry),bold:true}]);
+    }
+    fillRows("cmp-body", crows);
+    set("cmp-note", adv>=0
+      ? "At these numbers short-term renting nets "+money(adv)+"/mo more than a long-term lease — but weigh the extra work, turnover and regulatory risk against it."
+      : "At these numbers a long-term lease actually nets "+money(-adv)+"/mo MORE than short-term renting, with far less work. STR only wins here if you can lift ADR/occupancy or self-manage (drop the 20% management).");
   }
-  ids.forEach(function(id){ document.getElementById(id).addEventListener("input",calc); });
-  calc();
+
+  function setMode(m){
+    mode=m;
+    Array.prototype.forEach.call(document.querySelectorAll(".modes button"),function(btn){ btn.classList.toggle("active", btn.getAttribute("data-m")===m); });
+    var p=presets[m];
+    el("adr").value=p.adr; el("occ").value=p.occ; el("stay").value=p.stay; el("sqft").value=p.sqft; el("ltrent").value=p.ltrent;
+    set("lbl-sqft", m==="room"?"Room / ADU sq ft":"Square footage");
+    set("lbl-ltrent", m==="room"?"Long-term room/ADU rent ($/mo)":"Long-term rent ($/mo)");
+    set("lt-title", m==="room"?"Compare: long-term room rental":"Compare: long-term lease");
+    // "Your lodging while booked" only makes sense when you STR your own home
+    var ol=el("ownerlodge");
+    if(m==="primary"){ ol.parentNode.style.display=""; set("hint-ownerlodge","you pay to stay elsewhere while your home is booked"); }
+    else { ol.value=0; ol.parentNode.style.display="none"; }
+    setRich("mode-note", p.note);
+    calc();
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll(".modes button"),function(btn){ btn.addEventListener("click",function(){ setMode(btn.getAttribute("data-m")); }); });
+  Array.prototype.forEach.call(document.querySelectorAll("input"),function(inp){ inp.addEventListener("input",calc); });
+  setMode("primary");
 })();
 </script>
 </body>

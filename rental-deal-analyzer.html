@@ -13,20 +13,23 @@
   .wrap{ max-width:1040px; margin:0 auto; padding:18px; }
   header h1{ margin:0 0 4px; font-size:1.55rem; }
   header p{ margin:0 0 14px; color:var(--muted); font-size:.95rem; }
+  .modes{ display:flex; flex-wrap:wrap; gap:8px; margin:0 0 16px; }
+  .modes button{ flex:1 1 auto; min-height:46px; padding:9px 12px; font-size:.9rem; font-weight:600; cursor:pointer;
+                 border:1px solid var(--line); border-radius:10px; background:#fff; color:var(--muted); }
+  .modes button.active{ background:var(--brand); color:#fff; border-color:var(--brand); }
+  .modes button .d{ display:block; font-size:.68rem; font-weight:500; opacity:.8; margin-top:1px; }
   .grid{ display:grid; grid-template-columns:1fr; gap:16px; }
   @media(min-width:820px){ .grid{ grid-template-columns:1fr 1fr; align-items:start; } }
   .card{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px; margin-bottom:16px; }
   .card h2{ margin:0 0 10px; font-size:.78rem; letter-spacing:.06em; text-transform:uppercase; color:var(--brand); }
   .field{ margin-bottom:11px; }
   .field label{ display:block; font-size:.85rem; color:var(--muted); margin-bottom:4px; }
+  .field .hint{ font-size:.72rem; color:var(--muted); opacity:.85; margin-top:3px; }
+  .field .dol{ font-size:.74rem; color:var(--brand2); font-weight:600; margin-top:3px; }
   .field input{ width:100%; min-height:44px; padding:9px 11px; font-size:1rem; color:var(--ink);
                 border:1px solid var(--line); border-radius:9px; background:#fff; }
   .field input:focus{ outline:2px solid var(--brand2); border-color:var(--brand2); }
   .two{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-  .verdict{ border-radius:12px; padding:16px; margin-bottom:14px; }
-  .verdict .tag{ font-size:1.35rem; font-weight:700; }
-  .verdict .why{ font-size:.9rem; margin-top:3px; }
-  .v-green{ background:#DCFCE7; color:#14532D; } .v-amber{ background:#FEF3C7; color:#78350F; } .v-red{ background:#FEE2E2; color:#7F1D1D; }
   .metrics{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
   .metric{ border:1px solid var(--line); border-radius:10px; padding:11px; }
   .metric .k{ font-size:.74rem; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); }
@@ -43,260 +46,548 @@
   th{ font-size:.72rem; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); }
   .pill{ display:inline-block; padding:2px 9px; border-radius:999px; font-size:.78rem; font-weight:600; color:#fff; }
   footer{ margin-top:8px; font-size:.78rem; color:var(--muted); }
-  .disc{ background:#fffaf0; border:1px solid #f0e3c5; border-radius:9px; padding:10px 12px; font-size:.8rem; color:#6b5a33; }
+  .disc{ background:#fffaf0; border:1px solid #f0e3c5; border-radius:9px; padding:10px 12px; font-size:.8rem; color:#6b5a33; margin-bottom:8px; }
+  .disc b{ color:#5b4a23; }
+  .note{ font-size:.78rem; color:var(--muted); margin-top:6px; }
+  .hidden{ display:none !important; }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
     <h1>Rental Deal Analyzer</h1>
-    <p>Should you buy this rental — and what should you pay? Cap rate, cash flow, the highest smart offer, a stress test, and a multi-year return — instantly.</p>
+    <p>The real ways people own rentals — each analyzed the same honest way, with ROI per square foot and a year-by-year outlook. Pick your situation:</p>
+    <div class="modes" id="modes">
+      <button data-m="invest" class="active">Investment rental<span class="d">buy to rent, you live elsewhere</span></button>
+      <button data-m="duplex">Duplex — rent both<span class="d">two units, you live elsewhere</span></button>
+      <button data-m="duplexowner">Duplex — live in one<span class="d">live in Unit A, rent Unit B</span></button>
+      <button data-m="adu">ADU<span class="d">rent the unit on your lot</span></button>
+      <button data-m="hack">House-hack<span class="d">rent a room / half, you live there</span></button>
+    </div>
   </header>
-<!-- LAUNCH TODO: replace href with the live product URL before publishing -->
-<div style="background:#166534;color:#fff;padding:9px 14px;text-align:center;font:600 .85rem/1.4 -apple-system,Segoe UI,Arial,sans-serif">Free tool from Kyodo Partners · Get the full <strong>Kyodo Rental Property Assistant</strong> ($24) <a href="https://kyodopartners.gumroad.com" style="color:#fff;text-decoration:underline">here &rarr;</a></div>
+<div style="background:#166534;color:#fff;padding:9px 14px;text-align:center;font:600 .85rem/1.4 -apple-system,Segoe UI,Arial,sans-serif">Free tool from Kyodo Partners · Get the full <strong>Kyodo Rental Property Assistant</strong> — Excel with refinancing, remodel-by-year &amp; 30-yr proforma <a href="https://kyodopartners.gumroad.com" style="color:#fff;text-decoration:underline">here &rarr;</a></div>
+
 
   <div class="grid">
+    <!-- ============ INPUTS ============ -->
     <div>
-      <div class="card">
-        <h2>Purchase &amp; Financing</h2>
-        <div class="field"><label>Purchase price ($)</label><input id="price" type="number" inputmode="decimal" value="250000"></div>
+      <div class="card" data-mode="invest duplex duplexowner hack">
+        <h2>Property &amp; Financing</h2>
+        <div class="field"><label>Purchase price ($)</label><input id="price" type="number" min="0" inputmode="decimal" value="1450000"></div>
         <div class="two">
-          <div class="field"><label>Down payment (%)</label><input id="downpct" type="number" inputmode="decimal" value="20"></div>
-          <div class="field"><label>Closing + rehab ($)</label><input id="closing" type="number" inputmode="decimal" value="6000"></div>
+          <div class="field"><label>Down payment (%)</label><input id="downpct" type="number" min="0" max="100" inputmode="decimal" value="20"><div class="dol" id="r-down"></div></div>
+          <div class="field"><label>Closing + rehab ($)</label><input id="closing" type="number" min="0" inputmode="decimal" value="36000"></div>
         </div>
         <div class="two">
-          <div class="field"><label>Interest rate (%)</label><input id="rate" type="number" inputmode="decimal" value="7"></div>
-          <div class="field"><label>Loan term (years)</label><input id="term" type="number" inputmode="decimal" value="30"></div>
+          <div class="field"><label>Interest rate (%)</label><input id="rate" type="number" min="0" inputmode="decimal" value="6.5"></div>
+          <div class="field"><label>Loan term (years)</label><input id="term" type="number" min="0" inputmode="decimal" value="30"></div>
+        </div>
+        <div class="two">
+          <div class="field"><label>Total square footage</label><input id="sqft" type="number" min="0" inputmode="decimal" value="1800"></div>
+          <div class="field"><label>Maintenance ($/yr)</label><input id="maint" type="number" min="0" inputmode="decimal" value="14500"><div class="dol" id="r-maint"></div></div>
+        </div>
+        <div class="two">
+          <div class="field"><label>Property tax ($/yr)</label><input id="tax" type="number" min="0" inputmode="decimal" value="18125"></div>
+          <div class="field"><label>Insurance ($/yr)</label><input id="ins" type="number" min="0" inputmode="decimal" value="4500"></div>
         </div>
       </div>
-      <div class="card">
-        <h2>Income &amp; Operating Expenses</h2>
+
+      <!-- INVEST income -->
+      <div class="card" data-mode="invest">
+        <h2>Income &amp; Operating (full rental)</h2>
         <div class="two">
-          <div class="field"><label>Monthly rent ($)</label><input id="rent" type="number" inputmode="decimal" value="2200"></div>
-          <div class="field"><label>Other income ($/mo)</label><input id="other_inc" type="number" inputmode="decimal" value="0"></div>
+          <div class="field"><label>Monthly rent ($)</label><input id="rent" type="number" min="0" inputmode="decimal" value="5000"><div class="dol" id="r-rentsqft-in"></div></div>
+          <div class="field"><label>Other income ($/mo)</label><input id="other_inc" type="number" min="0" inputmode="decimal" value="0"></div>
+        </div>
+        <p class="hint">Use a comparable rent for your specific property — check Zillow's Rent Zestimate, Rentometer, or recent local listings.</p>
+        <div class="two">
+          <div class="field"><label>HOA ($/mo)</label><input id="hoa" type="number" min="0" inputmode="decimal" value="0"></div>
+          <div class="field"><label>Other exp ($/mo)</label><input id="other_exp" type="number" min="0" inputmode="decimal" value="0"></div>
         </div>
         <div class="two">
-          <div class="field"><label>Property tax ($/yr)</label><input id="tax" type="number" inputmode="decimal" value="3000"></div>
-          <div class="field"><label>Insurance ($/yr)</label><input id="ins" type="number" inputmode="decimal" value="1500"></div>
+          <div class="field"><label>Vacancy (% of rent)</label><input id="vac" type="number" min="0" max="100" inputmode="decimal" value="5"><div class="dol" id="r-vac"></div></div>
+          <div class="field"><label>Management (% of rent)</label><input id="mgmt" type="number" min="0" max="100" inputmode="decimal" value="8"><div class="dol" id="r-mgmt"></div></div>
         </div>
-        <div class="two">
-          <div class="field"><label>HOA ($/mo)</label><input id="hoa" type="number" inputmode="decimal" value="0"></div>
-          <div class="field"><label>Other ($/mo)</label><input id="other_exp" type="number" inputmode="decimal" value="0"></div>
-        </div>
-        <div class="two">
-          <div class="field"><label>Maintenance (% of rent)</label><input id="maint" type="number" inputmode="decimal" value="5"></div>
-          <div class="field"><label>Vacancy (% of rent)</label><input id="vac" type="number" inputmode="decimal" value="5"></div>
-        </div>
-        <div class="field"><label>Management (% of rent)</label><input id="mgmt" type="number" inputmode="decimal" value="8"></div>
+        <div class="field"><label>Months rented per year</label><input id="rentmonths" type="number" min="0" inputmode="decimal" value="12"><span class="hint">use less than 12 for a part-time / seasonal rental (e.g. a vacation rental)</span></div>
       </div>
-      <div class="card">
-        <h2>Projection &amp; Targets</h2>
+
+      <!-- DUPLEX income (shared by both duplex modes) -->
+      <div class="card hidden" data-mode="duplex duplexowner">
+        <h2>The two units</h2>
+        <p class="hint" id="dp-hint"></p>
         <div class="two">
-          <div class="field"><label>Appreciation (%/yr)</label><input id="apprec" type="number" inputmode="decimal" value="3"></div>
-          <div class="field"><label>Rent growth (%/yr)</label><input id="rentgrow" type="number" inputmode="decimal" value="2"></div>
+          <div class="field"><label id="dp-lblA">Unit A rent ($/mo)</label><input id="dp_rentA" type="number" min="0" inputmode="decimal" value="3200"></div>
+          <div class="field"><label>Unit A sq ft</label><input id="dp_sqftA" type="number" min="0" inputmode="decimal" value="900"></div>
         </div>
         <div class="two">
-          <div class="field"><label>Expense growth (%/yr)</label><input id="expgrow" type="number" inputmode="decimal" value="2"></div>
-          <div class="field"><label>Hold period (years)</label><input id="hold" type="number" inputmode="decimal" value="5"></div>
+          <div class="field"><label>Unit B rent ($/mo)</label><input id="dp_rentB" type="number" min="0" inputmode="decimal" value="3200"></div>
+          <div class="field"><label>Unit B sq ft</label><input id="dp_sqftB" type="number" min="0" inputmode="decimal" value="900"></div>
         </div>
         <div class="two">
-          <div class="field"><label>Selling cost (% of sale)</label><input id="sellcost" type="number" inputmode="decimal" value="6"></div>
-          <div class="field"><label>Target cash-on-cash (%)</label><input id="tcoc" type="number" inputmode="decimal" value="8"></div>
+          <div class="field"><label>Vacancy (% of rent)</label><input id="dp_vac" type="number" min="0" max="100" inputmode="decimal" value="5"><div class="dol" id="r-dpvac"></div></div>
+          <div class="field"><label>Management (% of rent)</label><input id="dp_mgmt" type="number" min="0" max="100" inputmode="decimal" value="8"><div class="dol" id="r-dpmgmt"></div></div>
         </div>
-        <div class="field"><label>Min. monthly cash flow ($) — for Max Offer</label><input id="tcf" type="number" inputmode="decimal" value="100"></div>
+      </div>
+
+      <!-- HACK income -->
+      <div class="card hidden" data-mode="hack">
+        <h2>Your rental portion</h2>
+        <div class="two">
+          <div class="field"><label>Rent received ($/mo)</label><input id="hk_rent" type="number" min="0" inputmode="decimal" value="1500"></div>
+          <div class="field"><label>Rented space (sq ft)</label><input id="hk_sqft" type="number" min="0" inputmode="decimal" value="400"></div>
+        </div>
+        <div class="field"><label>Vacancy (% of rent)</label><input id="hk_vac" type="number" min="0" max="100" inputmode="decimal" value="8"><div class="dol" id="r-hkvac"></div><span class="hint">a single room turns over more often than a whole unit — 8–10% is realistic if refills take a few weeks</span></div>
+        <p class="hint">You live here and have a job — the monthly cash flow below is your <b>net housing cost</b> (negative is normal), and "total profit if sold" shows the equity you build.</p>
+      </div>
+
+      <!-- ADU inputs -->
+      <div class="card hidden" data-mode="adu">
+        <h2>The ADU (added unit on your lot)</h2>
+        <div class="two">
+          <div class="field"><label>ADU build / cost ($)</label><input id="ad_cost" type="number" min="0" inputmode="decimal" value="350000"></div>
+          <div class="field"><label>ADU rent ($/mo)</label><input id="ad_rent" type="number" min="0" inputmode="decimal" value="2800"></div>
+        </div>
+        <div class="two">
+          <div class="field"><label>ADU size (sq ft)</label><input id="ad_sqft" type="number" min="0" inputmode="decimal" value="600"></div>
+          <div class="field"><label>Vacancy (% of rent)</label><input id="ad_vac" type="number" min="0" max="100" inputmode="decimal" value="5"><div class="dol" id="r-advac"></div></div>
+        </div>
+        <div class="two">
+          <div class="field"><label>Primary home (sq ft)</label><input id="ad_prim" type="number" min="0" inputmode="decimal" value="1800"></div>
+          <div class="field"><label>Lot size (sq ft)</label><input id="ad_lot" type="number" min="0" inputmode="decimal" value="5000"></div>
+        </div>
+        <div class="field"><label>Fits the lot?</label><div class="dol" id="r-adufit"></div></div>
+        <div class="two">
+          <div class="field"><label>Added property tax ($/yr)</label><input id="ad_tax" type="number" min="0" inputmode="decimal" value="4375"></div>
+          <div class="field"><label>Added insurance ($/yr)</label><input id="ad_ins" type="number" min="0" inputmode="decimal" value="500"></div>
+        </div>
+        <div class="field"><label>ADU maintenance ($/yr)</label><input id="ad_maint" type="number" min="0" inputmode="decimal" value="3500"></div>
+        <p class="hint"><b>Put the all-in build cost</b> in "ADU build / cost" — including the hidden extras (utility hookups, site prep, permits, sprinklers). See the ADU footnotes below.</p>
+      </div>
+
+      <!-- Projection (rentable modes) -->
+      <div class="card" data-mode="invest duplex duplexowner hack">
+        <h2>Projection</h2>
+        <div class="two">
+          <div class="field"><label>Appreciation (%/yr)</label><input id="apprec" type="number" min="0" inputmode="decimal" value="4"><div class="dol" id="r-apprec"></div></div>
+          <div class="field"><label>Rent growth (%/yr)</label><input id="rentgrow" type="number" min="0" inputmode="decimal" value="2"><div class="dol" id="r-rentgrow"></div></div>
+        </div>
+        <div class="two">
+          <div class="field"><label>Expense growth (%/yr)</label><input id="expgrow" type="number" min="0" inputmode="decimal" value="2"></div>
+          <div class="field"><label>Selling cost (% of sale)</label><input id="sellcost" type="number" min="0" max="100" inputmode="decimal" value="6"><div class="dol" id="r-sellcost"></div></div>
+        </div>
+      </div>
+
+      <!-- REMODEL + RESALE (rentable modes) -->
+      <div class="card" data-mode="invest duplex duplexowner hack">
+        <h2>Remodel &amp; resale (optional)</h2>
+        <div class="field"><label>Remodel budget ($)</label><input id="remodel" type="number" min="0" inputmode="decimal" value="0"><span class="hint">adds to your cash invested</span></div>
+        <div class="field"><label>Rent bump after remodel ($/mo)</label><input id="remodel_rent" type="number" min="0" inputmode="decimal" value="0"><span class="hint">higher rent the remodel justifies</span></div>
+        <div class="field"><label>Estimated resale price ($)</label><input id="resale" type="number" min="0" inputmode="decimal" value="0"><div class="dol" id="r-resale"></div><span class="hint">your best guess of what it sells for after any remodel. Leave 0 to use purchase price + appreciation.</span></div>
+        <p class="hint">For a flip or value-add deal, enter the resale price you expect. The "Three ways to play it" table uses it for the Flip column.</p>
+      </div>
+
+      <!-- STRESS TEST settings (rentable modes) -->
+      <div class="card" data-mode="invest duplex duplexowner hack">
+        <h2>Stress test — your bad-year settings</h2>
+        <p class="hint">A one-year "what if it goes wrong" check. Set how bad each shock is; the table on the right recomputes. You decide whether they happen alone or all at once.</p>
+        <div class="two">
+          <div class="field"><label>Rent drops by (%)</label><input id="s_rentdrop" type="number" min="0" inputmode="decimal" value="10"></div>
+          <div class="field"><label>Extra vacancy (+%)</label><input id="s_vac" type="number" min="0" inputmode="decimal" value="10"></div>
+        </div>
+        <div class="field"><label>Interest rate rises by (+%)</label><input id="s_rate" type="number" min="0" inputmode="decimal" value="1"></div>
       </div>
     </div>
 
+    <!-- ============ RESULTS ============ -->
     <div>
-      <div class="card">
-        <h2>Verdict — Year 1</h2>
-        <div id="verdict" class="verdict v-amber"><div class="tag" id="v-tag">—</div><div class="why" id="v-why"></div></div>
-        <div class="metrics">
-          <div class="metric"><div class="k">Cap rate</div><div class="v" id="m-cap">—</div><div class="sub">operating only</div></div>
-          <div class="metric"><div class="k">Cash-on-cash</div><div class="v" id="m-coc">—</div><div class="sub">year 1</div></div>
-          <div class="metric"><div class="k">Monthly cash flow</div><div class="v" id="m-mcf">—</div><div class="sub">after mortgage</div></div>
-          <div class="metric"><div class="k">DSCR</div><div class="v" id="m-dscr">—</div><div class="sub">debt coverage</div></div>
-          <div class="metric"><div class="k">1% rule</div><div class="v" id="m-one">—</div><div class="sub">rent &divide; price</div></div>
-          <div class="metric"><div class="k">Mortgage (P&amp;I)</div><div class="v" id="m-pi">—</div><div class="sub">per month</div></div>
+      <!-- INVEST / DUPLEX / DUPLEX-OWNER / HACK PANEL -->
+      <div id="panel-invest">
+        <!-- owner-occupy headline (only duplex-owner + house-hack) -->
+        <div class="card" data-mode="duplexowner hack">
+          <h2 id="oo-title">Your net housing cost</h2>
+          <div class="big"><div class="k">You pay per month to live here</div><div class="v" id="oo-net">—</div><div class="sub" id="oo-sub"></div></div>
+        </div>
+        <div class="card">
+          <h2>Will it make money over time?</h2>
+          <div style="overflow-x:auto"><table><thead><tr><th>Year</th><th id="tl-cf-th">Cash flow/mo</th><th>Total profit if sold</th><th>Standing</th></tr></thead><tbody id="tl-body"></tbody></table></div>
+          <p class="note"><span class="pill" style="background:var(--green)">Ahead</span> net positive if you sold that year &nbsp;·&nbsp; <span class="pill" style="background:var(--amber)">Close</span> within ~10% of break-even &nbsp;·&nbsp; <span class="pill" style="background:var(--red)">Behind</span> net negative.<br>"Total profit if sold" = all cash flow to date + sale proceeds (after selling cost &amp; loan payoff) − your cash invested.</p>
+          <p class="note" data-mode="duplexowner hack"><b>You live here</b>, so the monthly cash flow is your <em>housing cost</em> (negative is normal). The "Total profit if sold" column is the honest wealth picture — it counts the equity you build while a renter helps pay the mortgage.</p>
+        </div>
+        <div class="card">
+          <h2>Year-by-year metrics</h2>
+          <div style="overflow-x:auto"><table><thead><tr><th>Year</th><th>Cap</th><th>CoC</th><th id="ym-cf-th">Cash flow/mo</th><th>DSCR</th><th>ROI/sqft</th><th>P&amp;I/mo</th></tr></thead><tbody id="ym-body"></tbody></table></div>
+          <p class="note">Cap = yield on your purchase price; cash flow rises over time as rent grows while your mortgage P&amp;I stays fixed. Cap, CoC &amp; DSCR are defined in the footnotes.</p>
+          <p class="note" data-mode="duplexowner hack">These investment ratios look low here because you <b>also live in the property</b> — only the rented portion counts as income while the whole place carries the costs.</p>
+        </div>
+        <div class="card">
+          <h2>Three ways to play it — what you'd make</h2>
+          <div style="overflow-x:auto"><table><thead><tr><th>Year</th><th>Flip<br><span style="font-weight:400;color:var(--muted)">sell, no rent</span></th><th>Rent then sell</th><th>Just rent<br><span style="font-weight:400;color:var(--muted)">income only</span></th></tr></thead><tbody id="s3-body"></tbody></table></div>
+          <p class="note"><b>Flip</b> = buy (+ remodel), hold without renting, sell at your <em>resale price</em> — net after purchase, remodel, carrying cost &amp; selling cost. <b>Rent then sell</b> = rent it the whole time, then sell — cash flow to date + sale proceeds − cash invested. <b>Just rent</b> = keep it, never sell — only the cash flow you've collected (negative means you funded it out of pocket; you still own the equity). All three include your remodel &amp; resale inputs.</p>
+        </div>
+        <div class="card">
+          <h2>Stress test — survives a bad year?</h2>
+          <table><thead><tr><th>Scenario</th><th id="stress-cf-th">Cash flow/mo</th><th>Verdict</th></tr></thead><tbody id="stress-body"></tbody></table>
+          <p class="note" id="stress-note"></p>
+        </div>
+        <div class="card">
+          <h2>Quick ratios</h2>
+          <div class="metrics">
+            <div class="metric"><div class="k">Rent / sq ft</div><div class="v" id="m-rentsqft">—</div><div class="sub">monthly</div></div>
+            <div class="metric"><div class="k">Value / sq ft</div><div class="v" id="m-valsqft">—</div><div class="sub">price ÷ sqft</div></div>
+            <div class="metric"><div class="k">1% rule</div><div class="v" id="m-one">—</div><div class="sub">rent ÷ price</div></div>
+            <div class="metric"><div class="k">NOI</div><div class="v" id="m-noi">—</div><div class="sub">net operating income / yr</div></div>
+          </div>
         </div>
       </div>
 
-      <div class="card">
-        <h2>Max Offer — highest smart price</h2>
-        <div class="big"><div class="k">Pay no more than</div><div class="v" id="m-maxoffer">—</div><div class="sub" id="m-maxoffer-sub"></div></div>
-      </div>
-
-      <div class="card">
-        <h2>Stress Test — survives a bad year?</h2>
-        <table><thead><tr><th>Scenario</th><th>Cash flow/mo</th><th>Verdict</th></tr></thead><tbody id="stress-body"></tbody></table>
-      </div>
-
-      <div class="card">
-        <h2>Multi-Year Hold (<span id="hold-label">5</span> yrs)</h2>
-        <div class="metrics" style="margin-bottom:10px">
-          <div class="metric"><div class="k">IRR</div><div class="v" id="m-irr">—</div><div class="sub">annualized, time-weighted</div></div>
-          <div class="metric"><div class="k">Total profit</div><div class="v" id="m-profit">—</div><div class="sub">cash flow + sale − invested</div></div>
-          <div class="metric"><div class="k">Annualized return</div><div class="v" id="m-annual">—</div><div class="sub">equity multiple basis</div></div>
-          <div class="metric"><div class="k">Equity at exit</div><div class="v" id="m-equity">—</div><div class="sub">value − loan balance</div></div>
+      <!-- ADU PANEL -->
+      <div id="panel-adu" class="hidden">
+        <div class="card">
+          <h2>Build pays for itself in</h2>
+          <div class="big"><div class="k">Years to recoup the ADU build from rent</div><div class="v" id="ad-pay-head">—</div><div class="sub" id="ad-pay-sub"></div></div>
         </div>
-        <table><thead><tr><th>Year</th><th>Cash flow</th><th>Value</th><th>Equity</th></tr></thead><tbody id="proj-body"></tbody></table>
-      </div>
-
-      <div class="card">
-        <h2>Quick Ratios</h2>
-        <div class="metrics">
-          <div class="metric"><div class="k">Gross rent multiplier</div><div class="v" id="m-grm">—</div><div class="sub">price &divide; annual rent</div></div>
-          <div class="metric"><div class="k">Return on equity (yr 1)</div><div class="v" id="m-roe">—</div><div class="sub">cash flow + paydown + appreciation</div></div>
-          <div class="metric"><div class="k">Break-even occupancy</div><div class="v" id="m-breakeven">—</div><div class="sub">to cover all costs</div></div>
-          <div class="metric"><div class="k">NOI</div><div class="v" id="m-noi">—</div><div class="sub">net operating income / yr</div></div>
+        <div class="card">
+          <h2>The numbers</h2>
+          <div class="metrics">
+            <div class="metric"><div class="k">ADU cap rate</div><div class="v" id="ad-cap">—</div><div class="sub">net income ÷ build cost</div></div>
+            <div class="metric"><div class="k">ADU net income</div><div class="v" id="ad-noi">—</div><div class="sub">per year, after costs</div></div>
+            <div class="metric"><div class="k">Monthly net</div><div class="v" id="ad-mcf">—</div><div class="sub">after ADU costs</div></div>
+            <div class="metric"><div class="k">ROI / sq ft</div><div class="v" id="ad-roisqft">—</div><div class="sub">net income ÷ ADU sqft</div></div>
+            <div class="metric"><div class="k">Rent / sq ft</div><div class="v" id="ad-rsf">—</div><div class="sub">monthly</div></div>
+            <div class="metric"><div class="k">Cost / sq ft</div><div class="v" id="ad-csf">—</div><div class="sub">build ÷ ADU sqft</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <h2>Recouping the build over time</h2>
+          <table><thead><tr><th>Year</th><th>Net income/yr</th><th>Cumulative</th><th>% of build</th></tr></thead><tbody id="ad-tl"></tbody></table>
+          <p class="note">Net income = ADU rent minus its vacancy, tax, insurance &amp; maintenance. Rent &amp; costs grow ~2%/yr. The table stops the year you've recouped the build (100%) — that's your payback year.</p>
         </div>
       </div>
     </div>
   </div>
 
-<!-- LAUNCH TODO: replace href with the live product URL before publishing -->
-<div style="max-width:1040px;margin:18px auto;padding:0 18px"><div style="background:#166534;color:#fff;border-radius:12px;padding:20px 22px;font-family:-apple-system,Segoe UI,Arial,sans-serif"><div style="font-size:1.15rem;font-weight:700;margin-bottom:6px">Want to track the real numbers, not just estimate them?</div><div style="font-size:.92rem;opacity:.95;margin-bottom:12px">The <strong>Kyodo Rental Property Assistant</strong> adds the income / expense / mileage tracker, per-property dashboard, year-end tax summary, and phone app — plus this analyzer. Pay once — no subscription, no bank linking, your data stays on your device.</div><a href="https://kyodopartners.gumroad.com" style="display:inline-block;background:#fff;color:#166534;font-weight:700;text-decoration:none;padding:11px 20px;border-radius:9px">Get the Kyodo Rental Property Assistant — $24 &rarr;</a></div></div>
   <footer>
-    <p class="disc"><strong>Estimates for planning only — not investment or tax advice.</strong> Cap rate uses operating expenses only (excludes mortgage), matching the Kyodo Rental Property Assistant. Cash flow, cash-on-cash, IRR and projections include your full mortgage payment. Max Offer holds your entered expenses, down-payment %, rate and rent fixed. Tip: pull a comparable rent from Zillow's Rent Zestimate and enter it above.</p>
+    <p class="disc"><strong>Estimates for planning only — not investment, tax or accounting advice.</strong> Figures depend on the numbers you enter; verify locally.</p>
+
+    <p class="disc" data-mode="invest duplex"><b>Investment notes:</b> Cap rate uses operating expenses only (excludes the mortgage). Maintenance is a fixed $/yr (default ≈1% of value). <b>Appreciation</b> (default 4%/yr) is a market <em>assumption</em>, not a GAAP/accounting rule — long-run U.S. home prices rose ~4–4.3%/yr nominally (FHFA/Case-Shiller, 1975–2025); the Bay Area has been higher but more volatile. <b>Resale price</b> (optional): if you enter one, every "sold" figure starts from it (grown by your appreciation rate) instead of purchase price + appreciation — use it for a flip or value-add where you know the likely sale value.</p>
+
+    <p class="disc" data-mode="duplexowner hack"><b>Owner-occupy notes:</b> the monthly cash flow is your <em>net housing cost</em> — what you pay after the renter helps — so a negative number is normal and expected; you cover the rest from your job income. The real payoff is wealth: a renter pays down your mortgage and you keep the appreciation, shown in "Total profit if sold." Cap rate, cash-on-cash and DSCR are investment yardsticks and will read low because only the rented portion counts as income.</p>
+
+    <p class="disc" data-mode="invest duplex duplexowner hack"><b>DSCR (Debt Service Coverage Ratio)</b> answers one question: does the property's income cover the mortgage payment? It is net operating income (rent minus operating expenses, before the mortgage) ÷ the annual mortgage payment. <b>1.0</b> = income exactly covers the loan payment; <b>above 1.0</b> = income more than covers it (lenders typically want <b>1.20–1.25 or higher</b>); <b>below 1.0</b> = income does not cover the loan, so you feed it cash each month.</p>
+
+    <p class="disc" data-mode="invest duplex duplexowner hack"><b>The other metrics, plain-English:</b> <b>Cap rate</b> = yearly net operating income ÷ purchase price — the property's yield before the mortgage; <b>4%+ is healthy, under ~3% is thin</b> (Bay Area buy-to-rent is often ~1%). <b>CoC (cash-on-cash)</b> = yearly cash flow ÷ the cash you put in (down payment + closing + remodel) — your return on actual dollars invested; <b>8%+ is good</b>. <b>Cash flow/mo</b> = rent minus all operating costs <em>and</em> the mortgage (what lands in, or leaves, your pocket). <b>ROI/sqft</b> = yearly cash flow ÷ total square footage. <b>P&amp;I/mo</b> = principal + interest — your fixed monthly mortgage payment (tax &amp; insurance billed separately).</p>
+
+    <p class="disc" data-mode="invest duplex duplexowner hack"><b>Quick ratios — what they mean &amp; what's "good":</b> <b>Rent/sqft</b> = monthly rent ÷ square footage; higher means more income per foot — useful to compare similar properties, no universal target. <b>Value/sqft</b> = price ÷ square footage; compare to recent comparable sales to judge if you're overpaying. <b>1% rule</b> = monthly rent ÷ price; ≥ <b>1%</b> traditionally signals a property can cash-flow — the Bay Area runs ~0.3% because prices far outrun rents (a flashing "won't cash-flow on rent alone" sign). <b>NOI (net operating income)</b> = yearly rent minus operating expenses, <em>before</em> the mortgage; it's what's left to cover the loan and your profit — higher is better, and it's the number a cap rate is built from.</p>
+
+    <p class="disc" data-mode="invest duplex duplexowner hack"><b>The stress test</b> is a one-year snapshot: it re-runs the deal with the bad-year shocks you set (rent drop, extra vacancy, rate rise) — each on its own, then all three together in the last row. All three rarely hit at once, so the "all 3" row is a true worst case. A negative number means that year you'd feed the property cash out of pocket; the bigger the cushion above $0, the safer the deal.</p>
+
+    <p class="disc" data-mode="adu"><b>ADU notes:</b> the build cost should include commonly-missed extras — utility hookups/upgrades (~$10–35K), site prep/foundation/grading, design &amp; permits, impact fees (waived for ADUs under 750 sq ft in CA; proportional above), and possible fire sprinklers. <b>Lot fit (California):</b> no minimum lot size for an ADU; detached ADUs can sit ~4 ft from side/rear lines; ADUs ≤800 sq ft are exempt from lot-coverage limits, larger ones must meet local coverage (often 30–50%). The fit check is a rough guide — confirm with your city.</p>
+
+    <p class="disc" data-mode="adu"><b>How to read the ADU numbers:</b> <b>ADU cap rate</b> = the ADU's yearly net income (rent after its vacancy, tax, insurance &amp; maintenance) ÷ the all-in build cost — the return the build itself earns, before any loan. <b>4%+ is solid; 6–7% is strong</b>, and it typically beats buying a whole separate house to rent in the Bay Area (~1%). <b>Payback</b> = the year the rent (after costs) has repaid the build — the single most important ADU number; under ~15 years is good, the lower the better. <b>ROI/sqft</b> = yearly net income ÷ ADU square footage; <b>cost/sqft</b> = build ÷ ADU sqft (Bay Area ADUs commonly run $300–600/sqft all-in); <b>rent/sqft</b> = monthly rent ÷ ADU sqft for comparing to local rentals.</p>
+
     <p>Part of the Kyodo Rental Property Assistant &middot; &copy; 2026 Kyodo Partners LLC</p>
   </footer>
 </div>
 
 <script>
+/*
+  Rental Deal Analyzer — Kyodo Partners
+  ------------------------------------------------------------------
+  A single self-contained page. No tracking, no network calls, no cookies —
+  everything runs in the visitor's browser. Five "ways to own a rental" share
+  one analysis panel (invest / duplex-rent-both / duplex-live-in-one / ADU /
+  house-hack); the owner-occupy modes also show a net-housing headline.
+
+  How the money math hangs together:
+    base()        -> one year-1 snapshot (cash flow, cap, CoC, DSCR, NOI...)
+    timeline()    -> 30-year "profit if sold" using growth + amortization
+    strategies3() -> flip vs. rent-then-sell vs. just-rent, out to 25 years
+    yearMetrics() -> the year-by-year ratio table
+    renderInvest()-> paints all of the above; renderADU() handles the ADU case
+  Percent inputs are stored as whole numbers (6.5 means 6.5%) and divided by
+  100 in the formulas. Currency is rounded only for display.
+*/
 (function(){
   "use strict";
-  var ids=["price","downpct","closing","rate","term","rent","other_inc","tax","ins","hoa","other_exp","maint","vac","mgmt","apprec","rentgrow","expgrow","hold","sellcost","tcoc","tcf"];
-  function n(id){ var v=parseFloat(document.getElementById(id).value); return isFinite(v)?v:0; }
+  var mode="invest";              // which scenario button is active
+  function el(id){ return document.getElementById(id); }
+  function n(id){ var e=el(id); if(!e) return 0; var v=parseFloat(e.value); return isFinite(v)?v:0; }
   function money(x){ return (x<0?"-$":"$")+Math.abs(Math.round(x)).toLocaleString(); }
   function pct(x){ return (Math.round(x*100)/100).toFixed(2)+"%"; }
-  function set(id,t){ document.getElementById(id).textContent=t; }
-
-  function pmt(loan,annualRate,years){
-    var r=(annualRate/100)/12, m=years*12;
-    if(loan<=0||m<=0) return 0;
-    return r>0 ? loan*r*Math.pow(1+r,m)/(Math.pow(1+r,m)-1) : loan/m;
+  function set(id,t){ var e=el(id); if(e) e.textContent=t; }
+  // ---- safe table rendering: rows are built as DOM nodes (no innerHTML), so nothing can be parsed as markup ----
+  function clearKids(e){ while(e&&e.firstChild) e.removeChild(e.firstChild); }
+  function mkTd(c){
+    var td=document.createElement("td");
+    if(c&&c.pill!=null){ var s=document.createElement("span"); s.className="pill"; s.style.background=c.pillColor; s.textContent=c.pill; td.appendChild(s); return td; }
+    td.textContent=(c&&c.t!=null)?c.t:(c==null?"":c);
+    if(c&&c.color) td.style.color=c.color; if(c&&c.bold) td.style.fontWeight="600";
+    return td;
   }
+  function fillRows(id,rows){ var tb=el(id); if(!tb) return; clearKids(tb);
+    rows.forEach(function(r){ var tr=document.createElement("tr"); r.forEach(function(c){ tr.appendChild(mkTd(c)); }); tb.appendChild(tr); }); }
+  function cls(id,c){ var e=el(id); if(e) e.className="v "+c; }
+  // Standard mortgage payment (principal + interest) for a loan at a monthly rate.
+  function pmt(loan,rate,years){ var r=(rate/100)/12,m=years*12; if(loan<=0||m<=0)return 0; return r>0?loan*r*Math.pow(1+r,m)/(Math.pow(1+r,m)-1):loan/m; }
+  // Remaining loan balance after a number of months — we amortize month by month so the equity math is honest.
+  function balanceAfter(loan,rate,years,months){ var r=(rate/100)/12,pay=pmt(loan,rate,years),bal=loan; for(var i=0;i<months;i++){ bal=bal-(pay-bal*r); if(bal<0)bal=0; } return bal; }
+  // Full monthly cost of living in the home with no renter (mortgage + taxes + insurance + maintenance). Used by the owner-occupy headline.
+  function housingCost(I){ var loan=Math.max(I.price-I.price*I.downpct/100,0); return pmt(loan,I.rate,I.term)+I.tax/12+I.ins/12+I.maint/12+(I.hoa||0)+(I.other_exp||0); }
 
-  // Year-1 metrics for a given price + optional stress overrides
+  function shared(){ return {price:n("price"),downpct:n("downpct"),closing:n("closing"),rate:n("rate"),term:n("term"),sqft:n("sqft"),maint:n("maint"),tax:n("tax"),ins:n("ins")}; }
+
+  // ---- INVESTMENT engine ----
+  // One year-1 snapshot. The optional overrides (oRent/oVac/oRate) let the stress
+  // test re-run the same deal with a worse rent, vacancy, or rate without duplicating code.
   function base(I, price, oRent, oVac, oRate){
-    var rentU = oRent!=null?oRent:I.rent;
-    var vacU  = oVac!=null?oVac:I.vac;
-    var rateU = oRate!=null?oRate:I.rate;
-    var down=price*I.downpct/100, loan=Math.max(price-down,0), cashIn=down+I.closing;
-    var pi=pmt(loan,rateU,I.term);
-    var eff=rentU + I.other_inc - rentU*vacU/100;
-    var opEx=I.tax/12 + I.ins/12 + I.hoa + I.other_exp + rentU*I.maint/100 + rentU*I.mgmt/100;
-    var noiM=eff-opEx, noiY=noiM*12;
-    var mcf=noiM-pi, acf=mcf*12;
-    return {
-      price:price, down:down, loan:loan, cashIn:cashIn, pi:pi, noiM:noiM, noiY:noiY,
-      cap: price>0?noiY/price*100:0, mcf:mcf, acf:acf,
-      coc: cashIn>0?acf/cashIn*100:0,
-      dscr: pi>0?noiY/(pi*12):Infinity,
-      one: price>0?rentU/price*100:0, opExM:opEx
-    };
+    var rentU=oRent!=null?oRent:I.rent, vacU=oVac!=null?oVac:I.vac, rateU=oRate!=null?oRate:I.rate;
+    var rm=(I.rentmonths!=null?I.rentmonths:12)/12, gross=(rentU+(I.remodel_rent||0))*rm;
+    var down=price*I.downpct/100, loan=Math.max(price-down,0), cashIn=down+I.closing+(I.remodel||0), pi=pmt(loan,rateU,I.term);
+    var eff=gross + I.other_inc - gross*vacU/100;
+    var opEx=I.tax/12 + I.ins/12 + I.maint/12 + I.hoa + I.other_exp + gross*I.mgmt/100;
+    var noiM=eff-opEx, noiY=noiM*12, mcf=noiM-pi, acf=mcf*12;
+    return { price:price,down:down,loan:loan,cashIn:cashIn,pi:pi,noiM:noiM,noiY:noiY,gross:gross,eff:eff,
+      cap:price>0?noiY/price*100:0, mcf:mcf, acf:acf, coc:cashIn>0?acf/cashIn*100:0,
+      dscr:pi>0?noiY/(pi*12):Infinity, one:price>0?gross/price*100:0, opExM:opEx };
   }
   function verdict(b){
     var dscrOK=!isFinite(b.dscr)||b.dscr>=1.25, dscrBad=isFinite(b.dscr)&&b.dscr<1.0;
-    if(b.mcf<0||dscrBad) return {k:"red",t:"🔴 Pass",w:b.mcf<0?"Negative cash flow — costs you money each month.":"Debt coverage below 1.0 — income doesn't cover the loan."};
-    if(b.mcf>=0&&b.coc>=8&&dscrOK) return {k:"green",t:"🟢 Strong",w:"Positive cash flow, cash-on-cash ≥ 8%, healthy debt coverage."};
-    return {k:"amber",t:"🟡 Thin",w:"Cash flow positive but return or debt coverage is slim."};
+    if(b.mcf<0||dscrBad) return {k:"red",t:"Loses money"};
+    if(b.mcf>=0&&b.coc>=8&&dscrOK) return {k:"green",t:"Strong"};
+    return {k:"amber",t:"Thin"};
+  }
+  // Sale value at year H. If the owner typed a resale price we start from that (a flip / value-add estimate);
+  // otherwise we start from the purchase price. Either way it grows at the appreciation rate.
+  function valueAt(I, price, H){
+    var basis = (I.resale && I.resale>0) ? I.resale : (price + (I.remodel_val||0));
+    return basis * Math.pow(1+I.apprec/100, H);
   }
 
-  // Amortized loan balance after `months`
-  function balanceAfter(loan,annualRate,years,months){
-    var r=(annualRate/100)/12, pay=pmt(loan,annualRate,years), bal=loan;
-    for(var i=0;i<months;i++){ var interest=bal*r; bal=bal-(pay-interest); if(bal<0) bal=0; }
-    return bal;
-  }
-
-  function irr(cfs){
-    var lo=-0.95, hi=2.0;
-    function npv(rate){ var s=0; for(var t=0;t<cfs.length;t++) s+=cfs[t]/Math.pow(1+rate,t); return s; }
-    if(npv(lo)*npv(hi)>0) return null;
-    for(var i=0;i<200;i++){ var mid=(lo+hi)/2; var v=npv(mid); if(Math.abs(v)<0.01) return mid; if(npv(lo)*v<0) hi=mid; else lo=mid; }
-    return (lo+hi)/2;
-  }
-
-  function maxOffer(I, tCoC, tCF){
-    function passes(p){ var b=base(I,p); return b.coc>=tCoC && b.mcf>=tCF; }
-    var lo=1000, hi=20000000;
-    if(!passes(lo)) return null;          // even cheap doesn't hit targets (rent too low)
-    if(passes(hi)) return hi;
-    for(var i=0;i<60;i++){ var mid=(lo+hi)/2; if(passes(mid)) lo=mid; else hi=mid; }
-    return lo;
-  }
-
-  function calc(){
-    var I={}; ids.forEach(function(k){ I[k]=n(k); });
-    var b=base(I,I.price);
-
-    // Year-1 verdict + metrics
-    var v=verdict(b), box=document.getElementById("verdict");
-    box.className="verdict v-"+v.k; set("v-tag",v.t); set("v-why",v.w);
-    set("m-cap",pct(b.cap)); set("m-coc",b.cashIn>0?pct(b.coc):"—");
-    set("m-mcf",money(b.mcf)); document.getElementById("m-mcf").className="v "+(b.mcf>=0?"pass":"bad");
-    set("m-dscr",isFinite(b.dscr)?b.dscr.toFixed(2):"— cash");
-    var op=document.getElementById("m-one"); op.textContent=pct(b.one)+(b.one>=1?" ✓":""); op.className="v "+(b.one>=1?"pass":"warn");
-    set("m-pi",money(b.pi)); set("m-noi",money(b.noiY));
-
-    // Max Offer
-    var mo=maxOffer(I,I.tcoc,I.tcf);
-    set("m-maxoffer", mo!=null?money(mo):"—");
-    set("m-maxoffer-sub", mo!=null
-        ? ("to keep cash-on-cash ≥ "+pct(I.tcoc)+" and cash flow ≥ "+money(I.tcf)+"/mo. You're "+(I.price<=mo?"at or below it ✓":"above it — negotiate down."))
-        : "No price hits both targets at this rent — raise rent or lower targets.");
-
-    // Stress test
-    var scn=[
-      {n:"Base case", b:b},
-      {n:"Rent −10%", b:base(I,I.price, I.rent*0.9, null, null)},
-      {n:"Vacancy "+(I.vac+10)+"%", b:base(I,I.price, null, I.vac+10, null)},
-      {n:"Rate +1%", b:base(I,I.price, null, null, I.rate+1)},
-      {n:"Bad year (all 3)", b:base(I,I.price, I.rent*0.9, I.vac+10, I.rate+1)}
-    ];
-    var sb=""; scn.forEach(function(s){
-      var sv=verdict(s.b), col=sv.k==="green"?"var(--green)":sv.k==="amber"?"var(--amber)":"var(--red)";
-      sb+="<tr><td>"+s.n+"</td><td>"+money(s.b.mcf)+"</td><td><span class='pill' style='background:"+col+"'>"+sv.t.replace(/^[^ ]+ /,"")+"</span></td></tr>";
-    });
-    document.getElementById("stress-body").innerHTML=sb;
-
-    // Multi-year projection
-    var hold=Math.max(1,Math.round(I.hold)); set("hold-label",hold);
-    var cfs=[-b.cashIn], rows="", cumCF=0, valExit=0, eqExit=0, netSale=0;
-    for(var y=1;y<=hold;y++){
-      var g=Math.pow(1+I.rentgrow/100,y-1), eg=Math.pow(1+I.expgrow/100,y-1);
-      var rentY=I.rent*g;
+  // 30-year walk: each year rent grows, expenses grow, the loan amortizes, and the home appreciates.
+  // We report "profit if sold" at the milestone years = cash flow collected so far + net sale proceeds − cash invested.
+  function timeline(I, b){
+    var marks=[1,3,5,8,10,15,18,20,25,30], cum=0, out=[], rg=I.rentgrow/100, eg=I.expgrow/100;
+    var rm=(I.rentmonths!=null?I.rentmonths:12)/12, baseGross=(I.rent+(I.remodel_rent||0))*rm;
+    for(var y=1;y<=30;y++){
+      var rentY=baseGross*Math.pow(1+rg,y-1);
       var effY=rentY + I.other_inc - rentY*I.vac/100;
-      var opExY=(I.tax/12 + I.ins/12 + I.hoa + I.other_exp)*eg + rentY*I.maint/100 + rentY*I.mgmt/100;
-      var cfY=(effY-opExY-b.pi)*12;
-      var valY=I.price*Math.pow(1+I.apprec/100,y);
-      var balY=balanceAfter(b.loan,I.rate,I.term,y*12);
-      var eqY=valY-balY;
-      cumCF+=cfY;
-      var thisCF=cfY;
-      if(y===hold){ var sv2=valY*(1-I.sellcost/100); netSale=sv2-balY; thisCF=cfY+netSale; valExit=valY; eqExit=eqY; }
-      cfs.push(thisCF);
-      rows+="<tr><td>"+y+"</td><td>"+money(cfY)+"</td><td>"+money(valY)+"</td><td>"+money(eqY)+"</td></tr>";
+      var opExY=(I.tax/12+I.ins/12+I.maint/12+I.hoa+I.other_exp)*Math.pow(1+eg,y-1) + rentY*I.mgmt/100;
+      var mcfY=effY-opExY-b.pi; cum+=mcfY*12;
+      if(marks.indexOf(y)>=0){
+        var valY=valueAt(I,I.price,y), balY=balanceAfter(b.loan,I.rate,I.term,y*12);
+        var netSale=valY*(1-I.sellcost/100)-balY, total=cum+netSale-b.cashIn;
+        out.push({y:y, mcf:mcfY, total:total});
+      }
     }
-    document.getElementById("proj-body").innerHTML=rows;
-    var totalProfit=cumCF+netSale-b.cashIn;
-    var rr=irr(cfs);
-    set("m-irr", rr!=null?pct(rr*100):"—");
-    set("m-profit",money(totalProfit));
-    var annual = b.cashIn>0 ? (Math.pow((cumCF+netSale)/b.cashIn,1/hold)-1)*100 : 0;
-    set("m-annual", (cumCF+netSale)>0 && b.cashIn>0 ? pct(annual) : "—");
-    set("m-equity",money(eqExit));
-
-    // Ratios
-    set("m-grm", I.rent>0 ? (I.price/(I.rent*12)).toFixed(1) : "—");
-    var bal1=balanceAfter(b.loan,I.rate,I.term,12), paydown1=b.loan-bal1, appr1=I.price*I.apprec/100;
-    set("m-roe", b.cashIn>0 ? pct((b.acf+paydown1+appr1)/b.cashIn*100) : "—");
-    var grossM=I.rent+I.other_inc;
-    set("m-breakeven", grossM>0 ? pct((b.opExM+b.pi)/grossM*100) : "—");
+    return out;
   }
-  ids.forEach(function(id){ document.getElementById(id).addEventListener("input",calc); });
-  calc();
+  function yearMetrics(I,b){
+    var marks=[1,3,5,8,10,15,18,20,25,30], out=[], rm=(I.rentmonths!=null?I.rentmonths:12)/12, baseGross=(I.rent+(I.remodel_rent||0))*rm;
+    marks.forEach(function(y){
+      var rentY=baseGross*Math.pow(1+I.rentgrow/100,y-1);
+      var effY=rentY+I.other_inc-rentY*I.vac/100;
+      var opExY=(I.tax/12+I.ins/12+I.maint/12+I.hoa+I.other_exp)*Math.pow(1+I.expgrow/100,y-1)+rentY*I.mgmt/100;
+      var noiM=effY-opExY, noiY=noiM*12, mcf=noiM-b.pi;
+      out.push({y:y, cap:I.price>0?noiY/I.price*100:0, coc:b.cashIn>0?mcf*12/b.cashIn*100:0, mcf:mcf,
+        dscr:b.pi>0?noiY/(b.pi*12):Infinity, roisqft:I.sqft>0?mcf*12/I.sqft:0});
+    });
+    return out;
+  }
+  // Three ways to play the same property, side by side:
+  //   flip      = sell that year having never rented it (pay full carry, no rent)
+  //   rentsell  = rent it the whole time, then sell (cash flow to date + sale − cash in)
+  //   justrent  = keep it forever (only the cash flow collected; equity stays unrealized)
+  function strategies3(I,b){
+    var marks=[1,3,5,8,10,15,18,20,25], out=[], rm=(I.rentmonths!=null?I.rentmonths:12)/12, baseGross=(I.rent+(I.remodel_rent||0))*rm;
+    var cumRent=0, cumCarry=0;
+    for(var y=1;y<=25;y++){
+      var rentY=baseGross*Math.pow(1+I.rentgrow/100,y-1);
+      var fixed=(I.tax/12+I.ins/12+I.maint/12+I.hoa+I.other_exp)*Math.pow(1+I.expgrow/100,y-1);
+      var effY=rentY+I.other_inc-rentY*I.vac/100;
+      cumRent+=(effY-(fixed+rentY*I.mgmt/100)-b.pi)*12;
+      cumCarry+=(fixed+b.pi)*12;
+      if(marks.indexOf(y)>=0){
+        var valY=valueAt(I,I.price,y), balY=balanceAfter(b.loan,I.rate,I.term,y*12), sale=valY*(1-I.sellcost/100)-balY;
+        out.push({y:y, flip:sale-b.cashIn-cumCarry, rentsell:sale-b.cashIn+cumRent, justrent:cumRent});
+      }
+    }
+    return out;
+  }
+
+  // Paints the whole right-hand panel. ownerOcc=true (duplex-live-in-one, house-hack) adds the
+  // net-housing headline and relabels the cash-flow column as a housing cost rather than a loss.
+  function renderInvest(I, ownerOcc){
+    var b=base(I,I.price);
+    // owner-occupy headline
+    if(ownerOcc){
+      var fullHousing=housingCost(I), netCost=-b.mcf, contrib=fullHousing-netCost, cov=fullHousing>0?contrib/fullHousing*100:0;
+      set("oo-title", mode==="duplexowner" ? "Living in Unit A, renting Unit B" : "Renting a room while you live there");
+      set("oo-net", money(netCost));
+      set("oo-sub", "A renter covers "+money(contrib)+"/mo of your housing ("+cov.toFixed(0)+"%). You pay the rest from your income.");
+    }
+    // Will it make money over time?
+    var tl=timeline(I,b), tlRows=[];
+    tl.forEach(function(r){ var vk=r.total>=0?"green":(r.total>=-0.10*b.cashIn?"amber":"red");
+      var col=vk==="green"?"var(--green)":vk==="amber"?"var(--amber)":"var(--red)", word=vk==="green"?"Ahead":vk==="amber"?"Close":"Behind";
+      tlRows.push(["Yr "+r.y, money(r.mcf), money(r.total), {pill:word,pillColor:col}]); });
+    fillRows("tl-body", tlRows);
+    set("tl-cf-th", ownerOcc? "Net cost/mo" : "Cash flow/mo");
+    // Year-by-year metrics
+    var ym=yearMetrics(I,b), ymRows=[];
+    ym.forEach(function(m){ var cf=m.mcf>=0?"var(--green)":"var(--red)";
+      ymRows.push(["Yr "+m.y, pct(m.cap), (b.cashIn>0?pct(m.coc):"—"), {t:money(m.mcf),color:cf,bold:true}, (isFinite(m.dscr)?m.dscr.toFixed(2):"—"), (I.sqft>0?money(m.roisqft):"—"), money(b.pi)]); });
+    fillRows("ym-body", ymRows);
+    set("ym-cf-th", ownerOcc? "Net cost/mo" : "Cash flow/mo");
+    // Three ways to play it
+    var s3=strategies3(I,b), s3Rows=[];
+    s3.forEach(function(r){ function c(v){return {t:money(v),color:(v>=0?"var(--green)":"var(--red)"),bold:true};} s3Rows.push(["Yr "+r.y, c(r.flip), c(r.rentsell), c(r.justrent)]); });
+    fillRows("s3-body", s3Rows);
+    // Quick ratios (year 1)
+    set("m-noi",money(b.noiY));
+    set("m-rentsqft", I.sqft>0?("$"+(I.rent/I.sqft).toFixed(2)):"—");
+    set("m-valsqft", I.sqft>0?money(I.price/I.sqft):"—");
+    var op=el("m-one"); op.textContent=pct(b.one)+(b.one>=1?" ✓":""); op.className="v "+(b.one>=1?"pass":"warn");
+    // Stress test (year 1) with owner-controlled shocks
+    renderStress(I, b, ownerOcc);
+  }
+
+  // One-year "bad year" test. The owner sets how big each shock is; we re-run base() with each
+  // shock alone, then all three at once (a true worst case — they rarely all hit together).
+  function renderStress(I, base0, ownerOcc){
+    var rd=n("s_rentdrop"), ev=n("s_vac"), rr=n("s_rate");
+    var scn=[
+      {n:"Base case", b:base0},
+      {n:"Rent −"+rd+"%", b:base(I,I.price, I.rent*(1-rd/100), null, null)},
+      {n:"Vacancy +"+ev+"%", b:base(I,I.price, null, I.vac+ev, null)},
+      {n:"Rate +"+rr+"%", b:base(I,I.price, null, null, I.rate+rr)},
+      {n:"Bad year (all 3)", b:base(I,I.price, I.rent*(1-rd/100), I.vac+ev, I.rate+rr)}
+    ];
+    var srows=[];
+    scn.forEach(function(s){
+      if(ownerOcc){
+        var nh=-s.b.mcf, extra=nh-(-base0.mcf);
+        var col= extra<=50?"var(--green)":extra<=400?"var(--amber)":"var(--red)";
+        var lab= s.n==="Base case" ? "your cost" : ("+"+money(extra)+"/mo");
+        srows.push([s.n, money(nh), {pill:lab,pillColor:col}]);
+      } else {
+        var sv=verdict(s.b), col2=sv.k==="green"?"var(--green)":sv.k==="amber"?"var(--amber)":"var(--red)";
+        srows.push([s.n, money(s.b.mcf), {pill:sv.t,pillColor:col2}]);
+      }
+    });
+    fillRows("stress-body", srows);
+    set("stress-cf-th", ownerOcc? "Net housing/mo" : "Cash flow/mo");
+    set("stress-note", ownerOcc
+      ? "One-year snapshot. Each row shows your net housing cost if that shock hits; the pill is how much MORE you'd pay vs. the base case. Adjust the shocks at left — it's unlikely all three land at once."
+      : "One-year snapshot using the shocks you set at left. The last row stacks all three (a true worst case). A negative cash flow means you'd feed the property cash that year.");
+  }
+
+  // The ADU case is its own question: not "what does the house yield" but "what year does the
+  // rent pay back the build?" So we grow the net rent ~2%/yr, accumulate it, and find the payback year.
+  function renderADU(){
+    var cost=n("ad_cost"), rent=n("ad_rent"), sqft=n("ad_sqft"), vac=n("ad_vac"), tax=n("ad_tax"), ins=n("ad_ins"), maint=n("ad_maint");
+    var prim=n("ad_prim"), lot=n("ad_lot");
+    var netRent=rent*(1-vac/100), opExM=(tax+ins+maint)/12, noiM=netRent-opExM, noiY=noiM*12;
+    var cap=cost>0?noiY/cost*100:0;
+    // growing cumulative → payback year
+    var cum=0, paybackY=null, cumByYear=[], incByYear=[];
+    for(var y=1;y<=60;y++){
+      var nrY=rent*Math.pow(1.02,y-1)*(1-vac/100), exY=(tax+ins+maint)/12*Math.pow(1.02,y-1), nY=(nrY-exY)*12;
+      cum+=nY; cumByYear[y]=cum; incByYear[y]=nY;
+      if(paybackY===null && cost>0 && nY>0 && cum>=cost) paybackY=y;
+    }
+    set("ad-pay-head", noiY>0 ? (paybackY!=null? "Year "+paybackY : "30+ yrs") : "Never");
+    set("ad-pay-sub", noiY>0
+      ? (paybackY!=null ? "The ADU's rent (after its costs) repays the "+money(cost)+" build by year "+paybackY+"." : "It doesn't repay the build within 30 years at these numbers — check the rent vs. build cost.")
+      : "The ADU loses money each month — its rent doesn't cover its costs.");
+    set("ad-cap",pct(cap)); cls("ad-cap",cap>=6?"pass":cap>=4?"pass":cap>0?"warn":"bad");
+    set("ad-noi",money(noiY)); set("ad-mcf",money(noiM));
+    set("ad-roisqft", sqft>0?money(noiY/sqft):"—");
+    set("ad-rsf", sqft>0?("$"+(rent/sqft).toFixed(2)):"—");
+    set("ad-csf", sqft>0?money(cost/sqft):"—");
+    // fit check (CA)
+    var cov = lot>0 ? (prim+sqft)/lot*100 : 0, fit;
+    if(sqft<=800){ fit="✅ Allowed — CA sets no minimum lot size and ADUs ≤800 sq ft are exempt from lot-coverage limits (4-ft setbacks)."; }
+    else if(cov<=40){ fit="✅ Likely OK — building footprint ≈ "+cov.toFixed(0)+"% of lot (under a typical 40% cap). Confirm local coverage."; }
+    else { fit="⚠️ Tight — footprint ≈ "+cov.toFixed(0)+"% of lot; ADUs >800 sq ft must meet local coverage (often 30–50%). Consider ≤800 sq ft."; }
+    set("r-adufit", fit);
+    // recoup table — stop at payback (don't show past 100%)
+    var lastY = paybackY!=null ? paybackY : 30;
+    var allMarks=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,18,20,22,25,28,30];
+    var marks=allMarks.filter(function(m){return m<=lastY;});
+    if(marks.indexOf(lastY)<0) marks.push(lastY);
+    marks.sort(function(a,b){return a-b;});
+    var adRows=[];
+    marks.forEach(function(y){
+      var p=cost>0?cumByYear[y]/cost*100:0, col=p>=100?"var(--green)":"var(--amber)";
+      adRows.push(["Yr "+y, money(incByYear[y]), money(cumByYear[y]), {pill:p.toFixed(0)+"%",pillColor:col}]); });
+    fillRows("ad-tl", adRows);
+  }
+
+  // dollar readouts under % fields
+  function readouts(){
+    var price=n("price");
+    set("r-down", money(price*n("downpct")/100)+" down");
+    set("r-maint", "≈"+money(n("maint")/12)+"/mo · ~"+(price>0?(n("maint")/price*100).toFixed(2):"0")+"% of value");
+    if(mode==="invest"){ var rent=n("rent"); set("r-vac",money(rent*n("vac")/100)+"/mo"); set("r-mgmt",money(rent*n("mgmt")/100)+"/mo"); set("r-rentsqft-in", n("sqft")>0?("$"+(rent/n("sqft")).toFixed(2)+"/sq ft monthly"):""); }
+    if(mode==="hack"){ set("r-hkvac",money(n("hk_rent")*n("hk_vac")/100)+"/mo"); }
+    if(mode==="duplex"||mode==="duplexowner"){
+      var inc = mode==="duplex" ? (n("dp_rentA")+n("dp_rentB")) : n("dp_rentB");
+      set("r-dpvac",money(inc*n("dp_vac")/100)+"/mo"); set("r-dpmgmt",money(inc*n("dp_mgmt")/100)+"/mo");
+      set("dp-hint", mode==="duplex"
+        ? "You live elsewhere — both units' rent counts as income."
+        : "You live in Unit A — only Unit B's rent counts as income (Unit A's field is just for square-footage and is ignored as income).");
+      set("dp-lblA", mode==="duplex" ? "Unit A rent ($/mo)" : "Unit A rent ($/mo) — your unit");
+    }
+    if(mode==="adu"){ set("r-advac",money(n("ad_rent")*n("ad_vac")/100)+"/mo"); }
+    if(mode==="invest"||mode==="duplex"||mode==="duplexowner"||mode==="hack"){
+      set("r-apprec","+"+money(price*n("apprec")/100)+"/yr (year 1)");
+      var baseRent = mode==="duplex" ? (n("dp_rentA")+n("dp_rentB")) : mode==="duplexowner" ? n("dp_rentB") : mode==="hack" ? n("hk_rent") : n("rent");
+      set("r-rentgrow","+"+money(baseRent*n("rentgrow")/100)+"/mo next year");
+      set("r-sellcost", money(price*n("sellcost")/100)+" at this price");
+      var rs=n("resale"); set("r-resale", rs>0 ? ("sells for "+money(rs)) : "using appreciation");
+    }
+  }
+
+  function show(panel){ ["panel-invest","panel-adu"].forEach(function(p){ el(p).classList.toggle("hidden", p!==panel); }); }
+
+  // Reads every input, builds the right scenario object, and calls the matching renderer.
+  // Runs on page load and on every keystroke so the page is always live.
+  function calc(){
+    var S=shared();
+    var proj={apprec:n("apprec"),rentgrow:n("rentgrow"),expgrow:n("expgrow"),sellcost:n("sellcost"),
+      remodel:n("remodel"),remodel_val:0,remodel_rent:n("remodel_rent"),resale:n("resale")};
+    if(mode==="invest"){
+      var I=Object.assign({},S,proj,{rent:n("rent"),other_inc:n("other_inc"),hoa:n("hoa"),other_exp:n("other_exp"),vac:n("vac"),mgmt:n("mgmt"),rentmonths:(n("rentmonths")||12)});
+      show("panel-invest"); renderInvest(I,false);
+    } else if(mode==="duplex"||mode==="duplexowner"){
+      var rentA=n("dp_rentA"), rentB=n("dp_rentB"), vac=n("dp_vac"), mgmt=n("dp_mgmt");
+      var totSqft=n("dp_sqftA")+n("dp_sqftB"); if(totSqft>0) S.sqft=totSqft;
+      var income = mode==="duplex" ? (rentA+rentB) : rentB;
+      var I=Object.assign({},S,proj,{rent:income,other_inc:0,hoa:0,other_exp:0,vac:vac,mgmt:mgmt,rentmonths:12});
+      show("panel-invest"); renderInvest(I, mode==="duplexowner");
+    } else if(mode==="hack"){
+      var I2=Object.assign({},S,proj,{rent:n("hk_rent"),other_inc:0,hoa:0,other_exp:0,vac:n("hk_vac"),mgmt:0,rentmonths:12});
+      show("panel-invest"); renderInvest(I2, true);
+    } else if(mode==="adu"){
+      show("panel-adu"); renderADU();
+    }
+    readouts();
+  }
+
+  // Switches scenarios: highlights the button, shows/hides the input cards tagged for this mode
+  // (via data-mode attributes), then recalculates.
+  function setMode(m){
+    mode=m;
+    Array.prototype.forEach.call(document.querySelectorAll(".modes button"),function(btn){ btn.classList.toggle("active", btn.getAttribute("data-m")===m); });
+    Array.prototype.forEach.call(document.querySelectorAll("[data-mode]"),function(c){
+      var modes=c.getAttribute("data-mode").split(" "); c.classList.toggle("hidden", modes.indexOf(m)<0);
+    });
+    calc();
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll(".modes button"),function(btn){ btn.addEventListener("click",function(){ setMode(btn.getAttribute("data-m")); }); });
+  Array.prototype.forEach.call(document.querySelectorAll("input"),function(inp){ inp.addEventListener("input",calc); });
+  setMode("invest");
 })();
 </script>
 </body>
