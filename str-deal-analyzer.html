@@ -50,8 +50,38 @@
   .disc b{ color:#5b4a23; }
   .hidden{ display:none !important; }
 </style>
+<style id="kp-chrome">
+.kp-header{background:#166534;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.kp-header-in{max-width:1120px;margin:0 auto;padding:9px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.kp-brand{display:flex;align-items:center;gap:8px;color:#fff;text-decoration:none;font-weight:700;font-size:1.08rem;}
+.kp-mark{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:6px;background:#fff;color:#166534;font-weight:800;font-size:.8rem;border:2px solid #C9A227;}
+.kp-nav{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.kp-btn{background:rgba(255,255,255,.16);color:#fff;border:1px solid rgba(255,255,255,.4);border-radius:8px;padding:5px 11px;font:inherit;font-size:.84rem;font-weight:600;cursor:pointer;text-decoration:none;}
+.kp-btn:hover{background:rgba(255,255,255,.3);}
+.kp-link{color:#e8f1ec;text-decoration:none;font-size:.84rem;}
+.kp-link:hover{color:#fff;}
+.kp-footer{background:#0f4023;color:#cfe6d8;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;margin-top:40px;}
+.kp-footer-in{max-width:1120px;margin:0 auto;padding:30px 18px 14px;display:grid;grid-template-columns:1fr;gap:22px;}
+@media(min-width:720px){.kp-footer-in{grid-template-columns:2fr 1fr 1fr 1fr;}}
+.kp-footer h4{color:#fff;font-size:.8rem;text-transform:uppercase;letter-spacing:.05em;margin:0 0 10px;}
+.kp-footer a{display:block;color:#cfe6d8;text-decoration:none;font-size:.86rem;margin-bottom:7px;}
+.kp-footer a:hover{color:#fff;text-decoration:underline;}
+.kp-fbrand p{font-size:.86rem;line-height:1.5;margin:8px 0 0;max-width:34ch;}
+.kp-brand2{display:flex;align-items:center;gap:8px;color:#fff;font-weight:700;font-size:1.05rem;}
+.kp-footer-bottom{border-top:1px solid rgba(255,255,255,.15);max-width:1120px;margin:0 auto;padding:14px 18px 28px;font-size:.78rem;color:#9fc3ad;}
+</style>
 </head>
 <body>
+<header class="kp-header"><div class="kp-header-in">
+  <a class="kp-brand" href="https://www.kyodopartners.com" title="Kyodo Partners — Home"><span class="kp-mark">協</span> Kyodo Partners</a>
+  <nav class="kp-nav">
+    <button type="button" class="kp-btn" onclick="if(history.length>1){history.back()}else{location.href='https://www.kyodopartners.com'}">← Back</button>
+    <a class="kp-btn" href="https://www.kyodopartners.com">⌂ Home</a>
+    <a class="kp-link" href="https://www.kyodopartners.com#tools">Free tools</a>
+    <a class="kp-link" href="https://www.kyodopartners.com#products">Products</a>
+    <a class="kp-link" href="mailto:sales@kyodopartners.com">Contact</a>
+  </nav>
+</div></header>
 <div class="wrap">
   <header>
     <h1>Airbnb / Short-Term Rental Analyzer</h1>
@@ -62,7 +92,7 @@
       <button data-m="room">Room / ADU<span class="d">STR a room while you live there</span></button>
     </div>
   </header>
-<div style="background:#166534;color:#fff;padding:9px 14px;text-align:center;font:600 .85rem/1.4 -apple-system,Segoe UI,Arial,sans-serif">Free tool from Kyodo Partners · Get the full <strong>Kyodo Airbnb Assistant</strong> — Excel tracker with 3 STR scenarios &amp; booking log <a href="https://kyodopartners.gumroad.com" style="color:#fff;text-decoration:underline">here &rarr;</a></div>
+<div style="background:#166534;color:#fff;padding:9px 14px;text-align:center;font:600 .85rem/1.4 -apple-system,Segoe UI,Arial,sans-serif">Free tool from Kyodo Partners · Get the full <strong>Kyodo Airbnb Assistant</strong> — Excel tracker with 3 STR scenarios &amp; booking log <a href="https://kyodopartners.gumroad.com" target="_blank" rel="noopener" style="color:#fff;text-decoration:underline">here &rarr;</a><br><span style="font-weight:400;font-size:.78rem;opacity:.9">Secure checkout on Gumroad — opens in a new tab to complete your purchase.</span></div>
 
 
   <div class="grid">
@@ -267,5 +297,25 @@
   setMode("primary");
 })();
 </script>
+<footer class="kp-footer"><div class="kp-footer-in">
+  <div class="kp-fbrand"><div class="kp-brand2"><span class="kp-mark">協</span> Kyodo Partners</div>
+    <p>Practical, pay-once tools for landlords, freelancers &amp; small businesses. 協働 — working together.</p></div>
+  <div><h4>Free tools</h4>
+    <a href="https://www.kyodopartners.com#tools">All calculators</a>
+    <a href="https://www.kyodopartners.com/rental-deal-analyzer.html">Rental Deal Analyzer</a>
+    <a href="https://www.kyodopartners.com/str-deal-analyzer.html">Airbnb / STR Analyzer</a>
+    <a href="https://www.kyodopartners.com/remodel-calculator.html">Remodel Calculator</a>
+    <a href="https://www.kyodopartners.com/quarterly-tax-estimator.html">1099 Tax Estimator</a>
+    <a href="https://www.kyodopartners.com/tco-calculator.html">TCO Calculator</a></div>
+  <div><h4>Products</h4>
+    <a href="https://www.kyodopartners.com#products">Spreadsheet suites &amp; toolkits</a>
+    <a href="https://kyodopartners.gumroad.com/" target="_blank" rel="noopener">Our store (Gumroad)</a></div>
+  <div><h4>Company</h4>
+    <a href="mailto:sales@kyodopartners.com">Contact</a>
+    <a href="mailto:support@kyodopartners.com">Support</a>
+    <a href="mailto:sales@kyodopartners.com?subject=Notify%20me%20about%20Kyodo%20Partners%20updates">Get launch updates</a></div>
+</div>
+<div class="kp-footer-bottom">© 2026 Kyodo Partners LLC · Our tools are planning &amp; organization helpers — not legal, tax, accounting, or financial advice.</div>
+</footer>
 </body>
 </html>
