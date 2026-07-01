@@ -15,7 +15,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Kyodo TCO Assistant — Total Cost of Ownership Calculator</title>
+<title>Kyodo TCO Toolkit — Total Cost of Ownership Calculator</title>
 <style>
 :root{--navy:#166534;--accent:#15803D;--accent2:#166534;--bg:#FFFFFF;--card:#fff;--text:#1a2330;--muted:#6b7280;--line:#e2e8f0;}
 *{box-sizing:border-box;}
@@ -127,11 +127,11 @@ footer{padding:14px 28px;color:var(--muted);font-size:12px;border-top:1px solid 
 </div></header>
 <header>
   <div class="mono">TCO</div>
-  <div><h1>Kyodo TCO Assistant</h1><p>Total Cost of Ownership — Multi-Department Calculator</p></div>
+  <div><h1>Kyodo TCO Toolkit</h1><p>Total Cost of Ownership — Multi-Department Calculator</p></div>
   <span class="tag">Source included · editable in any browser, Replit, or Cursor</span>
 </header>
 <!-- LAUNCH TODO: replace href with the live product URL before publishing -->
-<div style="background:#166534;color:#fff;padding:9px 14px;text-align:center;font:600 .85rem/1.4 -apple-system,Segoe UI,Arial,sans-serif">Free tool from Kyodo Partners · Get the full <strong>Kyodo TCO Assistant</strong> ($39) <a href="https://kyodopartners.gumroad.com" target="_blank" rel="noopener" style="color:#fff;text-decoration:underline">here &rarr;</a><br><span style="font-weight:400;font-size:.78rem;opacity:.9">Secure checkout on Gumroad — opens in a new tab to complete your purchase.</span></div>
+<div style="background:#166534;color:#fff;padding:9px 14px;text-align:center;font:600 .85rem/1.4 -apple-system,Segoe UI,Arial,sans-serif">Free tool from Kyodo Partners · Get the full <strong>Kyodo TCO Toolkit</strong> ($79) <a href="https://kyodopartners.gumroad.com/l/tco-toolkit" target="_blank" rel="noopener" style="color:#fff;text-decoration:underline">here &rarr;</a><br><span style="font-weight:400;font-size:.78rem;opacity:.9">Secure checkout on Gumroad — opens in a new tab to complete your purchase.</span></div>
 <div class="wrap">
   <nav id="nav">
     <button data-t="about" class="active">Start here</button>
@@ -145,6 +145,7 @@ footer{padding:14px 28px;color:var(--muted);font-size:12px;border-top:1px solid 
     <button data-t="lease">Lease vs Buy</button>
     <button data-t="io">Insource vs Outsource</button>
     <button data-t="solar">Solar / Energy</button>
+    <button data-t="robot">Factory-Floor Robots</button>
   </nav>
   <main>
     <div class="sizebar"><span>Volume discounts (where enabled) auto-tier by the number of units you enter in that module: <b>5,000+ units = Enterprise pricing</b>, fewer = Small/Mid. HR turnover uses <b>employee headcount</b>, not units — the two are separate.</span></div>
@@ -152,7 +153,7 @@ footer{padding:14px 28px;color:var(--muted);font-size:12px;border-top:1px solid 
     <section class="panel active" data-p="about">
       <div class="hero">
         <h2>Ten cost calculators, one editable tool.</h2>
-        <p>Kyodo TCO Assistant estimates the <em>true</em> multi-year cost of the decisions every department faces — not just the sticker price, but software, labor, support, energy, maintenance, depreciation, and resale value. Pick a module, enter your numbers, and the answer updates instantly.</p>
+        <p>Kyodo TCO Toolkit estimates the <em>true</em> multi-year cost of the decisions every department faces — not just the sticker price, but software, labor, support, energy, maintenance, depreciation, and resale value. Pick a module, enter your numbers, and the answer updates instantly.</p>
       </div>
       <div class="card">
         <h3>What's inside</h3>
@@ -443,11 +444,42 @@ footer{padding:14px 28px;color:var(--muted);font-size:12px;border-top:1px solid 
           <div class="barrow"><span class="bl">Grid</span><div class="track"><div class="fill g" id="so_bg"></div></div><span class="bv" id="so_vg"></span></div></div>
         <div class="callout" id="so_call"></div></div>
     </section>
+    <section class="panel" data-p="robot">
+      <h2>Factory-Floor Robots (Humanoid &amp; Robot Dogs)</h2><p class="desc">A fleet of humanoid robots + robot dogs vs the human labor they displace — total cost, ROI and payback. Cash-basis planning estimate; no financing/NPV. 2026 benchmark defaults, all editable.</p>
+      <div class="card"><h3>Inputs</h3>
+        <div class="grid">
+        <div class="fld"><label>Analysis period (years)</label><input type="number" min="0" id="ro_y" value="5"></div>
+        <div class="fld"><label>Humanoids — number of robots</label><input type="number" min="0" id="ro_nh" value="4"></div>
+        <div class="fld"><label>Humanoid — unit cost ($)</label><input type="number" min="0" id="ro_ch" value="50000"></div>
+        <div class="fld"><label>Humanoid — FTEs replaced / shift</label><input type="number" min="0" id="ro_fteh" value="1"></div>
+        <div class="fld"><label>Robot dogs — number of robots</label><input type="number" min="0" id="ro_nd" value="2"></div>
+        <div class="fld"><label>Robot dog — unit cost ($)</label><input type="number" min="0" id="ro_cd" value="40000"></div>
+        <div class="fld"><label>Robot dog — inspection FTEs / shift</label><input type="number" min="0" id="ro_fted" value="0.5"></div>
+        <div class="fld"><label>Shifts per day</label><input type="number" min="0" id="ro_shifts" value="2"></div>
+        <div class="fld"><label>Integration &amp; deployment (% of capex)</label><input type="number" min="0" id="ro_integ" value="30"></div>
+        <div class="fld"><label>Maintenance (% of capex / yr)</label><input type="number" min="0" id="ro_maint" value="12"></div>
+        <div class="fld"><label>Energy / robot / yr ($)</label><input type="number" min="0" id="ro_energy" value="300"></div>
+        <div class="fld"><label>Software &amp; fleet-ops / robot / yr ($)</label><input type="number" min="0" id="ro_soft" value="3000"></div>
+        <div class="fld"><label>Residual at end (% of capex)</label><input type="number" min="0" id="ro_resid" value="10"></div>
+        <div class="fld"><label>Downtime cost / hour ($)</label><input type="number" min="0" id="ro_dthr" value="200"></div>
+        <div class="fld"><label>Downtime hours / robot / yr</label><input type="number" min="0" id="ro_dthrs" value="20"></div>
+        <div class="fld"><label>Fully-loaded labor / FTE / yr ($)</label><input type="number" min="0" id="ro_wage" value="50000"></div>
+        <div class="fld"><label>Line output value / yr ($, optional)</label><input type="number" min="0" id="ro_lineval" value="0"></div>
+        <div class="fld"><label>Throughput uplift (% of line value)</label><input type="number" min="0" id="ro_thru" value="20"></div></div></div>
+      <div class="card"><h3>Results</h3>
+        <div class="cols2">
+          <div class="result"><div class="lbl">Fleet TCO (over period)</div><div class="big" id="ro_tco">&mdash;</div><div class="sub" id="ro_tcoSub"></div></div>
+          <div class="result win"><div class="lbl">Payback</div><div class="big" id="ro_pay">&mdash;</div><div class="sub" id="ro_paySub"></div></div>
+          <div class="result"><div class="lbl">FTEs displaced</div><div class="big" id="ro_ftes">&mdash;</div><div class="sub" id="ro_ftesSub"></div></div>
+          <div class="result"><div class="lbl">Net value (over period)</div><div class="big" id="ro_net">&mdash;</div><div class="sub" id="ro_netSub"></div></div></div>
+        <div style="margin-top:14px;" id="ro_break"></div>
+        <div class="callout" id="ro_call"></div></div>
+    </section>
   </main>
 </div>
 <!-- LAUNCH TODO: replace href with the live product URL before publishing -->
-<div style="max-width:1040px;margin:18px auto;padding:0 18px"><div style="background:#166534;color:#fff;border-radius:12px;padding:20px 22px;font-family:-apple-system,Segoe UI,Arial,sans-serif"><div style="font-size:1.15rem;font-weight:700;margin-bottom:6px">Want the full toolkit, not just the online calculator?</div><div style="font-size:.92rem;opacity:.95;margin-bottom:12px">The <strong>Kyodo TCO Assistant</strong> adds the editable Excel TCO model (locked formulas, your data), the playbook guide, and full included source. Pay once — no subscription.</div><a href="https://kyodopartners.gumroad.com" target="_blank" rel="noopener" style="display:inline-block;background:#fff;color:#166534;font-weight:700;text-decoration:none;padding:11px 20px;border-radius:9px">Get the Kyodo TCO Assistant — $39 &rarr;</a><div style="font-size:.8rem;opacity:.9;margin-top:10px">Secure checkout on Gumroad — opens in a new tab to complete your purchase.</div></div></div>
-<footer>Kyodo TCO Assistant · © 2026 Kyodo Partners LLC · all rights reserved · sold as-is, source included; licensed for your own / organization's use, not for resale or redistribution · build your own modules in Replit or Cursor</footer>
+<div style="max-width:1040px;margin:18px auto;padding:0 18px"><div style="background:#166534;color:#fff;border-radius:12px;padding:20px 22px;font-family:-apple-system,Segoe UI,Arial,sans-serif"><div style="font-size:1.15rem;font-weight:700;margin-bottom:6px">Want the full toolkit, not just the online calculator?</div><div style="font-size:.92rem;opacity:.95;margin-bottom:12px">The <strong>Kyodo TCO Toolkit</strong> adds the editable Excel TCO model (locked formulas, your data), the playbook guide, and full included source. Pay once — no subscription.</div><a href="https://kyodopartners.gumroad.com/l/tco-toolkit" target="_blank" rel="noopener" style="display:inline-block;background:#fff;color:#166534;font-weight:700;text-decoration:none;padding:11px 20px;border-radius:9px">Get the Kyodo TCO Toolkit — $79 &rarr;</a><div style="font-size:.8rem;opacity:.9;margin-top:10px">Secure checkout on Gumroad — opens in a new tab to complete your purchase.</div></div></div>
+<footer>Kyodo TCO Toolkit · © 2026 Kyodo Partners LLC · all rights reserved · sold as-is, source included; licensed for your own / organization's use, not for resale or redistribution · build your own modules in Replit or Cursor</footer>
 <script>
 /* ===========================================================================
    TCO Toolkit - calculation engine
@@ -592,7 +624,24 @@ function calcSolar(){var y=num('so_y'),rate=num('so_rate')/100,bill=num('so_bill
   var msg=save>0?'Solar saves about '+money(save)+' over '+y+' years.':'Grid is cheaper by '+money(-save)+' over '+y+' years.';
   if(pay>0)msg+='  Simple payback: about '+pay.toFixed(1)+' years.';
   document.getElementById('so_call').textContent=msg;}
-function calcAll(){calcIT();calcCloud();calcFleet();calcEquip();calcHR();calcSaaS();calcFac();calcLease();calcOutsource();calcSolar();}
+function calcRobot(){var y=num('ro_y'),nh=num('ro_nh'),ch=num('ro_ch'),fteh=num('ro_fteh'),nd=num('ro_nd'),cd=num('ro_cd'),fted=num('ro_fted'),shifts=num('ro_shifts');
+  var integ=num('ro_integ')/100,maint=num('ro_maint')/100,energy=num('ro_energy'),soft=num('ro_soft'),resid=num('ro_resid')/100,dthr=num('ro_dthr'),dthrs=num('ro_dthrs'),wage=num('ro_wage'),lineval=num('ro_lineval'),thru=num('ro_thru')/100;
+  var nrob=nh+nd,capex=nh*ch+nd*cd,integcost=integ*capex,residval=resid*capex;
+  var maintann=maint*capex,enann=energy*nrob,softann=soft*nrob,dtann=dthr*dthrs*nrob,opex=maintann+enann+softann+dtann;
+  var invest=capex+integcost,tco=capex+integcost-residval+y*opex,perry=(nrob>0&&y>0)?tco/(nrob*y):0;
+  var ftes=(nh*fteh+nd*fted)*shifts,laborav=ftes*wage,thruval=thru*lineval,netval=laborav+thruval-opex;
+  var roi=invest>0?netval/invest:0,payback=netval>0?invest/netval*12:0,net5=y*netval-invest+residval;
+  document.getElementById('ro_tco').textContent=money(tco);
+  document.getElementById('ro_tcoSub').textContent='~'+money(perry)+' / robot / year · '+nrob+' robots';
+  document.getElementById('ro_pay').textContent=netval>0?(payback.toFixed(1)+' months'):'\u2014';
+  document.getElementById('ro_paySub').textContent=netval>0?('ROI '+Math.round(roi*100)+'% / yr'):'does not pay back at these inputs';
+  document.getElementById('ro_ftes').textContent=ftes.toFixed(1)+' FTEs';
+  document.getElementById('ro_ftesSub').textContent=money(laborav)+' / yr labor cost avoided';
+  document.getElementById('ro_net').textContent=money(net5);
+  document.getElementById('ro_netSub').textContent='net value over '+y+' years';
+  bars('ro_break',[['Capex (purchase)',capex],['Integration (one-time)',integcost],['Maintenance / yr',maintann],['Software & ops / yr',softann],['Downtime / yr',dtann],['Energy / yr',enann]]);
+  document.getElementById('ro_call').textContent='A fleet of '+nh+' humanoids + '+nd+' robot dogs costs '+money(tco)+' over '+y+' years (~'+money(perry)+'/robot/yr), displacing '+ftes.toFixed(1)+' FTEs (~'+money(laborav)+'/yr of labor). '+(netval>0?('Payback ~'+payback.toFixed(1)+' months, ROI '+Math.round(roi*100)+'%/yr \u2014 real-world 12\u201324 mo after ramp-up.'):'At these inputs the fleet does not pay back \u2014 revisit counts, wage, shifts, or utilization.');}
+function calcAll(){calcIT();calcCloud();calcFleet();calcEquip();calcHR();calcSaaS();calcFac();calcLease();calcOutsource();calcSolar();calcRobot();}
 document.getElementById('nav').addEventListener('click',function(e){if(e.target.tagName!=='BUTTON')return;var t=e.target.getAttribute('data-t');
   document.querySelectorAll('nav button').forEach(function(b){b.classList.toggle('active',b===e.target);});
   document.querySelectorAll('.panel').forEach(function(p){p.classList.toggle('active',p.getAttribute('data-p')===t);});});
