@@ -285,7 +285,7 @@
 
       <!-- GROWTH (rentable modes) -->
       <div class="card" data-mode="sfh duplex duplexowner hack">
-        <h2>How things grow over time</h2>
+        <h2>How things grow over time <sup>*</sup></h2>
         <p class="sublede">These are the projections you're paying the tool to make. The defaults are typical long-run averages — change them only if you have a reason to.</p>
         <div class="two">
           <div class="field"><label>Home value goes up (%/yr)<span class="info" tabindex="0" data-tip="How fast the home's value rises. Long-run U.S. average is about 4%/yr. This is an assumption, not a guarantee.">i</span></label><input id="apprec" type="number" min="0" inputmode="decimal" value="4"><span class="dol" id="r-apprec"></span></div>
@@ -523,7 +523,7 @@
 
       <!-- ADU shared GROWTH + WHEN-YOU-SELL + STRESS (both ADU modes get the full rentable analysis) -->
       <div class="card" data-mode="aduown adubuy">
-        <h2>How things grow over time</h2>
+        <h2>How things grow over time <sup>*</sup></h2>
         <p class="sublede">Same assumptions the other modes use; change them only if you have a reason to.</p>
         <div class="two">
           <div class="field"><label>Value goes up (%/yr)<span class="info" tabindex="0" data-tip="How fast the property's value rises. Long-run U.S. average is about 4%/yr. An assumption, not a guarantee.">i</span></label><input id="ad_apprec" type="number" min="0" inputmode="decimal" value="4"></div>
@@ -594,7 +594,7 @@
 
         <!-- owner-occupy headline -->
         <div class="card" id="oo-head-card" data-mode="duplexowner hack adubuy">
-          <h2 id="oo-title">Your net housing cost</h2>
+          <h2 id="oo-title">Your net housing cost <sup>*</sup></h2>
           <div class="big"><div class="k" id="oo-bigk">You pay per month to live here</div><div class="v" id="oo-net">—</div><div class="sub" id="oo-sub"></div></div>
         </div>
 
@@ -617,7 +617,7 @@
 
         <!-- CHART 1: cash flow over time -->
         <div class="card" id="cf-card">
-          <h2 id="cf-title">Your monthly cash flow, year by year</h2>
+          <h2 id="cf-title">Your monthly cash flow, year by year <sup>*</sup></h2>
           <p class="sublede" id="cf-lede"></p>
           <div class="chartwrap"><svg id="chart-cf" class="chart" viewBox="0 0 600 210" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Monthly cash flow by year"></svg></div>
           <div class="legend" id="cf-legend"><span><span class="swatch" style="background:var(--green)"></span>money in your pocket</span><span><span class="swatch" style="background:var(--red)"></span>money out of pocket</span></div>
@@ -722,6 +722,7 @@
 
   <footer>
     <p class="disc"><strong>Estimates for planning only — not investment, tax or accounting advice.</strong> Figures depend on the numbers you enter; verify locally.</p>
+<p class="disc"><b>* Why your monthly cost rises over the years even though the mortgage doesn&rsquo;t:</b> Your mortgage principal &amp; interest (P&amp;I) is fixed for the life of a fixed-rate loan &mdash; it never changes here. What rises is everything else: property tax, insurance, maintenance, HOA and other running costs (they grow at your &ldquo;your costs go up %/yr&rdquo; rate), plus property management, which is a % of rent so it climbs as rent climbs. These grow by <b>compounding</b> &mdash; each year&rsquo;s increase stacks on the previous year&rsquo;s total, not on the starting amount. At 2%/yr that&rsquo;s about +22% after 10 years and roughly +80% after 30 (1.02^30 &asymp; 1.81), not a flat 2% &times; 30 = 60%. Because the fixed P&amp;I is usually your biggest line, your <b>total</b> payment rises much more slowly than that &mdash; and when the loan is paid off at the end of its term, P&amp;I drops to $0, so the monthly cost falls sharply that year.</p>
     <!-- v23 AO2: the full investment glossary is now sfh/duplex/flip ONLY. aduown gets its OWN trimmed
          footnote (no P&I; DSCR mentioned only as "if you financed the build") so it matches its sheet. -->
     <p class="disc" data-mode="sfh duplex"><b>Plain-English glossary —</b> <b>Cap rate:</b> the property's yearly income (after running costs, before the mortgage) ÷ its price — its "yield." 4%+ is healthy; expensive markets run ~1%. <b>Cash-on-cash (CoC):</b> your yearly cash flow ÷ the cash you put in — the return on your actual dollars; 8%+ is good. <b>Cash flow:</b> rent minus every cost including the mortgage — what lands in (or leaves) your pocket. <b>DSCR:</b> does the rent cover the mortgage? 1.0 = exactly; lenders like 1.20+. <b>NOI:</b> yearly income after running costs, before the mortgage. <b>P&amp;I:</b> the principal + interest part of your monthly mortgage (taxes &amp; insurance are billed separately). <b>Equity:</b> the home's value minus what you still owe — what you'd keep if you sold and paid off the loan. <b>Appreciation</b> (default 4%/yr) is a market assumption, not a guarantee.</p>
@@ -2934,7 +2935,7 @@
     <a href="mailto:support@kyodopartners.com">Support</a>
     <a href="mailto:sales@kyodopartners.com?subject=Notify%20me%20about%20Kyodo%20Partners%20updates">Get launch updates</a></div>
 </div>
-<div class="kp-footer-bottom">© 2026 Kyodo Partners LLC · Our tools are planning &amp; organization helpers — not legal, tax, accounting, or financial advice.</div>
+<div class="kp-footer-bottom">© 2026 Kyodo Partners LLC · Our tools are planning &amp; organization helpers — not legal, tax, accounting, or financial advice. · v1.1.1</div>
 </footer>
 </body>
 </html>
