@@ -1,5 +1,5 @@
 /* ============================================================
-   Kyodo Landlord Assistant  —  application logic
+   Kyodo Landlord Toolkit  —  application logic
    A 100% client-side single-page app. No server, no build step.
    - Data lives in the browser (localStorage), so it survives refreshes.
    - The assistant reads a tenant message and classifies it (whole-word
@@ -557,7 +557,7 @@ function renderTenantReportMode() {
         <textarea id="tenantCopy" readonly style="margin-top:8px;min-height:140px"></textarea>
       </div>
     </section>
-    <footer class="site" style="display:block"><p>Powered by Kyodo Landlord Assistant · © 2026 Kyodo Partners LLC</p></footer>`;
+    <footer class="site" style="display:block"><p>Powered by Kyodo Landlord Toolkit · © 2026 Kyodo Partners LLC</p></footer>`;
   const f = $("#tenantForm");
   f.onsubmit = (e) => {
     e.preventDefault();

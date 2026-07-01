@@ -1,4 +1,4 @@
-# Kyodo Landlord Assistant
+# Kyodo Landlord Toolkit
 
 **Version:** 1.1.0  
 **Date:** June 2026  
@@ -30,7 +30,7 @@ A landlord dashboard that runs entirely in your web browser. Paste a tenant's me
 - **Real Excel export & import** — your properties, tenants, warranties, requests, and expenses to and from `.xlsx`.
 - **100% in your browser** — no account, no server; your data stays on your device.
 
-> Designed to pair with the **Kyodo Rental Property Assistant** — graduate your numbers into the Assistant for full income/expense/tax tracking and a year-end accountant summary.
+> Designed to pair with the **Kyodo Rental Property Toolkit** — graduate your numbers into the Assistant for full income/expense/tax tracking and a year-end accountant summary.
 
 ---
 
@@ -47,7 +47,7 @@ A landlord dashboard that runs entirely in your web browser. Paste a tenant's me
 
 ## Disclaimer
 
-Kyodo Landlord Assistant **organizes** your landlord workflow. It does not calculate taxes, determine legal rights or deductibility, or provide legal, tax, accounting, or financial advice. The request classification and calculators are planning helpers — always read the tenant's original message and consult a qualified professional for important decisions.
+Kyodo Landlord Toolkit **organizes** your landlord workflow. It does not calculate taxes, determine legal rights or deductibility, or provide legal, tax, accounting, or financial advice. The request classification and calculators are planning helpers — always read the tenant's original message and consult a qualified professional for important decisions.
 
 ---
 
