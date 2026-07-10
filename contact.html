@@ -35,7 +35,7 @@
 <header class="kp-header"><div class="kp-header-in">
   <a class="kp-brand" href="https://www.kyodopartners.com" title="Kyodo Partners — Home"><span class="kp-mark">協</span> Kyodo Partners</a>
   <nav class="kp-nav">
-    <button type="button" class="kp-btn" onclick="if(history.length>1){history.back()}else{location.href='https://www.kyodopartners.com'}">← Back</button>
+    <button type="button" id="kpBack" class="kp-btn">← Back</button>
     <a class="kp-btn" href="https://www.kyodopartners.com">⌂ Home</a>
     <a class="kp-link" href="https://www.kyodopartners.com#tools">Free tools</a>
     <a class="kp-link" href="https://www.kyodopartners.com#products">Products</a>
@@ -75,5 +75,6 @@ var FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSeO95vH7vtEz9ZbOGha9OOa
   }
 })();
 </script>
+<script>(function(){var b=document.getElementById("kpBack");if(b)b.addEventListener("click",function(){if(history.length>1){history.back();}else{location.href="https://www.kyodopartners.com";}});})();</script>
 </body>
 </html>

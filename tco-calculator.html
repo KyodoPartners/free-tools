@@ -105,7 +105,8 @@ footer{padding:14px 28px;color:var(--muted);font-size:12px;border-top:1px solid 
 .kp-link:hover{color:#fff;}
 .kp-footer{background:#0f4023;color:#cfe6d8;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;margin-top:40px;}
 .kp-footer-in{max-width:1120px;margin:0 auto;padding:30px 18px 14px;display:grid;grid-template-columns:1fr;gap:22px;}
-@media(min-width:720px){.kp-footer-in{grid-template-columns:2fr 1fr 1fr 1fr;}}
+@media(min-width:640px){.kp-footer-in{grid-template-columns:1fr 1fr;}}
+@media(min-width:980px){.kp-footer-in{grid-template-columns:2fr 1fr 1fr 1fr 1fr;}}
 .kp-footer h4{color:#fff;font-size:.8rem;text-transform:uppercase;letter-spacing:.05em;margin:0 0 10px;}
 .kp-footer a{display:block;color:#cfe6d8;text-decoration:none;font-size:.86rem;margin-bottom:7px;}
 .kp-footer a:hover{color:#fff;text-decoration:underline;}
@@ -113,12 +114,33 @@ footer{padding:14px 28px;color:var(--muted);font-size:12px;border-top:1px solid 
 .kp-brand2{display:flex;align-items:center;gap:8px;color:#fff;font-weight:700;font-size:1.05rem;}
 .kp-footer-bottom{border-top:1px solid rgba(255,255,255,.15);max-width:1120px;margin:0 auto;padding:14px 18px 28px;font-size:.78rem;color:#9fc3ad;}
 </style>
+<style id="kp-buycss">
+.kpb-wrap{max-width:900px;margin:14px auto 4px;padding:0 18px}
+.kpb-card{display:flex;align-items:center;gap:18px;flex-wrap:wrap;background:#fff;border:1px solid #e5e7eb;border-left:4px solid #E8820E;border-radius:12px;padding:15px 18px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.kpb-info{flex:1 1 240px;min-width:220px}
+.kpb-name{font:700 15.5px/1.3 -apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;color:#111;margin:0 0 3px}
+.kpb-sub{font:400 12.5px/1.45 -apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;color:#5b6b7b;margin:0}
+.kpb-trust{display:flex;flex-wrap:wrap;gap:14px;margin-top:8px;font:400 11.5px/1 -apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;color:#5b6b7b}
+.kpb-trust span{white-space:nowrap}
+.kpb-buyzone{display:flex;flex-direction:column;align-items:flex-end;gap:7px}
+.kpb-price{font:800 27px/1 -apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;color:#111}
+.kpb-buy{display:inline-flex;align-items:center;justify-content:center;gap:.35em;min-height:50px;padding:13px 26px;background:#E8820E;color:#111 !important;font:700 15px/1 -apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;letter-spacing:.2px;text-decoration:none;border:1px solid #B8660A;border-radius:9px;box-shadow:0 2px 6px rgba(0,0,0,.18);cursor:pointer;transition:background .15s}
+.kpb-buy:hover{background:#CC7000}
+.kpb-buy:active{transform:translateY(1px)}
+.kpb-buy:focus-visible{outline:3px solid #166534;outline-offset:2px}
+.kpb-sticky{position:fixed;right:16px;bottom:16px;left:auto;z-index:60;display:none}
+.kpb-sticky.kpb-show{display:block}
+.kpb-sticky .kpb-buy{min-height:42px;padding:9px 20px;font-size:13.5px;border-radius:26px;box-shadow:0 4px 14px rgba(0,0,0,.30)}
+.cta{background:#E8820E !important;color:#111 !important;border:1px solid #B8660A !important}
+@media(max-width:640px){.kpb-card{flex-direction:column;align-items:stretch}.kpb-buyzone{align-items:stretch}.kpb-buy{width:100%}.kpb-sticky{left:12px;right:12px;bottom:12px}.kpb-sticky .kpb-buy{width:100%;border-radius:9px}}
+body{padding-bottom:74px}
+</style>
 </head>
 <body>
 <header class="kp-header"><div class="kp-header-in">
   <a class="kp-brand" id="kpBrand" href="https://www.kyodopartners.com" title="Kyodo Partners — Home"><span class="kp-mark">協</span> Kyodo Partners</a>
   <nav class="kp-nav">
-    <button type="button" id="kpBack" class="kp-btn" onclick="if(history.length>1){history.back()}else{location.href='https://www.kyodopartners.com'}">← Back</button>
+    <button type="button" id="kpBack" class="kp-btn">← Back</button>
     <a class="kp-btn" id="kpHome" href="https://www.kyodopartners.com">⌂ Home</a>
     <a class="kp-link" href="https://www.kyodopartners.com#tools">Free tools</a>
     <a class="kp-link" href="https://www.kyodopartners.com#products">Products</a>
@@ -130,8 +152,17 @@ footer{padding:14px 28px;color:var(--muted);font-size:12px;border-top:1px solid 
   <div><h1>TCO Analyzer</h1><p>Total Cost of Ownership — Multi-Department Calculator</p></div>
   <span class="tag">Source included · editable in any browser, Replit, or Cursor</span>
 </header>
-<!-- LAUNCH TODO: replace href with the live product URL before publishing -->
-<div style="background:#166534;color:#fff;padding:9px 14px;text-align:center;font:600 .85rem/1.4 -apple-system,Segoe UI,Arial,sans-serif">Free tool from Kyodo Partners · Get the full <strong>Kyodo TCO Toolkit</strong> ($79) <a href="https://kyodopartners.gumroad.com/l/tco-toolkit" target="_blank" rel="noopener" style="color:#fff;text-decoration:underline">here &rarr;</a><br><span style="font-weight:400;font-size:.78rem;opacity:.9">Secure checkout on Gumroad — opens in a new tab to complete your purchase.</span></div>
+<div class="kpb-wrap" id="kpbTop"><div class="kpb-card">
+<div class="kpb-info">
+<p class="kpb-name">Kyodo TCO Toolkit</p>
+<p class="kpb-sub">An editable Excel or Google Sheets workbook with more features &mdash; and this free calculator is included. You control your data and where the workbook is stored; nothing is ever sent to us.</p>
+<div class="kpb-trust"><span>&#128274; Secure checkout</span><span>&#9889; Instant download</span><span>&#8617; 7-day money-back guarantee</span><span>&#129302; Your AI can fill it in for you</span></div>
+</div>
+<div class="kpb-buyzone">
+<div class="kpb-price">$79</div>
+<a class="kpb-buy" href="https://kyodopartners.gumroad.com/l/tco-toolkit" target="_blank" rel="noopener">Get my toolkit &rarr;</a>
+</div>
+</div></div>
 <div class="wrap">
   <nav id="nav">
     <button data-t="about" class="active">Start here</button>
@@ -152,7 +183,7 @@ footer{padding:14px 28px;color:var(--muted);font-size:12px;border-top:1px solid 
 
     <section class="panel active" data-p="about">
       <div class="hero">
-        <h2>Ten cost calculators, one editable tool.</h2>
+        <h2>Eleven cost calculators, one editable tool.</h2>
         <p>Kyodo TCO Toolkit estimates the <em>true</em> multi-year cost of the decisions every department faces — not just the sticker price, but software, labor, support, energy, maintenance, depreciation, and resale value. Pick a module, enter your numbers, and the answer updates instantly.</p>
       </div>
       <div class="card">
@@ -477,8 +508,7 @@ footer{padding:14px 28px;color:var(--muted);font-size:12px;border-top:1px solid 
     </section>
   </main>
 </div>
-<!-- LAUNCH TODO: replace href with the live product URL before publishing -->
-<div style="max-width:1040px;margin:18px auto;padding:0 18px"><div style="background:#166534;color:#fff;border-radius:12px;padding:20px 22px;font-family:-apple-system,Segoe UI,Arial,sans-serif"><div style="font-size:1.15rem;font-weight:700;margin-bottom:6px">Want the full toolkit, not just the online calculator?</div><div style="font-size:.92rem;opacity:.95;margin-bottom:12px">The <strong>Kyodo TCO Toolkit</strong> adds the editable Excel TCO model (locked formulas, your data), the playbook guide, and full included source. Pay once — no subscription.</div><a href="https://kyodopartners.gumroad.com/l/tco-toolkit" target="_blank" rel="noopener" style="display:inline-block;background:#fff;color:#166534;font-weight:700;text-decoration:none;padding:11px 20px;border-radius:9px">Get the Kyodo TCO Toolkit — $79 &rarr;</a><div style="font-size:.8rem;opacity:.9;margin-top:10px">Secure checkout on Gumroad — opens in a new tab to complete your purchase.</div></div></div>
+<div style="max-width:1040px;margin:18px auto;padding:0 18px"><div style="background:#166534;color:#fff;border-radius:12px;padding:20px 22px;font-family:-apple-system,Segoe UI,Arial,sans-serif"><div style="font-size:1.15rem;font-weight:700;margin-bottom:6px">Want the full toolkit, not just the online calculator?</div><div style="font-size:.92rem;opacity:.95;margin-bottom:12px">The <strong>Kyodo TCO Toolkit</strong> adds the editable Excel TCO model (locked formulas, your data), the playbook guide, and the full source code included. Pay once — no subscription.</div><a href="https://kyodopartners.gumroad.com/l/tco-toolkit" target="_blank" rel="noopener" style="display:inline-block;background:#E8820E;color:#111;font-weight:700;text-decoration:none;padding:12px 22px;border-radius:9px;border:1px solid #B8660A">Get the Kyodo TCO Toolkit — $79 &rarr;</a><div style="font-size:.8rem;opacity:.9;margin-top:10px">Secure checkout on Gumroad — opens in a new tab to complete your purchase.</div></div></div>
 <footer>Kyodo TCO Toolkit · © 2026 Kyodo Partners LLC · all rights reserved · sold as-is, source included; licensed for your own / organization's use, not for resale or redistribution · build your own modules in Replit or Cursor</footer>
 <script>
 /* ===========================================================================
@@ -657,6 +687,18 @@ document.addEventListener('input',calcAll);document.addEventListener('change',ca
     <a href="https://www.kyodopartners.com/remodel-calculator.html">Remodel Cost Analyzer</a>
     <a href="https://www.kyodopartners.com/quarterly-tax-estimator.html">1099 Quarterly Tax Analyzer</a>
     <a href="https://www.kyodopartners.com/tco-calculator.html">TCO Analyzer</a></div>
+  <div><h4>Break-even calculators</h4>
+    <a href="https://www.kyodopartners.com/breakeven-runway-calculator.html">Digital-Product &amp; AI</a>
+    <a href="https://www.kyodopartners.com/breakeven-notion.html">Notion Template Sellers</a>
+    <a href="https://www.kyodopartners.com/breakeven-pod.html">Print-on-Demand</a>
+    <a href="https://www.kyodopartners.com/breakeven-ebook.html">Self-Published Authors</a>
+    <a href="https://www.kyodopartners.com/breakeven-pottery.html">Potters &amp; Ceramics</a>
+    <a href="https://www.kyodopartners.com/breakeven-quilts.html">Quilt Makers</a>
+    <a href="https://www.kyodopartners.com/breakeven-baskets.html">Basket Weavers</a>
+    <a href="https://www.kyodopartners.com/breakeven-vintage.html">Vintage Resellers</a>
+    <a href="https://www.kyodopartners.com/breakeven-aiart.html">AI Art &amp; Image</a>
+    <a href="https://www.kyodopartners.com/breakeven-artphoto.html">Artists &amp; Photographers</a>
+    <a href="https://www.kyodopartners.com/breakeven-youtube.html">YouTube Creators</a></div>
   <div><h4>Products</h4>
     <a href="https://www.kyodopartners.com#products">Spreadsheet suites &amp; toolkits</a>
     <a href="https://kyodopartners.gumroad.com/" target="_blank" rel="noopener">Our store (Gumroad)</a></div>
@@ -665,8 +707,10 @@ document.addEventListener('input',calcAll);document.addEventListener('change',ca
     <a href="contact.html">Support</a>
     <a href="contact.html">Get launch updates</a></div>
 </div>
-<div class="kp-footer-bottom">© 2026 Kyodo Partners LLC · Our tools are planning &amp; organization helpers — not legal, tax, accounting, or financial advice. · v1.1.1</div>
+<div class="kp-footer-bottom">© 2026 Kyodo Partners LLC · Our tools are planning &amp; organization helpers — not legal, tax, accounting, or financial advice. · v2.0</div>
 </footer>
 <script>(function(){var net=location.hostname.indexOf("kyodopartners.net")>=0;var home=net?"/":"https://www.kyodopartners.com/";["kpHome","kpBrand"].forEach(function(id){var e=document.getElementById(id);if(e)e.setAttribute("href",home);});var b=document.getElementById("kpBack");if(b){b.removeAttribute("onclick");b.addEventListener("click",function(e){e.preventDefault();if(history.length>1){history.back();}else{location.href=home;}});}})();</script>
+<div class="kpb-sticky" id="kpbSticky"><a class="kpb-buy" href="https://kyodopartners.gumroad.com/l/tco-toolkit" target="_blank" rel="noopener">Get the toolkit &mdash; $79 &rarr;</a></div>
+<script>(function(){var b=document.getElementById("kpbSticky"),t=document.getElementById("kpbTop");if(!b||!t||!("IntersectionObserver" in window))return;new IntersectionObserver(function(e){b.classList.toggle("kpb-show",!e[0].isIntersecting);},{rootMargin:"-60px 0px 0px 0px"}).observe(t);})();</script>
 </body>
 </html>

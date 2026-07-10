@@ -69,7 +69,8 @@
 .kp-link:hover{color:#fff;}
 .kp-footer{background:#0f4023;color:#cfe6d8;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;margin-top:40px;}
 .kp-footer-in{max-width:1120px;margin:0 auto;padding:30px 18px 14px;display:grid;grid-template-columns:1fr;gap:22px;}
-@media(min-width:720px){.kp-footer-in{grid-template-columns:2fr 1fr 1fr 1fr;}}
+@media(min-width:640px){.kp-footer-in{grid-template-columns:1fr 1fr;}}
+@media(min-width:980px){.kp-footer-in{grid-template-columns:2fr 1fr 1fr 1fr 1fr;}}
 .kp-footer h4{color:#fff;font-size:.8rem;text-transform:uppercase;letter-spacing:.05em;margin:0 0 10px;}
 .kp-footer a{display:block;color:#cfe6d8;text-decoration:none;font-size:.86rem;margin-bottom:7px;}
 .kp-footer a:hover{color:#fff;text-decoration:underline;}
@@ -82,7 +83,7 @@
 <header class="kp-header"><div class="kp-header-in">
   <a class="kp-brand" href="https://www.kyodopartners.com" title="Kyodo Partners — Home"><span class="kp-mark">協</span> Kyodo Partners</a>
   <nav class="kp-nav">
-    <button type="button" class="kp-btn" onclick="if(history.length>1){history.back()}else{location.href='https://www.kyodopartners.com'}">← Back</button>
+    <button type="button" id="kpBack" class="kp-btn">← Back</button>
     <a class="kp-btn" href="https://www.kyodopartners.com">⌂ Home</a>
     <a class="kp-link" href="https://www.kyodopartners.com#tools">Free tools</a>
     <a class="kp-link" href="https://www.kyodopartners.com#products">Products</a>
@@ -92,9 +93,9 @@
 
   <div class="wrap">
     <section class="hero">
-      <h1>Practical tools that do the work for you.</h1>
-      <p style="font-size:1rem;color:#166534;font-weight:600;margin:0 0 10px">Kyodo (協働) means working together in Japanese — every Kyodo tool works alongside you.</p>
-      <p>Calculators, trackers, and dashboards for landlords, freelancers, and small businesses. Pay once — no subscriptions, no accounts, and your data stays on your own device.</p>
+      <h1>Weigh the options with data — before you decide.</h1>
+      <p style="font-size:1rem;color:#166534;font-weight:600;margin:0 0 10px">Kyodo tools work alongside you — 協働, “working together.”</p>
+      <p>Each tool runs your real numbers so you can see the risks and trade-offs and decide with confidence. Calculators, trackers, and dashboards for landlords, freelancers, and small businesses — pay once, no subscriptions, no accounts, and you stay in control of your data.</p>
       <a class="btn" href="#tools">Try the free tools ↓</a>
     </section>
 
@@ -113,7 +114,7 @@
 
     <section id="breakeven">
       <h2 class="sec">Free Break-Even &amp; Profit calculators</h2>
-      <p class="sec-sub">Free web versions tuned for specific businesses — see how many sales it takes to break even and the month you turn a profit. Each has a paid Excel + Google Sheets edition on Gumroad.</p>
+      <p class="sec-sub">Free web versions tuned for specific businesses — see how many sales it takes to break even and the month you turn a profit. Each has a paid Excel or Google Sheets edition on Gumroad.</p>
       <div class="grid">
         <a class="card" href="breakeven-runway-calculator.html"><span class="tag free">Free</span><h3>Digital-Product &amp; AI Business →</h3><p>The flagship — break-even per product, cash runway with and without a salary, and a profit forecast.</p></a>
         <a class="card" href="breakeven-notion.html"><span class="tag free">Free</span><h3>Notion Template Sellers →</h3><p>Profit per template after fees, sales to break even, and the month your shop turns a profit.</p></a>
@@ -153,8 +154,19 @@
     <a href="https://www.kyodopartners.com/str-deal-analyzer.html">Airbnb / STR Analyzer</a>
     <a href="https://www.kyodopartners.com/remodel-calculator.html">Remodel Cost Analyzer</a>
     <a href="https://www.kyodopartners.com/quarterly-tax-estimator.html">1099 Quarterly Tax Analyzer</a>
-    <a href="https://www.kyodopartners.com/tco-calculator.html">TCO Analyzer</a>
-    <a href="https://www.kyodopartners.com/breakeven-runway-calculator.html">Break-Even &amp; Runway Calculator</a></div>
+    <a href="https://www.kyodopartners.com/tco-calculator.html">TCO Analyzer</a></div>
+  <div><h4>Break-even calculators</h4>
+    <a href="https://www.kyodopartners.com/breakeven-runway-calculator.html">Digital-Product &amp; AI</a>
+    <a href="https://www.kyodopartners.com/breakeven-notion.html">Notion Template Sellers</a>
+    <a href="https://www.kyodopartners.com/breakeven-pod.html">Print-on-Demand</a>
+    <a href="https://www.kyodopartners.com/breakeven-ebook.html">Self-Published Authors</a>
+    <a href="https://www.kyodopartners.com/breakeven-pottery.html">Potters &amp; Ceramics</a>
+    <a href="https://www.kyodopartners.com/breakeven-quilts.html">Quilt Makers</a>
+    <a href="https://www.kyodopartners.com/breakeven-baskets.html">Basket Weavers</a>
+    <a href="https://www.kyodopartners.com/breakeven-vintage.html">Vintage Resellers</a>
+    <a href="https://www.kyodopartners.com/breakeven-aiart.html">AI Art &amp; Image</a>
+    <a href="https://www.kyodopartners.com/breakeven-artphoto.html">Artists &amp; Photographers</a>
+    <a href="https://www.kyodopartners.com/breakeven-youtube.html">YouTube Creators</a></div>
   <div><h4>Products</h4>
     <a href="https://www.kyodopartners.com#products">Spreadsheet suites &amp; toolkits</a>
     <a href="https://kyodopartners.gumroad.com/" target="_blank" rel="noopener">Our store (Gumroad)</a></div>
@@ -163,7 +175,8 @@
     <a href="contact.html">Support</a>
     <a href="contact.html">Get launch updates</a></div>
 </div>
-<div class="kp-footer-bottom">© 2026 Kyodo Partners LLC · Our tools are planning &amp; organization helpers — not legal, tax, accounting, or financial advice. · v1.1.1</div>
+<div class="kp-footer-bottom">© 2026 Kyodo Partners LLC · Our tools are planning &amp; organization helpers — not legal, tax, accounting, or financial advice. · v2.0</div>
 </footer>
+<script>(function(){var b=document.getElementById("kpBack");if(b)b.addEventListener("click",function(){if(history.length>1){history.back();}else{location.href="https://www.kyodopartners.com";}});})();</script>
 </body>
 </html>

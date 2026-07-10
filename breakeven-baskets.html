@@ -43,13 +43,44 @@
   .prodgrid small{grid-column:1/-1;color:#666}
   @media(max-width:640px){.prodgrid{grid-template-columns:1fr 1fr}}
 </style>
+<style id="kp-buycss">
+.kpb-wrap{max-width:900px;margin:14px auto 4px;padding:0 18px}
+.kpb-card{display:flex;align-items:center;gap:18px;flex-wrap:wrap;background:#fff;border:1px solid #e5e7eb;border-left:4px solid #E8820E;border-radius:12px;padding:15px 18px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.kpb-info{flex:1 1 240px;min-width:220px}
+.kpb-name{font:700 15.5px/1.3 -apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;color:#111;margin:0 0 3px}
+.kpb-sub{font:400 12.5px/1.45 -apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;color:#5b6b7b;margin:0}
+.kpb-trust{display:flex;flex-wrap:wrap;gap:14px;margin-top:8px;font:400 11.5px/1 -apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;color:#5b6b7b}
+.kpb-trust span{white-space:nowrap}
+.kpb-buyzone{display:flex;flex-direction:column;align-items:flex-end;gap:7px}
+.kpb-price{font:800 27px/1 -apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;color:#111}
+.kpb-buy{display:inline-flex;align-items:center;justify-content:center;gap:.35em;min-height:50px;padding:13px 26px;background:#E8820E;color:#111 !important;font:700 15px/1 -apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;letter-spacing:.2px;text-decoration:none;border:1px solid #B8660A;border-radius:9px;box-shadow:0 2px 6px rgba(0,0,0,.18);cursor:pointer;transition:background .15s}
+.kpb-buy:hover{background:#CC7000}
+.kpb-buy:active{transform:translateY(1px)}
+.kpb-buy:focus-visible{outline:3px solid #166534;outline-offset:2px}
+.kpb-sticky{position:fixed;right:16px;bottom:16px;left:auto;z-index:60;display:none}
+.kpb-sticky.kpb-show{display:block}
+.kpb-sticky .kpb-buy{min-height:42px;padding:9px 20px;font-size:13.5px;border-radius:26px;box-shadow:0 4px 14px rgba(0,0,0,.30)}
+.cta{background:#E8820E !important;color:#111 !important;border:1px solid #B8660A !important}
+@media(max-width:640px){.kpb-card{flex-direction:column;align-items:stretch}.kpb-buyzone{align-items:stretch}.kpb-buy{width:100%}.kpb-sticky{left:12px;right:12px;bottom:12px}.kpb-sticky .kpb-buy{width:100%;border-radius:9px}}
+body{padding-bottom:74px}
+</style>
 </head>
 <body>
 <header class="kp"><a href="https://www.kyodopartners.com" style="display:flex;align-items:center;gap:8px;color:inherit;text-decoration:none"><span class="kpmk">協</span><b>Kyodo Partners</b></a><a href="#" id="kpBack" class="kplink">← Back</a><a href="https://www.kyodopartners.com" id="kpHome" class="kplink">⌂ Home</a><a href="https://www.kyodopartners.com#tools" class="kplink">Free tools</a><a href="https://www.kyodopartners.com#products" class="kplink">Products</a><a href="contact.html" class="kplink">Contact</a></header>
-<div class="kp-topcta" style="background:#166534;color:#fff;text-align:center;padding:11px 16px;font-size:14px;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif">Get the full <strong>Excel + Google Sheets workbook</strong> — worked example &amp; AI-assist. <a href="https://kyodopartners.gumroad.com/l/breakeven-baskets" target="_blank" rel="noopener" style="color:#fff;font-weight:700;text-decoration:underline">Buy it on Gumroad — $24 →</a></div>
+<div class="kpb-wrap" id="kpbTop"><div class="kpb-card">
+<div class="kpb-info">
+<p class="kpb-name">Full Excel or Google Sheets workbook</p>
+<p class="kpb-sub">An editable Excel or Google Sheets workbook with more features &mdash; and this free calculator is included. You control your data and where the workbook is stored; nothing is ever sent to us.</p>
+<div class="kpb-trust"><span>&#128274; Secure checkout</span><span>&#9889; Instant download</span><span>&#8617; 7-day money-back guarantee</span><span>&#129302; Your AI can fill it in for you</span></div>
+</div>
+<div class="kpb-buyzone">
+<div class="kpb-price">$24</div>
+<a class="kpb-buy" href="https://kyodopartners.gumroad.com/l/breakeven-baskets" target="_blank" rel="noopener">Get my workbook &rarr;</a>
+</div>
+</div></div>
 <div class="wrap">
   <h1>Break-Even Calculator for Basket Weavers & Fiber Artists</h1>
-  <p class="lead">Per basket your true cost + craft-fair booth economics, how many to sell to break even, runway with &amp; without a salary. Set Fee 0 for cash/fair sales. Everything updates as you type.</p>
+  <p class="lead">Per basket your true cost + craft-fair booth economics, how many to sell to break even, runway with &amp; without a salary. Set Fee to 0 for cash/fair sales. Everything updates as you type.</p>
 
   <fieldset>
     <legend>Team &amp; overhead (monthly)</legend>
@@ -88,7 +119,7 @@
     <div style="margin-top:6px">Runway: <span class="verdict" id="runway"></span></div>
   </div>
 
-  <a class="cta" id="cta" href="#">Get the full workbook (Excel + Google Sheets, worked example, AI-assist) — $19 →</a>
+  <a class="cta" id="cta" href="#">Get the full workbook (Excel or Google Sheets, worked example, AI-assist) — $24 →</a>
   <p class="note">This is a planning estimate — not tax, accounting, or investment advice. "Units to break even" assumes selling only that product; the blended row assumes equal units. No data leaves your browser.</p>
 </div>
 <footer class="kp">© 2026 Kyodo Partners LLC · Kyodo (協働) means “working together.” · Planning &amp; organization helper — not legal, tax, or financial advice.</footer>
@@ -171,5 +202,7 @@ document.querySelectorAll('input[type=number]').forEach(function(i){
 });
 (function(){var home=location.hostname.indexOf("kyodopartners.net")>=0?"/":"https://www.kyodopartners.com/";var h=document.getElementById("kpHome");if(h)h.setAttribute("href",home);var b=document.getElementById("kpBack");if(b)b.addEventListener("click",function(e){e.preventDefault();if(history.length>1){history.back();}else{location.href=home;}});})();
 </script>
+<div class="kpb-sticky" id="kpbSticky"><a class="kpb-buy" href="https://kyodopartners.gumroad.com/l/breakeven-baskets" target="_blank" rel="noopener">Get the workbook &mdash; $24 &rarr;</a></div>
+<script>(function(){var b=document.getElementById("kpbSticky"),t=document.getElementById("kpbTop");if(!b||!t||!("IntersectionObserver" in window))return;new IntersectionObserver(function(e){b.classList.toggle("kpb-show",!e[0].isIntersecting);},{rootMargin:"-60px 0px 0px 0px"}).observe(t);})();</script>
 </body>
 </html>
