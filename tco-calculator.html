@@ -95,10 +95,10 @@ footer{padding:14px 28px;color:var(--muted);font-size:12px;border-top:1px solid 
 </style>
 <style id="kp-chrome">
 .kp-header{background:#166534;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
-.kp-header-in{max-width:1120px;margin:0 auto;padding:9px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.kp-header-in{max-width:1120px;margin:0 auto;padding:9px 18px;display:flex;align-items:center;justify-content:flex-start;flex-wrap:wrap;gap:14px;}
 .kp-brand{display:flex;align-items:center;gap:8px;color:#fff;text-decoration:none;font-weight:700;font-size:1.08rem;}
 .kp-mark{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:6px;background:#fff;color:#166534;font-weight:800;font-size:.8rem;border:2px solid #C9A227;}
-.kp-nav{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.kp-nav{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:transparent;width:auto;border:none;padding:0;}
 .kp-btn{background:rgba(255,255,255,.16);color:#fff;border:1px solid rgba(255,255,255,.4);border-radius:8px;padding:5px 11px;font:inherit;font-size:.84rem;font-weight:600;cursor:pointer;text-decoration:none;}
 .kp-btn:hover{background:rgba(255,255,255,.3);}
 .kp-link{color:#e8f1ec;text-decoration:none;font-size:.84rem;}
@@ -116,13 +116,13 @@ footer{padding:14px 28px;color:var(--muted);font-size:12px;border-top:1px solid 
 </head>
 <body>
 <header class="kp-header"><div class="kp-header-in">
-  <a class="kp-brand" href="https://www.kyodopartners.com" title="Kyodo Partners — Home"><span class="kp-mark">協</span> Kyodo Partners</a>
+  <a class="kp-brand" id="kpBrand" href="https://www.kyodopartners.com" title="Kyodo Partners — Home"><span class="kp-mark">協</span> Kyodo Partners</a>
   <nav class="kp-nav">
-    <button type="button" class="kp-btn" onclick="if(history.length>1){history.back()}else{location.href='https://www.kyodopartners.com'}">← Back</button>
-    <a class="kp-btn" href="https://www.kyodopartners.com">⌂ Home</a>
+    <button type="button" id="kpBack" class="kp-btn" onclick="if(history.length>1){history.back()}else{location.href='https://www.kyodopartners.com'}">← Back</button>
+    <a class="kp-btn" id="kpHome" href="https://www.kyodopartners.com">⌂ Home</a>
     <a class="kp-link" href="https://www.kyodopartners.com#tools">Free tools</a>
     <a class="kp-link" href="https://www.kyodopartners.com#products">Products</a>
-    <a class="kp-link" href="mailto:sales@kyodopartners.com">Contact</a>
+    <a class="kp-link" href="contact.html">Contact</a>
   </nav>
 </div></header>
 <header>
@@ -661,11 +661,12 @@ document.addEventListener('input',calcAll);document.addEventListener('change',ca
     <a href="https://www.kyodopartners.com#products">Spreadsheet suites &amp; toolkits</a>
     <a href="https://kyodopartners.gumroad.com/" target="_blank" rel="noopener">Our store (Gumroad)</a></div>
   <div><h4>Company</h4>
-    <a href="mailto:sales@kyodopartners.com">Contact</a>
-    <a href="mailto:support@kyodopartners.com">Support</a>
-    <a href="mailto:sales@kyodopartners.com?subject=Notify%20me%20about%20Kyodo%20Partners%20updates">Get launch updates</a></div>
+    <a href="contact.html">Contact</a>
+    <a href="contact.html">Support</a>
+    <a href="contact.html">Get launch updates</a></div>
 </div>
 <div class="kp-footer-bottom">© 2026 Kyodo Partners LLC · Our tools are planning &amp; organization helpers — not legal, tax, accounting, or financial advice. · v1.1.1</div>
 </footer>
+<script>(function(){var net=location.hostname.indexOf("kyodopartners.net")>=0;var home=net?"/":"https://www.kyodopartners.com/";["kpHome","kpBrand"].forEach(function(id){var e=document.getElementById(id);if(e)e.setAttribute("href",home);});var b=document.getElementById("kpBack");if(b){b.removeAttribute("onclick");b.addEventListener("click",function(e){e.preventDefault();if(history.length>1){history.back();}else{location.href=home;}});}})();</script>
 </body>
 </html>

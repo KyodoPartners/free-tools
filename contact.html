@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contact — Kyodo Partners</title>
+<meta name="description" content="Contact Kyodo Partners — sales and support. Send us a note and we'll reply by email.">
+<style>
+  :root{ --ink:#1c2733; --muted:#5b6b7b; --line:#e4e9ef; --bg:#f5f8fa; --card:#fff; --brand:#166534; --brand2:#15803D; }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.55;-webkit-text-size-adjust:100%;}
+  a{color:var(--brand);}
+  .wrap{max-width:900px;margin:0 auto;padding:0 18px;}
+  /* shared green chrome (matches the rest of the site) */
+  .kp-header{background:#166534;color:#fff;}
+  .kp-header-in{max-width:1120px;margin:0 auto;padding:9px 18px;display:flex;align-items:center;justify-content:flex-start;flex-wrap:wrap;gap:14px;}
+  .kp-brand{display:flex;align-items:center;gap:8px;color:#fff;text-decoration:none;font-weight:700;font-size:1.08rem;}
+  .kp-mark{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:6px;background:#fff;color:#166534;font-weight:800;font-size:.8rem;border:2px solid #C9A227;}
+  .kp-nav{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:transparent;width:auto;border:none;padding:0;}
+  .kp-btn{background:rgba(255,255,255,.16);color:#fff;border:1px solid rgba(255,255,255,.4);border-radius:8px;padding:5px 11px;font:inherit;font-size:.84rem;font-weight:600;cursor:pointer;text-decoration:none;}
+  .kp-btn:hover{background:rgba(255,255,255,.3);}
+  .kp-link{color:#e8f1ec;text-decoration:none;font-size:.84rem;}
+  .kp-link:hover{color:#fff;}
+  h1{font-size:1.75rem;margin:26px 0 6px;}
+  .lead{color:var(--muted);margin:0 0 18px;max-width:62ch;}
+  .formcard{background:#fff;border:1px solid var(--line);border-radius:13px;padding:6px;overflow:hidden;}
+  .formcard iframe{width:100%;border:0;min-height:1150px;display:block;}
+  .fallback{background:#fff;border:1px solid var(--line);border-left:3px solid #166534;border-radius:10px;padding:15px 18px;color:var(--muted);font-size:.95rem;}
+  .kp-footer{background:#0f4023;color:#cfe6d8;margin-top:34px;}
+  .kp-footer-in{max-width:1120px;margin:0 auto;padding:22px 18px 30px;font-size:.85rem;}
+  .kp-footer a{color:#cfe6d8;}
+</style>
+</head>
+<body>
+<header class="kp-header"><div class="kp-header-in">
+  <a class="kp-brand" href="https://www.kyodopartners.com" title="Kyodo Partners — Home"><span class="kp-mark">協</span> Kyodo Partners</a>
+  <nav class="kp-nav">
+    <button type="button" class="kp-btn" onclick="if(history.length>1){history.back()}else{location.href='https://www.kyodopartners.com'}">← Back</button>
+    <a class="kp-btn" href="https://www.kyodopartners.com">⌂ Home</a>
+    <a class="kp-link" href="https://www.kyodopartners.com#tools">Free tools</a>
+    <a class="kp-link" href="https://www.kyodopartners.com#products">Products</a>
+    <a class="kp-link" href="contact.html">Contact</a>
+  </nav>
+</div></header>
+
+<div class="wrap">
+  <h1>Contact us</h1>
+  <p class="lead">Questions about a product, a purchase, or need support? Fill out the form and we'll reply by email — usually within one business day. For product help, include the product name and your order/receipt if you have it.</p>
+
+  <div class="formcard" id="kpformcard" style="display:none">
+    <iframe id="kpform" title="Contact Kyodo Partners" loading="lazy"></iframe>
+  </div>
+
+  <p class="fallback" id="kpfallback">Our contact form is being connected right now. In the meantime, email <b>sales@kyodopartners.com</b> for sales questions or <b>support@kyodopartners.com</b> for product support and we'll get right back to you.</p>
+</div>
+
+<footer class="kp-footer"><div class="kp-footer-in">© 2026 Kyodo Partners LLC · Our tools are planning &amp; organization helpers — not legal, tax, accounting, or financial advice.</div></footer>
+
+<script>
+/* ============================================================
+   WIRE THE GOOGLE FORM: paste the embed URL between the quotes.
+   In Google Forms → Send → the < > (Embed HTML) tab → copy the
+   value of src="..." (starts https://docs.google.com/forms/.../viewform?embedded=true)
+   ============================================================ */
+var FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSeO95vH7vtEz9ZbOGha9OOaTVl-A0BQlBrziWHoK739N1aoRg/viewform?embedded=true";
+
+(function(){
+  var card = document.getElementById('kpformcard');
+  var frame = document.getElementById('kpform');
+  var fb = document.getElementById('kpfallback');
+  if (FORM_URL && FORM_URL.indexOf('docs.google.com/forms') !== -1) {
+    frame.src = FORM_URL;
+    card.style.display = 'block';
+    fb.style.display = 'none';
+  }
+})();
+</script>
+</body>
+</html>

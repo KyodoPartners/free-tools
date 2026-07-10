@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<!--
+  Kyodo Break-Even & Runway Calculator (free web version / lead magnet)
+  Single file, no dependencies, no network, no storage. Results are built with
+  createElement + textContent (never innerHTML) so user text can't inject markup.
+  Mirrors the paid workbook's math. © 2026 Kyodo Partners LLC.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Break-Even Calculator for Potters & Ceramicists (Free) — Kyodo</title>
+<style>
+  :root{--green:#166534;--green2:#15803D;--gold:#C9A227;--ink:#111;--line:#ddd;--bg:#fff;}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:var(--bg);line-height:1.45}
+  header.kp{background:var(--green);color:#fff;padding:14px 18px;display:flex;align-items:center;gap:10px}
+  header.kp b{font-size:18px}
+  .kplink{color:#fff;text-decoration:none;font-size:13px;opacity:.92;cursor:pointer}
+  .kplink:hover{text-decoration:underline}
+  .kpmk{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;background:#fff;color:var(--green);border:2px solid var(--gold);border-radius:6px;font-weight:bold;font-size:13px}
+  .wrap{max-width:900px;margin:0 auto;padding:18px}
+  h1{font-size:22px;margin:.2em 0}
+  p.lead{color:#444}
+  fieldset{border:1px solid var(--line);border-radius:8px;margin:14px 0;padding:12px 14px}
+  legend{font-weight:bold;color:var(--green);padding:0 6px}
+  label{display:block;font-size:13px;margin:8px 0 2px}
+  input{width:100%;padding:7px;border:1px solid var(--line);border-radius:6px;font-size:14px}
+  .row{display:flex;gap:10px;flex-wrap:wrap}
+  .row>div{flex:1;min-width:120px}
+  table{width:100%;border-collapse:collapse;margin-top:8px;font-size:13px}
+  th,td{border:1px solid var(--line);padding:6px 8px;text-align:right}
+  th:first-child,td:first-child{text-align:left}
+  thead th{background:#f0f4f0}
+  .big{font-size:15px}
+  .card{background:#f7faf7;border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin:10px 0}
+  .verdict{font-weight:bold;color:var(--green)}
+  .cta{display:block;background:var(--green);color:#fff;text-decoration:none;text-align:center;
+       padding:12px;border-radius:8px;font-weight:bold;margin:16px 0}
+  .note{font-size:12px;color:#666}
+  footer.kp{border-top:1px solid var(--line);margin-top:24px;padding:16px;font-size:12px;color:#666;text-align:center}
+  .prodgrid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:6px;align-items:end}
+  .prodgrid small{grid-column:1/-1;color:#666}
+  @media(max-width:640px){.prodgrid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<header class="kp"><a href="https://www.kyodopartners.com" style="display:flex;align-items:center;gap:8px;color:inherit;text-decoration:none"><span class="kpmk">協</span><b>Kyodo Partners</b></a><a href="#" id="kpBack" class="kplink">← Back</a><a href="https://www.kyodopartners.com" id="kpHome" class="kplink">⌂ Home</a><a href="https://www.kyodopartners.com#tools" class="kplink">Free tools</a><a href="https://www.kyodopartners.com#products" class="kplink">Products</a><a href="contact.html" class="kplink">Contact</a></header>
+<div class="wrap">
+  <h1>Break-Even Calculator for Potters & Ceramicists</h1>
+  <p class="lead">Per piece: your true cost incl. clay + glaze + firing, how many to sell to break even, runway with &amp; without a salary, and when you profit. Everything updates as you type.</p>
+
+  <fieldset>
+    <legend>Team &amp; overhead (monthly)</legend>
+    <div class="row">
+      <div><label>Team pay — total $/mo</label><input id="team" type="number" min="0" value="3000"></div>
+      <div><label>Employer payroll tax / benefits % (0 for owner draws)</label><input id="load" type="number" min="0" value="0"></div>
+      <div><label>Fixed overhead — total $/mo</label><input id="oh" type="number" min="0" value="230"></div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Your products</legend>
+    <div id="prods"></div>
+    <p class="note">Contribution/unit = price − (price × fee% + fee $) − per-unit cost. Fees + costs are pre-filled for this niche — edit to match your platform and products.</p>
+  </fieldset>
+
+  <fieldset>
+    <legend>Runway (optional)</legend>
+    <div class="row">
+      <div><label>Cash on hand ($)</label><input id="cash" type="number" min="0" value="1500"></div>
+      <div><label>Current NET revenue $/mo (after fees)</label><input id="rev" type="number" min="0" value="0"></div>
+    </div>
+  </fieldset>
+
+  <div class="card">
+    <div class="big">Monthly burn — cover costs: <b id="burnCosts"></b> &nbsp;·&nbsp; cover costs + salaries: <b id="burnAll"></b></div>
+  </div>
+
+  <table>
+    <thead><tr><th>Product</th><th>Contribution/unit</th><th>Units/mo → cover costs</th><th>Units/mo → costs + salaries</th></tr></thead>
+    <tbody id="results"></tbody>
+  </table>
+
+  <div class="card">
+    <div>Blended basket (equal units across your products): <b id="blend"></b> units/mo to cover costs + salaries (≈ <b id="blendPer"></b> each).</div>
+    <div style="margin-top:6px">Runway: <span class="verdict" id="runway"></span></div>
+  </div>
+
+  <a class="cta" id="cta" href="#">Get the full workbook (Excel + Google Sheets, worked example, AI-assist) — $24 →</a>
+  <p class="note">This is a planning estimate — not tax, accounting, or investment advice. "Units to break even" assumes selling only that product; the blended row assumes equal units. No data leaves your browser.</p>
+</div>
+<footer class="kp">© 2026 Kyodo Partners LLC · Kyodo (協働) means “working together.” · Planning &amp; organization helper — not legal, tax, or financial advice.</footer>
+
+<script>
+"use strict";
+// Default products: Kyodo's own (so the free tool ships with the worked example + matches the workbook)
+var DEFAULT_PRODUCTS=[
+  ["Mug",32,9.5,0.45,3.5],
+  ["Bowl",45,9.5,0.45,5],
+  ["Vase",60,9.5,0.45,7],
+  ["Planter",38,9.5,0.45,4.5]
+];
+var GUMROAD_URL="https://kyodopartners.gumroad.com/l/breakeven-pottery";
+
+function el(tag,props,kids){var e=document.createElement(tag);if(props)for(var k in props){if(k==="class")e.className=props[k];else if(k==="text")e.textContent=props[k];else e.setAttribute(k,props[k]);}if(kids)kids.forEach(function(c){e.appendChild(c);});return e;}
+function money(n){return isFinite(n)?"$"+Math.round(n).toLocaleString():"—";}
+function money2(n){return isFinite(n)?"$"+n.toFixed(2):"—";}
+
+// Build 5 product input rows
+function buildProductInputs(){
+  var host=document.getElementById("prods");
+  for(var i=0;i<5;i++){
+    var d=DEFAULT_PRODUCTS[i]||["",0,10,0.50,0];
+    var grid=el("div",{class:"prodgrid"});
+    grid.appendChild(el("div",null,[el("label",{text:"Product name"}),mkInput("p_name_"+i,"text",d[0])]));
+    grid.appendChild(el("div",null,[el("label",{text:"Price $"}),mkInput("p_price_"+i,"number",d[1])]));
+    grid.appendChild(el("div",null,[el("label",{text:"Fee %"}),mkInput("p_feep_"+i,"number",d[2])]));
+    grid.appendChild(el("div",null,[el("label",{text:"Fee $"}),mkInput("p_fees_"+i,"number",d[3])]));
+    grid.appendChild(el("div",null,[el("label",{text:"Cost/unit $"}),mkInput("p_var_"+i,"number",d[4])]));
+    host.appendChild(grid);
+    host.appendChild(el("hr",{style:"border:none;border-top:1px dashed #eee;margin:8px 0"}));
+  }
+}
+function mkInput(id,type,val){var i=el("input",{id:id,type:type});if(type==="number")i.setAttribute("min","0");i.value=val;i.addEventListener("input",compute);return i;}
+function num(id){var v=parseFloat((document.getElementById(id)||{}).value);return isFinite(v)?v:0;}
+function str(id){return ((document.getElementById(id)||{}).value||"").trim();}
+
+function compute(){
+  var team=num("team"), load=num("load")/100, oh=num("oh");
+  var burnCosts=oh, burnAll=team*(1+load)+oh;
+  document.getElementById("burnCosts").textContent=money(burnCosts);
+  document.getElementById("burnAll").textContent=money(burnAll);
+
+  var tbody=document.getElementById("results"); tbody.replaceChildren();
+  var contribs=[];
+  for(var i=0;i<5;i++){
+    var name=str("p_name_"+i), price=num("p_price_"+i);
+    if(price<=0){continue;}
+    var contrib=price-(price*num("p_feep_"+i)/100+num("p_fees_"+i))-num("p_var_"+i);
+    var beC=contrib>0?Math.ceil(burnCosts/contrib).toLocaleString():"loss";
+    var beA=contrib>0?Math.ceil(burnAll/contrib).toLocaleString():"loss";
+    contribs.push(contrib);
+    var tr=el("tr",null,[
+      el("td",{text:name||("Product "+(i+1))}),
+      el("td",{text:money2(contrib)}),
+      el("td",{text:beC}),
+      el("td",{text:beA})
+    ]);
+    tbody.appendChild(tr);
+  }
+  var avg=contribs.length?contribs.reduce(function(a,b){return a+b;},0)/contribs.length:0;
+  var blend=avg>0?Math.ceil(burnAll/avg):NaN;
+  var per=isFinite(blend)&&contribs.length?Math.ceil(blend/contribs.length):NaN;
+  document.getElementById("blend").textContent=isFinite(blend)?blend.toLocaleString():"—";
+  document.getElementById("blendPer").textContent=isFinite(per)?per.toLocaleString():"—";
+
+  var cash=num("cash"), rev=num("rev"), net=Math.max(burnAll-rev,0);
+  document.getElementById("runway").textContent = net<=0 ? "profitable — n.a." : (Math.round(cash/net*10)/10)+" months";
+}
+
+document.getElementById("cta").setAttribute("href",GUMROAD_URL);
+document.getElementById("cta").setAttribute("target","_blank");
+document.getElementById("cta").setAttribute("rel","noopener noreferrer");
+buildProductInputs();
+["team","load","oh","cash","rev"].forEach(function(id){var e=document.getElementById(id);if(e)e.addEventListener("input",compute);});
+compute();
+document.querySelectorAll('input[type=number]').forEach(function(i){
+  i.addEventListener('focus',function(){this.select();});
+  i.addEventListener('blur',function(){var v=this.value;if(v!==''&&!isNaN(v)){var n=String(parseFloat(v));if(n!==v){this.value=n;compute();}}});
+});
+(function(){var home=location.hostname.indexOf("kyodopartners.net")>=0?"/":"https://www.kyodopartners.com/";var h=document.getElementById("kpHome");if(h)h.setAttribute("href",home);var b=document.getElementById("kpBack");if(b)b.addEventListener("click",function(e){e.preventDefault();if(history.length>1){history.back();}else{location.href=home;}});})();
+</script>
+</body>
+</html>
