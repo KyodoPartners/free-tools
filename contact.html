@@ -19,13 +19,22 @@
   .kp-nav{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:transparent;width:auto;border:none;padding:0;}
   .kp-btn{background:rgba(255,255,255,.16);color:#fff;border:1px solid rgba(255,255,255,.4);border-radius:8px;padding:5px 11px;font:inherit;font-size:.84rem;font-weight:600;cursor:pointer;text-decoration:none;}
   .kp-btn:hover{background:rgba(255,255,255,.3);}
-  .kp-link{color:#e8f1ec;text-decoration:none;font-size:.84rem;}
-  .kp-link:hover{color:#fff;}
+  .kp-link{background:rgba(255,255,255,.16);color:#fff;border:1px solid rgba(255,255,255,.4);border-radius:8px;padding:5px 11px;font-size:.84rem;font-weight:600;text-decoration:none;}
+  .kp-link:hover{background:rgba(255,255,255,.3);color:#fff;}
   h1{font-size:1.75rem;margin:26px 0 6px;}
   .lead{color:var(--muted);margin:0 0 18px;max-width:62ch;}
-  .formcard{background:#fff;border:1px solid var(--line);border-radius:13px;padding:6px;overflow:hidden;}
-  .formcard iframe{width:100%;border:0;min-height:1150px;display:block;}
-  .fallback{background:#fff;border:1px solid var(--line);border-left:3px solid #166534;border-radius:10px;padding:15px 18px;color:var(--muted);font-size:.95rem;}
+  .formcard{background:#fff;border:1px solid var(--line);border-radius:13px;padding:22px 20px;max-width:640px;}
+  .formcard label{display:block;font-weight:600;font-size:.9rem;margin:14px 0 5px;}
+  .formcard input[type=text],.formcard input[type=email],.formcard textarea{width:100%;border:1px solid var(--line);border-radius:8px;padding:10px 12px;font:inherit;font-size:.95rem;color:var(--ink);background:#fbfdfe;}
+  .formcard input:focus,.formcard textarea:focus{outline:2px solid #166534;border-color:#166534;}
+  .formcard textarea{min-height:120px;resize:vertical;}
+  .formcard .topic{display:flex;gap:16px;flex-wrap:wrap;margin-top:4px;}
+  .formcard .topic label{display:flex;align-items:center;gap:6px;font-weight:500;margin:0;}
+  .formcard .send{margin-top:20px;background:var(--brand);color:#fff;border:0;border-radius:9px;padding:12px 28px;font:inherit;font-size:1rem;font-weight:700;cursor:pointer;}
+  .formcard .send:hover{background:#12532b;}
+  .formcard .req{color:#b91c1c;}
+  .kp-ok{background:#DCFCE7;border:1px solid #86efac;border-radius:11px;padding:18px 20px;color:#14532D;font-weight:600;max-width:640px;}
+  .fallback{background:#fff;border:1px solid var(--line);border-left:3px solid #166534;border-radius:10px;padding:15px 18px;color:var(--muted);font-size:.95rem;margin-top:16px;max-width:640px;}
   .kp-footer{background:#0f4023;color:#cfe6d8;margin-top:34px;}
   .kp-footer-in{max-width:1120px;margin:0 auto;padding:22px 18px 30px;font-size:.85rem;}
   .kp-footer a{color:#cfe6d8;}
@@ -47,32 +56,60 @@
   <h1>Contact us</h1>
   <p class="lead">Questions about a product, a purchase, or need support? Fill out the form and we'll reply by email — usually within one business day. For product help, include the product name and your order/receipt if you have it.</p>
 
-  <div class="formcard" id="kpformcard" style="display:none">
-    <iframe id="kpform" title="Contact Kyodo Partners" loading="lazy"></iframe>
-  </div>
+  <form class="formcard" id="kpform" novalidate>
+    <label for="cf_name">Name <span class="req">*</span></label>
+    <input type="text" id="cf_name" name="entry.1625174236" autocomplete="name" required>
 
-  <p class="fallback" id="kpfallback">If the form doesn't load, email <b>sales@kyodopartners.com</b> for sales questions or <b>support@kyodopartners.com</b> for product support and we'll get right back to you.</p>
+    <label for="cf_email">Email <span class="req">*</span></label>
+    <input type="email" id="cf_email" name="entry.1109004830" autocomplete="email" required>
+
+    <label>Topic</label>
+    <div class="topic">
+      <label><input type="radio" name="entry.422631737" value="Sales" checked> Sales</label>
+      <label><input type="radio" name="entry.422631737" value="Support"> Support</label>
+      <label><input type="radio" name="entry.422631737" value="Other"> Other</label>
+    </div>
+
+    <label for="cf_product">Product <span style="color:var(--muted);font-weight:400">(optional)</span></label>
+    <input type="text" id="cf_product" name="entry.1549571152" placeholder="e.g. Kyodo Rental Property Toolkit">
+
+    <label for="cf_msg">Message <span class="req">*</span></label>
+    <textarea id="cf_msg" name="entry.1380285002" required></textarea>
+
+    <button type="submit" class="send">Send message</button>
+  </form>
+
+  <div class="kp-ok" id="kpok" style="display:none">Thanks — your message has been sent. We'll reply by email, usually within one business day.</div>
+
+  <p class="fallback">Prefer email? Reach us at <b>sales@kyodopartners.com</b> for sales questions or <b>support@kyodopartners.com</b> for product support.</p>
 </div>
 
 <footer class="kp-footer"><div class="kp-footer-in">© 2026 Kyodo Partners LLC · Our tools are planning &amp; organization helpers — not legal, tax, accounting, or financial advice.</div></footer>
 
 <script>
-/* ============================================================
-   WIRE THE GOOGLE FORM: paste the embed URL between the quotes.
-   In Google Forms → Send → the < > (Embed HTML) tab → copy the
-   value of src="..." (starts https://docs.google.com/forms/.../viewform?embedded=true)
-   ============================================================ */
-var FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSeO95vH7vtEz9ZbOGha9OOaTVl-A0BQlBrziWHoK739N1aoRg/viewform?embedded=true";
-
+/* Native contact form. Posts to our Google Form's formResponse endpoint
+   (same form/spreadsheet as before) so there is no Google "sign in to
+   save progress" banner and it matches the site's styling. */
 (function(){
-  var card = document.getElementById('kpformcard');
-  var frame = document.getElementById('kpform');
-  var fb = document.getElementById('kpfallback');
-  if (FORM_URL && FORM_URL.indexOf('docs.google.com/forms') !== -1) {
-    frame.src = FORM_URL;
-    card.style.display = 'block';
-    fb.style.display = 'none';
-  }
+  var form = document.getElementById('kpform');
+  var ok = document.getElementById('kpok');
+  var ACTION = "https://docs.google.com/forms/d/e/1FAIpQLSeO95vH7vtEz9ZbOGha9OOaTVl-A0BQlBrziWHoK739N1aoRg/formResponse";
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var name = document.getElementById('cf_name');
+    var email = document.getElementById('cf_email');
+    var msg = document.getElementById('cf_msg');
+    if (!name.value.trim() || !email.value.trim() || !msg.value.trim()) {
+      alert('Please fill in your name, email, and a message.');
+      return;
+    }
+    var body = new URLSearchParams(new FormData(form));
+    fetch(ACTION, { method:'POST', mode:'no-cors', body: body }).finally(function(){
+      form.style.display = 'none';
+      ok.style.display = 'block';
+      ok.scrollIntoView({ behavior:'smooth', block:'center' });
+    });
+  });
 })();
 </script>
 <script>(function(){var b=document.getElementById("kpBack");if(b)b.addEventListener("click",function(){if(history.length>1){history.back();}else{location.href="https://www.kyodopartners.com";}});})();</script>

@@ -26,10 +26,10 @@ header h1{margin:0;font-size:19px;font-weight:600;}
 header p{margin:3px 0 0;font-size:12.5px;color:#bbf7d0;}
 .tag{margin-left:auto;font-size:11px;background:#14532D;color:#DCFCE7;padding:5px 12px;border-radius:20px;}
 .wrap{display:flex;min-height:calc(100vh - 76px);max-width:1200px;margin:0 auto;}
-nav{width:226px;background:#F8FAFC;border-right:1px solid var(--line);padding:12px 0;flex-shrink:0;}
-nav button{display:block;width:100%;text-align:left;background:none;border:none;border-left:3px solid transparent;padding:11px 20px;font-size:13.5px;color:var(--text);cursor:pointer;}
-nav button:hover{background:#f3f6fb;}
-nav button.active{border-left-color:#166534;background:#DCFCE7;color:#14532D;font-weight:600;}
+#nav{width:226px;background:#F8FAFC;border-right:1px solid var(--line);padding:12px 0;flex-shrink:0;}
+#nav button{display:block;width:100%;text-align:left;background:none;border:none;border-left:3px solid transparent;padding:11px 20px;font-size:13.5px;color:var(--text);cursor:pointer;}
+#nav button:hover{background:#f3f6fb;}
+#nav button.active{border-left-color:#166534;background:#DCFCE7;color:#14532D;font-weight:600;}
 main{flex:1;padding:20px 28px;max-width:940px;}
 .sizebar{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin-bottom:16px;}
 .sizebar span{font-size:12px;color:var(--muted);}
@@ -79,9 +79,9 @@ footer{padding:14px 28px;color:var(--muted);font-size:12px;border-top:1px solid 
   header p{font-size:11.5px;}
   .tag{display:none;}
   .wrap{flex-direction:column;min-height:0;}
-  nav{width:100%;border-right:none;border-bottom:1px solid var(--line);padding:6px;display:flex;flex-wrap:wrap;gap:4px;}
-  nav button{width:auto;border-left:none;border-radius:7px;padding:9px 13px;font-size:13px;}
-  nav button.active{border-left-color:transparent;background:#eaf1fb;}
+  #nav{width:100%;border-right:none;border-bottom:1px solid var(--line);padding:6px;display:flex;flex-wrap:wrap;gap:4px;}
+  #nav button{width:auto;border-left:none;border-radius:7px;padding:9px 13px;font-size:13px;}
+  #nav button.active{border-left-color:transparent;background:#eaf1fb;}
   main{padding:16px;max-width:100%;}
   .grid,.cols2,.mods{grid-template-columns:1fr;}
   .barrow{flex-wrap:wrap;}
@@ -101,8 +101,8 @@ footer{padding:14px 28px;color:var(--muted);font-size:12px;border-top:1px solid 
 .kp-nav{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:transparent;width:auto;border:none;padding:0;}
 .kp-btn{background:rgba(255,255,255,.16);color:#fff;border:1px solid rgba(255,255,255,.4);border-radius:8px;padding:5px 11px;font:inherit;font-size:.84rem;font-weight:600;cursor:pointer;text-decoration:none;}
 .kp-btn:hover{background:rgba(255,255,255,.3);}
-.kp-link{color:#e8f1ec;text-decoration:none;font-size:.84rem;}
-.kp-link:hover{color:#fff;}
+.kp-link{background:rgba(255,255,255,.16);color:#fff;border:1px solid rgba(255,255,255,.4);border-radius:8px;padding:5px 11px;font-size:.84rem;font-weight:600;text-decoration:none;}
+.kp-link:hover{background:rgba(255,255,255,.3);color:#fff;}
 .kp-footer{background:#0f4023;color:#cfe6d8;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;margin-top:40px;}
 .kp-footer-in{max-width:1120px;margin:0 auto;padding:30px 18px 14px;display:grid;grid-template-columns:1fr;gap:22px;}
 @media(min-width:640px){.kp-footer-in{grid-template-columns:1fr 1fr;}}
@@ -674,7 +674,7 @@ function calcRobot(){var y=num('ro_y'),nh=num('ro_nh'),ch=num('ro_ch'),fteh=num(
   document.getElementById('ro_call').textContent='A fleet of '+nh+' humanoids + '+nd+' robot dogs costs '+money(tco)+' over '+y+' years (~'+money(perry)+'/robot/yr), displacing '+ftes.toFixed(1)+' FTEs (~'+money(laborav)+'/yr of labor). '+(netval>0?('Payback ~'+payback.toFixed(1)+' months, ROI '+Math.round(roi*100)+'%/yr \u2014 real-world 12\u201324 mo after ramp-up.'):'At these inputs the fleet does not pay back \u2014 revisit counts, wage, shifts, or utilization.');}
 function calcAll(){calcIT();calcCloud();calcFleet();calcEquip();calcHR();calcSaaS();calcFac();calcLease();calcOutsource();calcSolar();calcRobot();}
 document.getElementById('nav').addEventListener('click',function(e){if(e.target.tagName!=='BUTTON')return;var t=e.target.getAttribute('data-t');
-  document.querySelectorAll('nav button').forEach(function(b){b.classList.toggle('active',b===e.target);});
+  document.querySelectorAll('#nav button').forEach(function(b){b.classList.toggle('active',b===e.target);});
   document.querySelectorAll('.panel').forEach(function(p){p.classList.toggle('active',p.getAttribute('data-p')===t);});});
 document.addEventListener('input',calcAll);document.addEventListener('change',calcAll);calcAll();
 </script>
