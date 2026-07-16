@@ -45,6 +45,14 @@ A landlord dashboard that runs entirely in your web browser. Paste a tenant's me
 
 ---
 
+## Your history & backups
+
+Everything you enter — tenant requests, warranties, properties, and expenses — saves automatically inside your browser, so it's there when you come back on the same device. Because it lives in the browser, it isn't a file you can open on its own, and it won't follow you to another device or survive clearing your browser data.
+
+So keep a spreadsheet copy. Click **Export to Excel** and you get one workbook with a tab for each list, including a **Requests** tab that logs every tenant message, the app's summary and priority, the warranty match, the suggested next step, and the **drafted reply** — a complete communication history you can open in Excel or Google Sheets and keep. To restore or move your data later, click **Import** and pick that file. Export after any busy session; that Excel file is your permanent record.
+
+---
+
 ## Disclaimer
 
 Kyodo Landlord Toolkit **organizes** your landlord workflow. It does not calculate taxes, determine legal rights or deductibility, or provide legal, tax, accounting, or financial advice. The request classification and calculators are planning helpers — always read the tenant's original message and consult a qualified professional for important decisions.
