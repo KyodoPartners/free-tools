@@ -423,8 +423,10 @@ document.getElementById("demo-run").addEventListener("click",()=>{
   const cvR=within2SE(C,R);
   document.getElementById("demo-verdict").textContent =
     "The combined \u201cbest\u201d line matched "+C.mean.toFixed(2)+" numbers per draw; a random Quick Pick matched "+R.mean.toFixed(2)+".";
-  document.getElementById("demo-explain").textContent =
-    "Both sit near "+expected.toFixed(2)+", what pure chance predicts. Their gap of "+Math.abs(C.mean-R.mean).toFixed(2)+" is within the \u00b1"+(2*cvR.seDiff).toFixed(2)+" you'd expect from randomness alone (2 SE). Combining every statistic gives you\u2026 chance.";
+  const gap=Math.abs(C.mean-R.mean).toFixed(2), band=(2*cvR.seDiff).toFixed(2);
+  document.getElementById("demo-explain").textContent = cvR.within
+    ? "Both sit near "+expected.toFixed(2)+", what pure chance predicts. Their gap of "+gap+" is within the \u00b1"+band+" you'd expect from randomness alone (2 SE). Combining every statistic gives you\u2026 chance."
+    : "Both sit near "+expected.toFixed(2)+", what pure chance predicts. Their gap of "+gap+" runs a little past the \u00b1"+band+" expected from randomness this time (2 SE) \u2014 that's the ordinary wobble of a single run, not a signal; rerun and it settles back to chance.";
   document.getElementById("demo-out").hidden=false;
 });
 
