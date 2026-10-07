@@ -75,14 +75,22 @@
 
   /* Hide page chrome when printing so the printout is just the numbers. */
   function injectPrintCss() {
+    // NOTE: the two page families use different class names —
+    // breakeven-*.html use <header class="kp"> / <footer class="kp">,
+    // the five main calculators use .kp-header / .kp-footer. Hide both.
+    // The orange buy box (.kpb-wrap and friends) must never print: a
+    // customer handing these numbers to a lender should not be handing
+    // over our sales pitch too.
     var css =
       "@media print{" +
         "html,body{background:#fff !important;}" +
-        ".kp-header,.kp-footer,footer.kp,.kpb-sticky,#kpCapture,nav,.kp-nav,.kp-btn,.kp-link{display:none !important;}" +
+        "header.kp,header.kp-header,.kp-header,.kp-footer,footer.kp,footer.kp-footer," +
+          ".kpb-sticky,.kpb-wrap,.kpb-card,.kpb-buyzone,.kpb-buy," +
+          "#kpCapture,nav,.kp-nav,.kp-btn,.kp-link{display:none !important;}" +
         "a[href]:after{content:'' !important;}" +
         "*{box-shadow:none !important;}" +
         ".card,.box,section,table,.r-card{break-inside:avoid;page-break-inside:avoid;}" +
-        "#kpPrintStamp{display:block !important;font:12px/1.5 -apple-system,Segoe UI,Roboto,sans-serif;color:#444;" +
+        "#kpPrintStamp{display:block !important;font:11px/1.5 -apple-system,Segoe UI,Roboto,sans-serif;color:#555;" +
           "border-bottom:1px solid #ccc;padding-bottom:6px;margin-bottom:14px;}" +
       "}" +
       "#kpPrintStamp{display:none;}";
@@ -92,11 +100,13 @@
     document.head.appendChild(s);
   }
 
-  /* A small "printed from" line that only appears on paper. */
+  /* A small "printed from" line that only appears on paper.
+     Deliberately does NOT repeat the page title — the browser already
+     prints its own header with the title and date. */
   function injectPrintStamp() {
-    var stamp = el("div", null, "Kyodo Partners — " + document.title +
-      "  ·  printed " + new Date().toLocaleDateString() +
-      "  ·  kyodopartners.com  ·  Planning helper, not financial advice.");
+    var stamp = el("div", null,
+      "kyodopartners.com  ·  printed " + new Date().toLocaleDateString() +
+      "  ·  Planning helper — not legal, tax, accounting, or financial advice.");
     stamp.id = "kpPrintStamp";
     if (document.body.firstChild) {
       document.body.insertBefore(stamp, document.body.firstChild);
@@ -125,6 +135,9 @@
       "#kpCapture .kpc-send{background:#15803D;color:#fff;border:0;border-radius:9px;padding:10px 18px;" +
         "font-weight:700;font-size:.95rem;cursor:pointer;}" +
       "#kpCapture .kpc-send:hover{background:#166534;}" +
+      "#kpCapture .kpc-opt{display:flex;gap:8px;align-items:flex-start;margin:12px 0 0;font-weight:400;" +
+        "font-size:.88rem;color:#374151;cursor:pointer;line-height:1.45;}" +
+      "#kpCapture .kpc-opt input{margin:2px 0 0;flex:0 0 auto;width:16px;height:16px;accent-color:#166534;cursor:pointer;}" +
       "#kpCapture .kpc-fine{margin:9px 0 0;font-size:.82rem;color:#6b7280;}" +
       "#kpCapture .kpc-err{margin:8px 0 0;font-size:.86rem;color:#b91c1c;}" +
       "#kpCapture .kpc-thanks{margin:0;color:#166534;font-weight:600;}";
@@ -142,17 +155,31 @@
     try { window.localStorage.setItem(DONE_KEY, "1"); } catch (e) {}
   }
 
+  /* Print-only pages: show the Print / Save button but NO email form.
+     Used where the email offer (a guide / paid workbook) does not exist or
+     does not fit, e.g. the lottery educator page. A page opts in with
+     <meta name="kp-capture" content="print-only">, or by being listed here. */
+  var PRINT_ONLY_PAGES = ["lottery-odds-calculator"];
+  function isPrintOnly() {
+    var m = document.querySelector('meta[name="kp-capture"]');
+    if (m && /print-only/i.test(m.getAttribute("content") || "")) return true;
+    var f = (location.pathname.split("/").pop() || "").replace(/\.html$/, "");
+    return PRINT_ONLY_PAGES.indexOf(f) !== -1;
+  }
+
   function build() {
     var slug = toolSlug();
+    var printOnly = isPrintOnly();
 
     var wrap = el("section");
     wrap.id = "kpCapture";
-    wrap.setAttribute("aria-label", "Print your results or request the written guide");
+    wrap.setAttribute("aria-label", printOnly ? "Print your results" : "Print your results or request the written guide");
 
     wrap.appendChild(el("h3", null, "Take your results with you"));
-    wrap.appendChild(el("p", "kpc-sub",
-      "Print this page or save it as a PDF so you can hand the numbers to a lender, " +
-      "a partner, or your accountant. Nothing is uploaded — the file is made right here in your browser."));
+    wrap.appendChild(el("p", "kpc-sub", printOnly
+      ? "Print this page or save it as a PDF to keep your results. Nothing is uploaded — the file is made right here in your browser."
+      : "Print this page or save it as a PDF so you can hand the numbers to a lender, " +
+        "a partner, or your accountant. Nothing is uploaded — the file is made right here in your browser."));
 
     var printBtn = el("button", "kpc-print", "🖨  Print / Save as PDF");
     printBtn.type = "button";
@@ -162,7 +189,7 @@
     });
     wrap.appendChild(printBtn);
 
-    if (alreadySignedUp()) return wrap;
+    if (printOnly || alreadySignedUp()) return wrap;
 
     wrap.appendChild(el("hr", "kpc-rule"));
 
@@ -172,7 +199,7 @@
     var form = el("form");
     form.setAttribute("novalidate", "novalidate");
 
-    var lab = el("label", null, "Want the written guide that explains these numbers?");
+    var lab = el("label", null, "Want this guide emailed to you to read later?");
     lab.setAttribute("for", "kpcEmail");
     form.appendChild(lab);
 
@@ -189,10 +216,23 @@
     row.appendChild(send);
     form.appendChild(row);
 
+    /* Opt-in for anything beyond the one guide they asked for.
+       Unchecked by default — an opt-in that starts checked is not consent. */
+    var optWrap = el("label", "kpc-opt");
+    var optBox = el("input");
+    optBox.type = "checkbox";
+    optBox.id = "kpcOptIn";
+    optWrap.appendChild(optBox);
+    optWrap.appendChild(el("span", null,
+      " Check here if you'd also like other information from Kyodo Partners — " +
+      "new free tools and guides as we release them."));
+    optWrap.setAttribute("for", "kpcOptIn");
+    form.appendChild(optWrap);
+
     var fine = el("p", "kpc-fine",
-      "We'll send the guide for this calculator and let you know when the paid workbook is ready. " +
       "Only your email address is sent — the numbers you typed above never leave your device. " +
-      "No newsletter, and you can ask us to delete it any time.");
+      "We never sell, rent, or share your email address with anyone. " +
+      "You can ask us to delete it at any time and we will.");
     form.appendChild(fine);
 
     var err = el("p", "kpc-err");
@@ -219,7 +259,10 @@
       body.append(F_EMAIL, value);
       body.append(F_TOPIC, "Other");
       body.append(F_PRODUCT, slug);
-      body.append(F_MESSAGE, "Guide request from the free " + slug + " calculator (" + location.pathname + ")");
+      var wantsMore = !!(optBox && optBox.checked);
+      body.append(F_MESSAGE,
+        "Guide request from the free " + slug + " calculator (" + location.pathname + "). " +
+        "Consent to other Kyodo Partners information: " + (wantsMore ? "YES" : "no") + ".");
 
       function finish() {
         ev("email_capture", { tool: slug, page_path: location.pathname });
