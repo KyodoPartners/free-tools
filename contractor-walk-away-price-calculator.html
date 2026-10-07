@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contractor Walk-Away Price Calculator — the lowest price you can take on a job</title>
+<meta name="description" content="Free calculator. Work out your overhead per billable hour, your break-even price, and the walk-away price below which a job costs you money. No signup, no email, nothing uploaded. Works on any phone, tablet or computer.">
+<link rel="canonical" href="https://kyodopartners.com/contractor-walk-away-price-calculator.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Contractor Walk-Away Price Calculator">
+<meta property="og:description" content="The lowest price you can take on this job without paying to do it. Free, no signup, works on any device.">
+<meta property="og:url" content="https://kyodopartners.com/contractor-walk-away-price-calculator.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="robots" content="index,follow,max-snippet:-1">
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebApplication",
+      "name":"Contractor Walk-Away Price Calculator",
+      "applicationCategory":"BusinessApplication",
+      "operatingSystem":"Any web browser",
+      "url":"https://kyodopartners.com/contractor-walk-away-price-calculator.html",
+      "description":"Free calculator that works out a contractor's overhead per billable hour, break-even price and walk-away price for a job.",
+      "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}
+    },
+    {
+      "@type":"FAQPage",
+      "mainEntity":[
+        {"@type":"Question","name":"What is a walk-away price?",
+         "acceptedAnswer":{"@type":"Answer","text":"Your walk-away price is the lowest price you can accept for a job and still hit the minimum profit margin you have decided you need. It sits above break-even. Break-even means you made nothing; the walk-away price means you made the least you are willing to work for. Decide it before you meet the customer, and do not negotiate below it."}},
+        {"@type":"Question","name":"What is the difference between markup and margin?",
+         "acceptedAnswer":{"@type":"Answer","text":"Markup is the percentage you add to your cost. Margin is the percentage you keep out of the final price. They are never the same number. Adding 20 percent to a cost gives you a 16.7 percent margin, not 20 percent. To keep a 20 percent margin you must add 25 percent to cost. Margin equals markup divided by one plus markup."}},
+        {"@type":"Question","name":"How do I calculate my overhead per billable hour?",
+         "acceptedAnswer":{"@type":"Answer","text":"Add up a full year of overhead — insurance, vehicle, phone, software, accounting, advertising, and the unpaid hours you spend quoting and chasing invoices. Then count the hours you actually bill in a year, which is far fewer than the hours you work. Divide the first by the second. Most one to five person contracting businesses land between 12 and 35 dollars per billable hour."}},
+        {"@type":"Question","name":"Why is my labour cost per hour higher than the wage I pay?",
+         "acceptedAnswer":{"@type":"Answer","text":"Because the wage is not the cost. Payroll taxes, workers compensation, liability insurance, and vehicle costs all ride on top. For most small crews the true cost is the wage multiplied by roughly 1.25 to 1.45. If you pay 28 dollars an hour, your cost is closer to 35 to 40."}},
+        {"@type":"Question","name":"Is this calculator free?",
+         "acceptedAnswer":{"@type":"Answer","text":"Yes. There is no signup, no email address required, and no account. Everything runs inside your own browser and no numbers are sent anywhere."}}
+      ]
+    }
+  ]
+}
+</script>
+<style>
+:root{
+  --ink:#1c2733; --muted:#5b6b7b; --line:#e4e9ef; --bg:#f5f8fa; --panel:#fff;
+  --accent:#166534; --accent-soft:#e8f1ec; --warn:#b8660a; --warn-soft:#fdf1e0;
+  --bad:#8c2f22; --bad-soft:#fbecea; --hero:#14532d;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font:17px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  color:var(--ink);background:var(--bg);-webkit-text-size-adjust:100%}
+.wrap{max-width:820px;margin:0 auto;padding:0 18px}
+header.hero{background:var(--hero);color:#fff;padding:34px 0 30px}
+header.hero h1{font-size:29px;line-height:1.18;margin:0 0 10px;letter-spacing:-.4px}
+header.hero p.lede{margin:0;font-size:18px;color:#cfe6d8;max-width:36em}
+header.hero p.free{margin:16px 0 0;font-size:13.5px;color:#bbf7d0;letter-spacing:.3px}
+main{padding:26px 0 60px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:22px;margin:0 0 18px}
+h2{font-size:20px;margin:0 0 4px;letter-spacing:-.2px}
+h3{font-size:12px;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin:22px 0 10px;font-weight:700}
+h3:first-of-type{margin-top:4px}
+.hint{font-size:14.5px;color:var(--muted);margin:0 0 16px}
+.field{margin:0 0 14px}
+.field label{display:block;font-size:13px;font-weight:600;margin:0 0 5px}
+.field .sub{display:block;font-size:12.5px;color:var(--muted);font-weight:400;margin:2px 0 5px}
+input[type=number]{font:inherit;font-size:17px;width:100%;padding:11px 12px;border:1px solid var(--line);
+  border-radius:7px;text-align:right;font-variant-numeric:tabular-nums;background:#fff;color:var(--ink);-moz-appearance:textfield}
+input[type=number]:focus{outline:2px solid var(--accent);outline-offset:-1px;border-color:var(--accent)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
+.calcbox{background:#f0f4f2;border:1px solid var(--line);border-radius:7px;padding:11px 12px;
+  text-align:right;font-variant-numeric:tabular-nums;font-size:17px;color:var(--muted)}
+
+/* result */
+.result{background:var(--hero);color:#fff;border-radius:10px;padding:24px 22px;margin:0 0 18px}
+.result .lab{font-size:11.5px;text-transform:uppercase;letter-spacing:1.1px;color:#bbf7d0;font-weight:700;margin:0 0 4px}
+.result .big{font-size:44px;line-height:1;font-weight:700;letter-spacing:-1.5px;font-variant-numeric:tabular-nums;margin:0 0 6px}
+.result .cap{font-size:14.5px;color:#cfe6d8;margin:0}
+.rowset{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:22px 0 0;
+  border-top:1px solid rgba(255,255,255,.18);padding-top:18px}
+.rowset .lab{color:#8fb9ac}
+.rowset .v{font-size:21px;font-weight:700;font-variant-numeric:tabular-nums}
+table.read{width:100%;border-collapse:collapse;font-size:15px}
+table.read td{padding:7px 0;border-bottom:1px solid var(--line)}
+table.read td:last-child{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+table.read tr.b td{font-weight:700;border-bottom:2px solid var(--ink)}
+table.read tr:last-child td{border-bottom:none}
+.note{background:var(--accent-soft);border-left:3px solid var(--accent);padding:13px 15px;
+  border-radius:0 6px 6px 0;font-size:15px;margin:16px 0}
+.note.warn{background:var(--warn-soft);border-left-color:var(--warn)}
+.note.bad{background:var(--bad-soft);border-left-color:var(--bad)}
+.note strong{display:block;margin-bottom:3px}
+.btn{font:inherit;font-size:15px;font-weight:600;padding:12px 20px;border-radius:8px;
+  border:1px solid var(--line);background:#fff;cursor:pointer;color:var(--ink);text-decoration:none;display:inline-block}
+.btn:hover{background:#f0f2f2}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.primary:hover{background:#0c4a3c}
+.btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+table.conv{width:100%;border-collapse:collapse;font-size:15px;margin:12px 0 0}
+table.conv th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.6px;
+  color:var(--muted);border-bottom:2px solid var(--ink);padding:0 0 6px}
+table.conv th:last-child,table.conv td:last-child{text-align:right}
+table.conv td{padding:6px 0;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+details{border-top:1px solid var(--line);padding:14px 0}
+details summary{cursor:pointer;font-weight:600;font-size:16px;list-style:none}
+details summary::-webkit-details-marker{display:none}
+details summary::before{content:"+ ";color:var(--accent);font-weight:700}
+details[open] summary::before{content:"– "}
+details p{margin:10px 0 0;font-size:15.5px;color:#33393c}
+.upsell{background:#fff;border:2px solid var(--accent);border-radius:10px;padding:24px 22px}
+.upsell h2{color:var(--accent)}
+.upsell ul{margin:12px 0 18px;padding-left:20px}
+.upsell li{margin:0 0 6px;font-size:15.5px}
+footer{border-top:1px solid var(--line);padding:24px 0 40px;font-size:13.5px;color:var(--muted)}
+footer a{color:var(--accent)}
+@media(max-width:640px){
+  header.hero h1{font-size:24px}
+  .grid2{grid-template-columns:1fr}
+  .result .big{font-size:36px}
+  .rowset{grid-template-columns:1fr;gap:12px}
+  .card{padding:18px}
+}
+@media print{
+  header.hero{background:#fff;color:#000;padding:0 0 12px;border-bottom:2px solid #000}
+  header.hero h1{font-size:20px}header.hero p.lede,header.hero p.free{color:#444;font-size:12px}
+  .result{background:#fff;color:#000;border:2px solid #000}
+  .result .lab{color:#444}.rowset .lab{color:#444}
+  .noprint{display:none !important}
+  body{font-size:12px;background:#fff}
+  .card{border:none;padding:0;margin:0 0 14px}
+  @page{margin:16mm}
+}
+</style>
+<script src="/kp-analytics.js" defer></script>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <h1>Contractor Walk-Away Price Calculator</h1>
+    <p class="lede">The lowest price you can take on this job without paying to do it — and what every dollar below it costs you.</p>
+    <p class="free">Free · no signup · no email · nothing is uploaded anywhere</p>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section class="card">
+  <h2>Your business</h2>
+  <p class="hint">You only need to work these two out once. They stay true until your costs change.</p>
+
+  <div class="grid2">
+    <div class="field">
+      <label for="ohAnnual">A year of overhead</label>
+      <span class="sub">Insurance, truck, phone, software, accounting, advertising, and the unpaid hours you spend quoting and chasing invoices. Not materials, not job labour.</span>
+      <input id="ohAnnual" type="number" inputmode="decimal" value="48000" min="0" step="500">
+    </div>
+    <div class="field">
+      <label for="ohHours">Hours you actually bill in a year</label>
+      <span class="sub">Not the hours you work — the hours a customer pays for. Usually 2,000 to 3,000 for a small crew, and almost everyone guesses high.</span>
+      <input id="ohHours" type="number" inputmode="decimal" value="2400" min="1" step="50">
+    </div>
+  </div>
+
+  <div class="field" style="max-width:340px">
+    <label for="ohRate">Your overhead, per billable hour</label>
+    <div class="calcbox" id="ohRate">$0.00</div>
+  </div>
+</section>
+
+<section class="card">
+  <h2>This job</h2>
+  <p class="hint">Enter what the job costs <em>you</em>. Not what you plan to charge.</p>
+
+  <div class="grid2">
+    <div class="field">
+      <label for="jobHours">Labour hours</label>
+      <span class="sub">Total man-hours. Two people for three days is 48.</span>
+      <input id="jobHours" type="number" inputmode="decimal" value="48" min="0" step="1">
+    </div>
+    <div class="field">
+      <label for="labRate">Labour cost per hour</label>
+      <span class="sub">The wage you pay <em>plus</em> payroll burden — taxes, comp, insurance, vehicle. Usually the wage × 1.25 to 1.45.</span>
+      <input id="labRate" type="number" inputmode="decimal" value="38" min="0" step="1">
+    </div>
+    <div class="field">
+      <label for="matCost">Materials, at your cost</label>
+      <input id="matCost" type="number" inputmode="decimal" value="4200" min="0" step="50">
+    </div>
+    <div class="field">
+      <label for="otherCost">Subcontractors, equipment, permits, dump fees</label>
+      <input id="otherCost" type="number" inputmode="decimal" value="900" min="0" step="50">
+    </div>
+    <div class="field">
+      <label for="minMargin">Minimum margin you will accept (%)</label>
+      <span class="sub">Your floor. The number you refuse to go below.</span>
+      <input id="minMargin" type="number" inputmode="decimal" value="12" min="0" max="90" step="1">
+    </div>
+    <div class="field">
+      <label for="tgtMargin">Margin you actually want (%)</label>
+      <input id="tgtMargin" type="number" inputmode="decimal" value="22" min="0" max="90" step="1">
+    </div>
+  </div>
+</section>
+
+<div class="result" id="resultBox">
+  <p class="lab">Your walk-away price</p>
+  <p class="big" id="walkAway">$0</p>
+  <p class="cap" id="walkCap">Take a dollar less than this and you are working below the floor you set.</p>
+  <div class="rowset">
+    <div><p class="lab">Break-even</p><div class="v" id="breakEven">$0</div></div>
+    <div><p class="lab">Price you want</p><div class="v" id="targetPrice">$0</div></div>
+    <div><p class="lab">Profit per labour hour</p><div class="v" id="perHour">$0</div></div>
+  </div>
+</div>
+
+<section class="card">
+  <h2>The read</h2>
+  <table class="read"><tbody id="readout"></tbody></table>
+  <div id="verdict"></div>
+  <div class="btns noprint" style="margin-top:16px">
+    <button class="btn" onclick="window.print()">Print or save this</button>
+    <button class="btn" onclick="resetAll()">Reset</button>
+  </div>
+</section>
+
+<section class="card">
+  <h2>Markup is not margin</h2>
+  <p>This is the mistake that quietly empties a busy contractor's account, and almost everyone in the trade has made it at least once.</p>
+  <p><strong>Markup</strong> is what you add to your cost. <strong>Margin</strong> is what you keep out of the price. They are never the same number.</p>
+  <p>A job costs you $10,000. You add 20% — "twenty per cent, that's my margin." You charge $12,000 and make $2,000. But $2,000 out of $12,000 is <strong>16.7%</strong>, not 20%. You just handed back a third of the profit you thought you were making. To actually keep 20% of the price, you have to add <strong>25%</strong> to your cost.</p>
+
+  <table class="conv">
+    <thead><tr><th>Add this markup to cost</th><th>You keep this margin</th></tr></thead>
+    <tbody>
+      <tr><td>10%</td><td>9.1%</td></tr>
+      <tr><td>15%</td><td>13.0%</td></tr>
+      <tr><td>20%</td><td>16.7%</td></tr>
+      <tr><td>25%</td><td>20.0%</td></tr>
+      <tr><td>33.3%</td><td>25.0%</td></tr>
+      <tr><td>42.9%</td><td>30.0%</td></tr>
+      <tr><td>53.8%</td><td>35.0%</td></tr>
+      <tr><td>66.7%</td><td>40.0%</td></tr>
+    </tbody>
+  </table>
+
+  <div class="note"><strong>The formula, if you want it.</strong>
+    Margin = markup ÷ (1 + markup). Markup = margin ÷ (1 − margin). The calculator above works in margin throughout, so you never have to do this in your head at nine at night with a customer waiting.</div>
+</section>
+
+<section class="card">
+  <h2>Common questions</h2>
+
+  <details open><summary>What counts as overhead?</summary>
+    <p>Everything you pay for whether or not you are on a job. Insurance, your truck and fuel to and from the yard, your phone, software subscriptions, the accountant, advertising, licence renewals, the rent on the storage unit — and the hours you spend estimating, invoicing, chasing payment and driving out to look at work you do not win. That last one is the one people leave out, and it is often the largest.</p></details>
+
+  <details><summary>Why are my billable hours so much lower than the hours I work?</summary>
+    <p>Because quoting, driving, buying materials, invoicing and chasing money are all hours you do not bill. A contractor working a full year might put in 2,000 hours and bill 1,300 of them. If you divide your overhead by the hours you <em>work</em> instead of the hours you <em>bill</em>, you will under-recover on every job you take. Guess low here rather than high.</p></details>
+
+  <details><summary>Why is my labour cost higher than the wage I pay?</summary>
+    <p>The wage is not the cost. Payroll taxes, workers' compensation, liability insurance and vehicle costs all ride on top of it. For most small crews the true cost is the wage multiplied by somewhere between 1.25 and 1.45. If you pay $28 an hour, enter something closer to $35 to $40.</p></details>
+
+  <details><summary>What is the difference between break-even and the walk-away price?</summary>
+    <p>Break-even is the price at which you made exactly nothing — you covered your costs and your overhead and went home with zero for the risk. The walk-away price is break-even plus the minimum margin you decided you were willing to work for. Break-even is a fact about the job. The walk-away price is a decision about your business. Make it before you meet the customer, write it on the folder, and do not move.</p></details>
+
+  <details><summary>Should I show the customer these numbers?</summary>
+    <p>No. Your costs, your rates, your overhead and your margin are yours. A customer gets a scope of work and a price. If they ask for a breakdown, give them categories — labour, materials, permits — not your cost per hour. The moment they can see your material cost they will start pricing your lumber at the big-box store on their phone.</p></details>
+
+  <details><summary>Where does this go wrong?</summary>
+    <p>Three places, in order of how often. Overhead guessed too low, usually by forgetting unpaid hours. Billable hours guessed too high, because it feels like you work all the time. And margin confused with markup, which quietly costs you a third of your profit on every job. This page fixes all three, and it is free, and there is nothing to sign up for.</p></details>
+</section>
+
+<section class="upsell noprint">
+  <h2>When you want the whole job priced, not just the floor</h2>
+  <p>This page gives you one number. The full toolkit prices the entire job — every labour line, materials with waste and markup, equipment, subcontractors, contingency and tax — and then produces the estimate you actually hand the customer, with a payment schedule, your terms and a signature block. It prices change orders at the same overhead and profit as the original bid, so the work added halfway through stops being free.</p>
+  <ul>
+    <li>Runs in any browser on any device. No Excel, no Google account, no subscription, no internet needed.</li>
+    <li>Your costs never appear on the customer's copy — you choose lump sum, summary or itemised.</li>
+    <li>One payment. Yours to keep. An eight-page guide comes with it.</li>
+  </ul>
+  <div class="btns">
+    <a class="btn primary" id="buyLink" href="#">Get the Contractor Bid &amp; Estimate Toolkit</a>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><strong>Nothing you type here leaves your device.</strong> There is no account, no tracking of your figures, and no email required. The calculation runs entirely inside your own browser.</p>
+    <p><strong>On an iPhone or iPad:</strong> this page remembers your two business figures, but Safari clears anything a web page has saved after seven days if you have not opened the page in between. To keep them, press the Share button and choose <em>Add to Home Screen</em> — storage in a Home Screen app is not cleared on that timer. On a computer the figures stay until you clear them yourself.</p>
+    <p>This tool does arithmetic on numbers you supply. It is not a cost database, and it is not accounting, tax or legal advice. Checking your inputs, and standing behind the price, is your job.</p>
+    <p>Built by Kyodo Partners. Artificial intelligence was used in building this tool; the pricing method and the written guidance are our own work.</p>
+  </div>
+</footer>
+
+<script>
+"use strict";
+var $=function(i){return document.getElementById(i)};
+function n(v){var x=parseFloat(v);return isFinite(x)?x:0}
+function money(v){var g=v<0;v=Math.abs(v);return (g?"-$":"$")+v.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,",")}
+function money0(v){var g=v<0;v=Math.abs(v);return (g?"-$":"$")+Math.round(v).toString().replace(/\B(?=(\d{3})+(?!\d))/g,",")}
+
+var FIELDS=["ohAnnual","ohHours","jobHours","labRate","matCost","otherCost","minMargin","tgtMargin"];
+var DEFAULTS={ohAnnual:48000,ohHours:2400,jobHours:48,labRate:38,matCost:4200,otherCost:900,minMargin:12,tgtMargin:22};
+
+function calc(){
+  var ohA=n($("ohAnnual").value), ohH=n($("ohHours").value)||1;
+  var ohRate=ohA/ohH;
+  $("ohRate").textContent=money(ohRate);
+
+  var hrs=n($("jobHours").value), lab=n($("labRate").value);
+  var labourCost=hrs*lab;
+  var mat=n($("matCost").value), oth=n($("otherCost").value);
+  var direct=labourCost+mat+oth;
+  var overhead=ohRate*hrs;
+  var breakEven=direct+overhead;
+
+  var minM=Math.min(n($("minMargin").value),90)/100;
+  var tgtM=Math.min(n($("tgtMargin").value),90)/100;
+  var walk=breakEven/(1-minM);
+  var target=breakEven/(1-tgtM);
+
+  var profTarget=target-breakEven;
+  var perHourProf=hrs>0?profTarget/hrs:0;
+  var perHourRev=hrs>0?target/hrs:0;
+
+  $("walkAway").textContent=money0(walk);
+  $("breakEven").textContent=money0(breakEven);
+  $("targetPrice").textContent=money0(target);
+  $("perHour").textContent=money0(perHourProf);
+
+  $("walkCap").textContent = breakEven>0
+    ? "Take a dollar less than " + money0(walk) + " and you are working below the floor you set."
+    : "Fill in the job above and your floor appears here.";
+
+  var markupEq = tgtM<0.9 ? ((tgtM/(1-tgtM))*100).toFixed(1)+"%" : "—";
+
+  $("readout").innerHTML=
+    r("Labour — "+hrs.toFixed(0)+" hours at "+money(lab),money(labourCost))+
+    r("Materials",money(mat))+
+    r("Subs, equipment, permits, fees",money(oth))+
+    rb("What this job costs you",money(direct))+
+    r("Overhead — "+money(ohRate)+" per billable hour × "+hrs.toFixed(0),money(overhead))+
+    rb("Break-even price",money(breakEven))+
+    r("Walk-away price at "+(minM*100).toFixed(0)+"% margin",money(walk))+
+    r("Price at your target "+(tgtM*100).toFixed(0)+"% margin",money(target))+
+    r("That target margin as a markup on cost",markupEq)+
+    r("Profit at the target price",money(profTarget))+
+    r("Revenue per labour hour",money(perHourRev))+
+    r("Profit per labour hour",money(perHourProf));
+
+  var v="";
+  if(direct<=0){
+    v="<div class='note'><strong>Nothing costed yet.</strong> Put the job's hours and material cost in above and the numbers fill in.</div>";
+  } else if(hrs<=0){
+    v="<div class='note warn'><strong>No labour hours entered.</strong> Overhead is recovered per hour, so with zero hours none of it is being recovered and the break-even price below is too low.</div>";
+  } else if(overhead/breakEven<0.05){
+    v="<div class='note warn'><strong>Your overhead is barely registering.</strong> It is coming to "+money(overhead)+
+      " on this job, about "+((overhead/breakEven)*100).toFixed(0)+"% of break-even. That usually means the annual overhead figure is too low or the billable hours are too high. Both mistakes push you toward taking work that loses money.</div>";
+  } else {
+    v="<div class='note'><strong>Write "+money0(walk)+" on the folder before you go.</strong> "+
+      "That is your floor on this job. At the price you actually want, "+money0(target)+
+      ", you clear "+money(profTarget)+" — which is "+money(perHourProf)+
+      " for every labour hour on site, after overhead. If the customer pushes you below "+money0(walk)+
+      ", the honest answer is that the job is not worth doing at that number.</div>";
+  }
+  $("verdict").innerHTML=v;
+
+  try{ localStorage.setItem("kp_walkaway",JSON.stringify(gather())); }catch(e){}
+}
+function r(l,v){return "<tr><td style='color:#5b6b7b'>"+l+"</td><td>"+v+"</td></tr>"}
+function rb(l,v){return "<tr class='b'><td>"+l+"</td><td>"+v+"</td></tr>"}
+
+function gather(){var o={};for(var i=0;i<FIELDS.length;i++)o[FIELDS[i]]=$(FIELDS[i]).value;return o}
+function resetAll(){for(var i=0;i<FIELDS.length;i++)$(FIELDS[i]).value=DEFAULTS[FIELDS[i]];calc();window.scrollTo(0,0)}
+
+(function init(){
+  /* remember the business figures between visits, quietly and locally */
+  try{
+    var s=localStorage.getItem("kp_walkaway");
+    if(s){var d=JSON.parse(s);for(var k in d){if($(k)&&d[k]!=="")$(k).value=d[k];}}
+  }catch(e){}
+  for(var i=0;i<FIELDS.length;i++){
+    $(FIELDS[i]).addEventListener("input",calc);
+    $(FIELDS[i]).addEventListener("change",calc);
+  }
+  /* the paid listing URL is set in one place */
+  $("buyLink").href="https://www.etsy.com/listing/4561382865";
+  calc();
+})();
+</script>
+</body>
+</html>
