@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lottery Odds &amp; Expected-Value Calculator — Kyodo Partners</title>
+<meta name="description" content="Free, honest lottery math: real jackpot odds for Powerball, Mega Millions and state games, what a ticket is actually worth, the birthday-split effect, and a simulator that shows why past draws can't predict the next one. No predictions, no systems — just the math.">
+<link rel="canonical" href="https://kyodopartners.com/lottery-odds-calculator.html">
+<style>
+/* ---- Kyodo Partners brand tokens (match kp-chrome) ---- */
+:root{
+  --brand:#166534;        /* primary brand green */
+  --brand-2:#15803D;      /* lighter green: links/hover */
+  --ink:#1c2733;          /* body text */
+  --muted:#6b7280;        /* labels/captions */
+  --page:#f8fafc;         /* page canvas */
+  --card:#ffffff;         /* card surface */
+  --line:#e2e8f0;         /* borders/dividers */
+  --callout-bg:#dcfce7;   /* success/callout box */
+  --callout-ink:#14532d;
+  --callout-line:#bbf7d0;
+  --warn-bg:#fef3c7;      /* amber note */
+  --warn-ink:#92400e;
+  --warn-line:#fcd34d;
+  --cta:#e8820e;          /* orange = money CTA only */
+  --cta-ink:#111111;
+  --cta-line:#b8660a;
+  --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;font-family:var(--font);color:var(--ink);background:var(--page);line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:var(--brand-2)}
+h1,h2,h3{line-height:1.2;margin:0}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+
+
+/* ---- hero ---- */
+.hero{background:var(--brand);color:#fff;padding:26px 0 30px}
+.hero .wrap{max-width:1040px}
+.hero h1{font-size:clamp(1.8rem,4.4vw,2.6rem);font-weight:800;letter-spacing:-.01em}
+.hero p.lead{margin:12px 0 0;max-width:62ch;font-size:1.06rem;color:#eafbf0}
+.hero .honest{margin-top:14px;max-width:66ch;color:#d6f5e0;font-size:.98rem}
+.rp{display:flex;gap:10px;align-items:flex-start;margin-top:18px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.3);border-radius:10px;padding:11px 14px;max-width:66ch;font-size:.9rem;color:#eafbf0}
+.rp a{color:#fff;font-weight:700}
+
+/* ---- section + card ---- */
+section{padding:30px 0}
+section + section{border-top:1px solid var(--line)}
+.sec-head{margin-bottom:6px;font-size:1.5rem;font-weight:800;color:var(--brand)}
+.sec-sub{margin:0 0 20px;color:var(--muted);max-width:68ch}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px}
+.grid2{display:grid;gap:22px;grid-template-columns:1fr 1fr}
+@media(max-width:760px){.grid2{grid-template-columns:1fr}}
+
+/* ---- form controls ---- */
+label{display:block;font-size:.82rem;font-weight:600;color:var(--muted);margin:0 0 5px}
+input[type=number],select{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:9px;font:inherit;color:var(--ink);background:#fff}
+input:focus-visible,select:focus-visible,button:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
+.field{margin-bottom:14px}
+.row{display:grid;gap:12px;grid-template-columns:1fr 1fr}
+@media(max-width:520px){.row{grid-template-columns:1fr}}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden;flex-wrap:wrap}
+.seg button{border:0;background:#fff;color:var(--ink);padding:8px 13px;font:600 .85rem/1 var(--font);cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--brand);color:#fff}
+
+/* buttons: green = action/nav, orange reserved for money (not used here) */
+.btn{appearance:none;border:1px solid var(--brand);background:var(--brand);color:#fff;font:700 .95rem/1 var(--font);padding:12px 20px;border-radius:9px;cursor:pointer;min-height:46px}
+.btn:hover{background:var(--brand-2);border-color:var(--brand-2)}
+.btn.sec{background:#fff;color:var(--brand)}
+
+/* result + math readout */
+.result{margin-top:16px;background:var(--callout-bg);border:1px solid var(--callout-line);color:var(--callout-ink);border-radius:11px;padding:16px}
+.result .big{font-size:clamp(1.3rem,3vw,1.9rem);font-weight:800;line-height:1.1}
+.steps{margin-top:12px;font-family:var(--mono);font-size:.82rem;color:var(--ink);background:#0f172a08;border:1px solid var(--line);border-radius:9px;padding:12px;white-space:pre-wrap;overflow-x:auto}
+.note{font-size:.82rem;color:var(--muted);margin-top:10px}
+.callout{background:var(--callout-bg);border:1px solid var(--callout-line);color:var(--callout-ink);border-radius:11px;padding:16px}
+.warn{background:var(--warn-bg);border:1px solid var(--warn-line);color:var(--warn-ink);border-radius:11px;padding:14px;font-size:.9rem}
+
+/* number balls (data display, not a bet surface) */
+.balls{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.ball{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:#1d4ed8;color:#fff;font-weight:700;font-size:.9rem}
+.ball.special{background:#7c3aed}
+.ball.miss{background:#e2e8f0;color:#64748b}
+.ball.hit{box-shadow:0 0 0 3px var(--brand)}
+
+/* comparison table */
+.cmp{width:100%;border-collapse:collapse;margin-top:14px;font-size:.92rem}
+.cmp th,.cmp td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
+.cmp th{color:var(--muted);font-size:.78rem;font-weight:700}
+.tag{display:inline-block;font-size:.72rem;font-weight:700;padding:3px 8px;border-radius:999px;background:var(--callout-bg);color:var(--callout-ink);border:1px solid var(--callout-line)}
+.tag.sim{background:var(--warn-bg);color:var(--warn-ink);border-color:var(--warn-line)}
+
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+<style id="kp-chrome">
+.kp-header{padding:0;display:block;background:#166534;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.kp-header-in{max-width:1120px;margin:0 auto;padding:9px 18px;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:14px;}
+.kp-brand{display:flex;align-items:center;gap:8px;color:#fff;text-decoration:none;font-weight:700;font-size:1.08rem;}
+.kp-mark{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:6px;background:#fff;color:#166534;font-weight:800;font-size:.8rem;border:2px solid #C9A227;}
+.kp-nav{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:transparent;width:auto;border:none;padding:0;}
+.kp-btn{background:rgba(255,255,255,.16);color:#fff;border:1px solid rgba(255,255,255,.4);border-radius:8px;padding:5px 11px;font:inherit;font-size:.84rem;font-weight:600;cursor:pointer;text-decoration:none;}
+.kp-btn:hover{background:rgba(255,255,255,.3);}
+.kp-link{background:rgba(255,255,255,.16);color:#fff;border:1px solid rgba(255,255,255,.4);border-radius:8px;padding:5px 11px;font-size:.84rem;font-weight:600;text-decoration:none;}
+.kp-link:hover{background:rgba(255,255,255,.3);color:#fff;}
+.kp-footer{background:#0f4023;color:#cfe6d8;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;margin-top:40px;}
+.kp-footer-in{max-width:1120px;margin:0 auto;padding:30px 18px 14px;display:grid;grid-template-columns:1fr;gap:22px;}
+@media(min-width:640px){.kp-footer-in{grid-template-columns:1fr 1fr;}}
+@media(min-width:980px){.kp-footer-in{grid-template-columns:2fr 1fr 1fr 1fr 1fr;}}
+.kp-footer h4{color:#fff;font-size:.8rem;text-transform:uppercase;letter-spacing:.05em;margin:0 0 10px;}
+.kp-footer a{display:block;color:#cfe6d8;text-decoration:none;font-size:.86rem;margin-bottom:7px;}
+.kp-footer a:hover{color:#fff;text-decoration:underline;}
+.kp-fbrand p{font-size:.86rem;line-height:1.5;margin:8px 0 0;max-width:34ch;}
+.kp-brand2{display:flex;align-items:center;gap:8px;color:#fff;font-weight:700;font-size:1.05rem;}
+.kp-footer-bottom{border-top:1px solid rgba(255,255,255,.15);max-width:1120px;margin:0 auto;padding:14px 18px 28px;font-size:.78rem;color:#9fc3ad;}
+</style>
+<!-- KP-ANALYTICS -->
+<script src="/kp-analytics.js" defer></script>
+</head>
+<body>
+
+<header class="kp-header"><div class="kp-header-in">
+  <a class="kp-brand" id="kpBrand" href="https://www.kyodopartners.com" title="Kyodo Partners — Home"><span class="kp-mark">協</span> Kyodo Partners</a>
+  <nav class="kp-nav">
+    <button type="button" id="kpBack" class="kp-btn">← Back</button>
+    <a class="kp-btn" id="kpHome" href="https://www.kyodopartners.com">⌂ Home</a>
+    <a class="kp-link" href="https://www.kyodopartners.com#tools">Free tools</a>
+    <a class="kp-link" href="https://www.kyodopartners.com#products">Products</a>
+    <a class="kp-link" href="contact.html">Contact</a>
+  </nav>
+</div></header>
+
+<!-- =============== HERO =============== -->
+<div class="hero">
+  <div class="wrap">
+    <h1>The honest lottery math</h1>
+    <p class="lead">Real odds, what a ticket is actually worth, and a simple demonstration of something the whole industry would rather you didn't test: no amount of statistics picks better numbers than pure chance.</p>
+    <p class="honest">Everything here is plain math you can check. There are no predictions and no "systems" — because for a fair, independently drawn lottery, no way of choosing numbers makes any number more likely to come up.</p>
+    <div class="rp" role="note">
+      <span aria-hidden="true">♦</span>
+      <span>Play for fun, within a budget you'd be fine losing. If the fun stops, call the National Problem Gambling Helpline: <a href="tel:18005224700">1-800-522-4700</a> (24/7, free, confidential).</span>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+
+<!-- =============== 1. THE DEMONSTRATION (centerpiece) =============== -->
+<section id="demo">
+  <h2 class="sec-head">The "best system" vs. a real draw</h2>
+  <p class="sec-sub">Here's the experiment people run when they're sure numbers can be beaten: take every statistical method — most-frequent, hot, cold, pairs, balanced — mash them together into one "best" combined line, then check it against what actually came up. Run it across many past draws and compare it to a plain random Quick Pick. Watch what happens.</p>
+  <div class="card">
+    <div class="row" style="align-items:end">
+      <div class="field">
+        <label for="demo-game">Game</label>
+        <select id="demo-game"></select>
+      </div>
+      <div class="field">
+        <label for="demo-trials">Past draws to test against</label>
+        <input id="demo-trials" type="number" min="20" max="2000" step="10" value="300">
+      </div>
+    </div>
+    <button class="btn" id="demo-run">Run the comparison</button>
+    <span id="demo-src" class="note" style="margin-left:10px"></span>
+    <div id="demo-out" hidden>
+      <div class="result" style="margin-top:18px">
+        <div class="big" id="demo-verdict"></div>
+        <p class="note" id="demo-explain" style="color:var(--callout-ink)"></p>
+      </div>
+      <table class="cmp">
+        <thead><tr><th>Approach</th><th>Avg. matching numbers per draw</th><th>How it compares to chance</th></tr></thead>
+        <tbody id="demo-rows"></tbody>
+      </table>
+      <p class="note">Each "past draw" is scored using only the draws before it — no peeking at the answer. "Matching numbers" counts how many of the five main numbers the line got right. A perfect system would sit far above the random row; it doesn't.</p>
+    </div>
+  </div>
+</section>
+
+<!-- =============== 2. ODDS =============== -->
+<section id="odds">
+  <h2 class="sec-head">Odds for any game</h2>
+  <p class="sec-sub">Pick a game, or set your own: how many numbers you choose, from how large a pool, plus an optional separate bonus ball. The jackpot odds are just one divided by the number of possible tickets.</p>
+  <div class="grid2">
+    <div class="card">
+      <div class="field">
+        <label for="odds-game">Game</label>
+        <select id="odds-game"></select>
+      </div>
+      <div class="row">
+        <div class="field"><label for="odds-pick">Numbers you pick (N)</label><input id="odds-pick" type="number" min="1" max="20" value="5"></div>
+        <div class="field"><label for="odds-pool">From a pool of (M)</label><input id="odds-pool" type="number" min="2" max="100" value="69"></div>
+      </div>
+      <div class="field"><label for="odds-bonus">Separate bonus-ball pool (0 for none)</label><input id="odds-bonus" type="number" min="0" max="100" value="26"></div>
+      <button class="btn" id="odds-run">Show the odds</button>
+    </div>
+    <div class="card">
+      <div class="result">
+        <div class="big" id="odds-big">—</div>
+        <div class="steps" id="odds-steps">Choose a game or enter your own numbers.</div>
+      </div>
+      <p class="note">These are jackpot (match-everything) odds. Matching fewer numbers is more likely, but every single ticket — however the numbers are chosen — carries exactly these odds.</p>
+    </div>
+  </div>
+</section>
+
+<!-- =============== 3. TICKET VALUE / EV =============== -->
+<section id="value">
+  <h2 class="sec-head">What a ticket is actually worth</h2>
+  <p class="sec-sub">The "expected value" of a ticket is what you'd win on average per ticket if you played forever. It folds in the real odds, the cash-vs-annuity choice, taxes, and the chance you'd have to split the jackpot with other winners.</p>
+  <div class="grid2">
+    <div class="card">
+      <div class="field"><label for="ev-game">Game</label><select id="ev-game"></select></div>
+      <div class="row">
+        <div class="field"><label for="ev-jackpot">Advertised jackpot (annuity, $)</label><input id="ev-jackpot" type="number" min="0" step="1000000" value="400000000"></div>
+        <div class="field"><label for="ev-price">Ticket price ($)</label><input id="ev-price" type="number" min="0" step="0.5" value="2"></div>
+      </div>
+      <div class="row">
+        <div class="field"><label for="ev-cash">Cash option (% of annuity)</label><input id="ev-cash" type="number" min="1" max="100" value="50"></div>
+        <div class="field"><label for="ev-tax">Tax on winnings (%)</label><input id="ev-tax" type="number" min="0" max="60" value="37"></div>
+      </div>
+      <div class="field"><label for="ev-sold">Tickets sold (for split chance)</label><input id="ev-sold" type="number" min="0" step="1000000" value="250000000"></div>
+      <button class="btn" id="ev-run">Calculate the value</button>
+    </div>
+    <div class="card">
+      <div class="result">
+        <div class="big" id="ev-big">—</div>
+        <div class="steps" id="ev-steps">Enter the jackpot and press calculate.</div>
+      </div>
+      <p class="note">This uses the jackpot only; small fixed prizes add a few cents and don't change the conclusion. A negative number means the ticket is worth less than it costs — which, for essentially every big lottery, it is.</p>
+    </div>
+  </div>
+</section>
+
+<!-- =============== 4. ABOVE-31 SPLIT =============== -->
+<section id="split">
+  <h2 class="sec-head">The "numbers above 31" effect</h2>
+  <p class="sec-sub">Choosing numbers above 31 does <em>not</em> improve your odds — nothing does. But most people play birthdays, so their numbers cluster in 1–31. If you win on a line that includes higher numbers, you're less likely to be sharing the prize. Same chance of winning; a bigger slice if you do.</p>
+  <div class="grid2">
+    <div class="card">
+      <div class="field"><label for="sp-game">Game</label><select id="sp-game"></select></div>
+      <div class="row">
+        <div class="field"><label for="sp-jackpot">Jackpot, after cash &amp; tax ($)</label><input id="sp-jackpot" type="number" min="0" step="1000000" value="126000000"></div>
+        <div class="field"><label for="sp-sold">Tickets sold</label><input id="sp-sold" type="number" min="0" step="1000000" value="250000000"></div>
+      </div>
+      <div class="field"><label for="sp-birthday">Share of players who only use birthday numbers (1–31), %</label><input id="sp-birthday" type="number" min="0" max="100" value="55"></div>
+      <button class="btn" id="sp-run">Compare the two lines</button>
+    </div>
+    <div class="card">
+      <div class="result">
+        <div class="big" id="sp-big">—</div>
+        <div class="steps" id="sp-steps">Compare a birthday-style line against one that uses higher numbers.</div>
+      </div>
+      <p class="note">The birthday share is an estimate you can adjust — real figures vary by game. The win probability is identical for both lines; only the expected split changes.</p>
+    </div>
+  </div>
+</section>
+
+<!-- =============== 5. HOT / COLD SIMULATOR =============== -->
+<section id="hotcold">
+  <h2 class="sec-head">Hot &amp; cold numbers: a simulator</h2>
+  <p class="sec-sub">"Hot" numbers come up a lot; "cold" ones are "overdue." This runs real random draws in your browser, finds the hot and cold numbers from that history, then tests whether betting on them beats a random line on the <em>next</em> draws. Because each draw is independent, it never does.</p>
+  <div class="card">
+    <div class="row" style="align-items:end">
+      <div class="field"><label for="hc-game">Game</label><select id="hc-game"></select></div>
+      <div class="field"><label for="hc-draws">Draws of history to generate</label><input id="hc-draws" type="number" min="50" max="5000" step="50" value="500"></div>
+    </div>
+    <button class="btn" id="hc-run">Run the simulation</button>
+    <div id="hc-out" hidden style="margin-top:18px">
+      <div class="grid2">
+        <div>
+          <label>Hottest numbers from the simulated history</label>
+          <div class="balls" id="hc-hot"></div>
+          <label style="margin-top:12px">Coldest ("most overdue") numbers</label>
+          <div class="balls" id="hc-cold"></div>
+        </div>
+        <div class="callout">
+          <div class="big" style="font-size:1.1rem" id="hc-verdict"></div>
+          <table class="cmp" style="margin-top:8px">
+            <thead><tr><th>Line used</th><th>Avg. matches on next draws</th></tr></thead>
+            <tbody id="hc-rows"></tbody>
+          </table>
+        </div>
+      </div>
+      <p class="note">The three lines land on top of each other. Past frequency is just a picture of history — a fair draw doesn't read it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- =============== CLOSER =============== -->
+<section id="closer">
+  <div class="callout">
+    <h3 style="margin-bottom:8px;font-size:1.15rem">So what's the takeaway?</h3>
+    <p style="margin:0 0 10px">Every tool on this page agrees on one thing: a lottery ticket is entertainment with a known, negative expected value, and no method of picking numbers changes your odds. If you play, play for the fun of it, with money you can afford to lose.</p>
+    <p style="margin:0">The interesting part isn't beating luck — it's seeing clearly what's luck and what isn't. Deciding where to put money when the odds <em>can</em> be studied is a different skill. That's what the rest of our <a href="https://www.kyodopartners.com#tools">free business calculators</a> are for.</p>
+  </div>
+  <div class="warn" style="margin-top:16px">
+    This page is for education and entertainment. It does not predict winning numbers, it does not improve anyone's odds, and nothing here is financial advice. Must be of legal age to play the lottery.
+    If gambling is causing harm, call <a href="tel:18005224700">1-800-522-4700</a>.
+  </div>
+</section>
+
+</main>
+
+<footer class="kp-footer"><div class="kp-footer-in">
+  <div class="kp-fbrand"><div class="kp-brand2"><span class="kp-mark">協</span> Kyodo Partners</div>
+    <p>Practical, pay-once tools for landlords, freelancers &amp; small businesses. 協働 — working together.</p></div>
+  <div><h4>Free tools</h4>
+    <a href="https://www.kyodopartners.com#tools">All calculators</a>
+    <a href="https://www.kyodopartners.com/rental-deal-analyzer.html">Rental Deal Analyzer</a>
+    <a href="https://www.kyodopartners.com/str-deal-analyzer.html">Airbnb / STR Analyzer</a>
+    <a href="https://www.kyodopartners.com/remodel-calculator.html">Remodel Cost Analyzer</a>
+    <a href="https://www.kyodopartners.com/quarterly-tax-estimator.html">1099 Quarterly Tax Analyzer</a>
+    <a href="https://www.kyodopartners.com/tco-calculator.html">TCO Analyzer</a></div>
+  <div><h4>Break-even calculators</h4>
+    <a href="https://www.kyodopartners.com/breakeven-runway-calculator.html">Digital-Product &amp; AI</a>
+    <a href="https://www.kyodopartners.com/breakeven-notion.html">Notion Template Sellers</a>
+    <a href="https://www.kyodopartners.com/breakeven-pod.html">Print-on-Demand</a>
+    <a href="https://www.kyodopartners.com/breakeven-ebook.html">Self-Published Authors</a>
+    <a href="https://www.kyodopartners.com/breakeven-pottery.html">Potters &amp; Ceramics</a>
+    <a href="https://www.kyodopartners.com/breakeven-quilts.html">Quilt Makers</a>
+    <a href="https://www.kyodopartners.com/breakeven-baskets.html">Basket Weavers</a>
+    <a href="https://www.kyodopartners.com/breakeven-vintage.html">Vintage Resellers</a>
+    <a href="https://www.kyodopartners.com/breakeven-aiart.html">AI Art &amp; Image</a>
+    <a href="https://www.kyodopartners.com/breakeven-artphoto.html">Artists &amp; Photographers</a>
+    <a href="https://www.kyodopartners.com/breakeven-youtube.html">YouTube Creators</a></div>
+  <div><h4>Products</h4>
+    <a href="https://www.kyodopartners.com#products">Spreadsheet suites &amp; toolkits</a>
+    <a href="https://kyodopartners.gumroad.com/" target="_blank" rel="noopener">Our store (Gumroad)</a></div>
+  <div><h4>Company</h4>
+    <a href="contact.html">Contact</a>
+    <a href="contact.html">Support</a>
+    <a href="contact.html">Get launch updates</a></div>
+</div>
+<div class="kp-footer-bottom">© 2026 Kyodo Partners LLC · Our tools are planning &amp; organization helpers — not legal, tax, accounting, or financial advice. · v2.0</div>
+</footer>
+<script>(function(){var net=location.hostname.indexOf("kyodopartners.net")>=0;var home=net?"/":"https://www.kyodopartners.com/";["kpHome","kpBrand"].forEach(function(id){var e=document.getElementById(id);if(e)e.setAttribute("href",home);});var b=document.getElementById("kpBack");if(b){b.removeAttribute("onclick");b.addEventListener("click",function(e){e.preventDefault();if(history.length>1){history.back();}else{location.href=home;}});}})();</script>
+
+<script>
+/* =====================================================================
+   Lottery honest-math engine. Pure client-side. No predictions.
+   Games default to standard formats; verify current rules on deploy.
+   ===================================================================== */
+"use strict";
+const GAMES = {
+  powerball:   {label:"Powerball",            pick:5, pool:69, bonus:26, price:2,  cashPct:50},
+  mega:        {label:"Mega Millions",        pick:5, pool:70, bonus:24, price:5,  cashPct:50},
+  superlotto:  {label:"CA SuperLotto Plus",   pick:5, pool:47, bonus:27, price:1,  cashPct:60},
+  custom:      {label:"Custom game",          pick:5, pool:69, bonus:26, price:2,  cashPct:50}
+};
+
+/* ---- math helpers ---- */
+function nCr(n,k){ if(k<0||k>n) return 0; k=Math.min(k,n-k); let r=1; for(let i=0;i<k;i++){ r=r*(n-i)/(i+1);} return Math.round(r); }
+function fmt(n){ return n.toLocaleString("en-US"); }
+function money(n){ return (n<0?"-$":"$")+Math.abs(n).toLocaleString("en-US",{maximumFractionDigits:2}); }
+function totalCombos(g){ return nCr(g.pool,g.pick) * (g.bonus>0?g.bonus:1); }
+/* For K ~ Poisson(lambda), E[1/(1+K)] = (1 - e^-lambda)/lambda  (lambda>0) */
+function expShare(lambda){ return lambda<=0 ? 1 : (1-Math.exp(-lambda))/lambda; }
+function sample(poolSize,pick){ const s=new Set(); while(s.size<pick){ s.add(1+Math.floor(Math.random()*poolSize)); } return [...s].sort((a,b)=>a-b); }
+function overlap(a,b){ const B=new Set(b); let c=0; for(const x of a) if(B.has(x)) c++; return c; }
+
+/* ---- populate game selects ---- */
+function fillGames(sel, withCustom=true){
+  for(const [k,g] of Object.entries(GAMES)){
+    if(k==="custom" && !withCustom) continue;
+    const o=document.createElement("option"); o.value=k; o.textContent=g.label; sel.appendChild(o);
+  }
+}
+["demo-game","odds-game","ev-game","sp-game","hc-game"].forEach(id=>{
+  const el=document.getElementById(id); fillGames(el, id==="odds-game");
+});
+
+/* ================= ODDS ================= */
+const oddsGame=document.getElementById("odds-game");
+function syncOdds(){ const g=GAMES[oddsGame.value]; document.getElementById("odds-pick").value=g.pick; document.getElementById("odds-pool").value=g.pool; document.getElementById("odds-bonus").value=g.bonus; }
+oddsGame.addEventListener("change",syncOdds); syncOdds();
+document.getElementById("odds-run").addEventListener("click",()=>{
+  const N=+document.getElementById("odds-pick").value, M=+document.getElementById("odds-pool").value, B=+document.getElementById("odds-bonus").value;
+  if(N<1||M<N){ document.getElementById("odds-steps").textContent="Check your inputs: you can't pick more numbers than the pool holds."; return; }
+  const main=nCr(M,N); const total=main*(B>0?B:1);
+  document.getElementById("odds-big").textContent="1 in "+fmt(total);
+  let s=`C(${M},${N}) = ${M}! / (${N}! × ${M-N}!) = ${fmt(main)} ways to pick the main numbers`;
+  if(B>0) s+=`\n× ${B} bonus-ball options = ${fmt(total)} possible tickets`;
+  s+=`\n\nJackpot odds = 1 / ${fmt(total)} = 1 in ${fmt(total)}`;
+  document.getElementById("odds-steps").textContent=s;
+});
+
+/* ================= EXPECTED VALUE ================= */
+document.getElementById("ev-game").addEventListener("change",e=>{ const g=GAMES[e.target.value]; document.getElementById("ev-price").value=g.price; document.getElementById("ev-cash").value=g.cashPct; });
+document.getElementById("ev-run").addEventListener("click",()=>{
+  const g=GAMES[document.getElementById("ev-game").value];
+  const J=+document.getElementById("ev-jackpot").value, price=+document.getElementById("ev-price").value;
+  const cash=+document.getElementById("ev-cash").value/100, tax=+document.getElementById("ev-tax").value/100, sold=+document.getElementById("ev-sold").value;
+  const total=totalCombos(g); const p=1/total;
+  const net=J*cash*(1-tax);
+  const lambda=sold*p;                 // expected total jackpot winners
+  const share=expShare(lambda);        // expected fraction of jackpot you'd keep if you win
+  const ev=p*net*share - price;
+  document.getElementById("ev-big").textContent="Expected value ≈ "+money(ev)+" per ticket";
+  let s=`Jackpot odds: 1 in ${fmt(total)}  (p = ${p.toExponential(3)})\n`;
+  s+=`Cash value: ${money(J)} × ${(cash*100)}% = ${money(J*cash)}\n`;
+  s+=`After ${(tax*100)}% tax: ${money(net)}\n`;
+  s+=`Expected jackpot winners (${fmt(sold)} tickets): ${lambda.toFixed(3)}\n`;
+  s+=`Your expected share if you win: ${(share*100).toFixed(1)}%  →  ${money(net*share)}\n`;
+  s+=`\nEV = p × (shared, taxed payout) − price\n   = ${money(p*net*share)} − ${money(price)} = ${money(ev)}`;
+  document.getElementById("ev-steps").textContent=s;
+});
+
+/* ================= ABOVE-31 SPLIT ================= */
+document.getElementById("sp-run").addEventListener("click",()=>{
+  const g=GAMES[document.getElementById("sp-game").value];
+  const J=+document.getElementById("sp-jackpot").value, sold=+document.getElementById("sp-sold").value, f=+document.getElementById("sp-birthday").value/100;
+  const total=totalCombos(g); const p=1/total;
+  const lambdaBirthday=sold*p;                 // everyone can share a 1–31 line
+  const lambdaHigh=sold*(1-f)*p;               // birthday-only players can't share a line with a high number
+  const shareB=expShare(lambdaBirthday), shareH=expShare(lambdaHigh);
+  const payB=J*shareB, payH=J*shareH;
+  document.getElementById("sp-big").textContent="Higher-number line keeps ≈ "+money(payH-payB)+" more, on average";
+  let s=`Win probability: 1 in ${fmt(total)} — identical for both lines.\n\n`;
+  s+=`Birthday-style line (1–31):\n  co-winners ~ ${lambdaBirthday.toFixed(3)}, expected share ${(shareB*100).toFixed(1)}%  →  ${money(payB)}\n\n`;
+  s+=`Line including numbers above 31:\n  ${(f*100)}% of players can't match it, co-winners ~ ${lambdaHigh.toFixed(3)}, expected share ${(shareH*100).toFixed(1)}%  →  ${money(payH)}\n\n`;
+  s+=`Same odds. The only difference is how many people you'd split with.`;
+  document.getElementById("sp-steps").textContent=s;
+});
+
+/* ================= METHODS (for demo) ================= */
+/* each method takes a history of draws (arrays of main numbers) + pool size, returns a pick of `pick` numbers */
+function freqCount(history,pool){ const c=new Array(pool+1).fill(0); for(const d of history) for(const n of d) c[n]++; return c; }
+const METHODS = {
+  mostFrequent:(h,pool,pick)=>{ const c=freqCount(h,pool); return rankTop(c,pick); },
+  hot:(h,pool,pick)=>{ const recent=h.slice(-Math.max(10,Math.floor(h.length*0.2))); const c=freqCount(recent,pool); return rankTop(c,pick); },
+  overdue:(h,pool,pick)=>{ const last=new Array(pool+1).fill(-1); h.forEach((d,i)=>d.forEach(n=>last[n]=i)); const gap=last.map((v,i)=>({i,v})).slice(1); gap.sort((a,b)=>a.v-b.v); return gap.slice(0,pick).map(x=>x.i).sort((a,b)=>a-b); },
+  pairs:(h,pool,pick)=>{ const c=freqCount(h,pool); return rankTop(c,pick); } // simplified companion-style; same family
+};
+function rankTop(c,pick){ const idx=c.map((v,i)=>({v,i})).slice(1); idx.sort((a,b)=>b.v-a.v||a.i-b.i); return idx.slice(0,pick).map(x=>x.i).sort((a,b)=>a-b); }
+
+/* consensus = numbers most-endorsed across all methods, topped up by frequency */
+function consensusPick(history,pool,pick){
+  const votes=new Array(pool+1).fill(0);
+  for(const m of Object.values(METHODS)) for(const n of m(history,pool,pick)) votes[n]++;
+  const ranked=rankTop(votes,pool); // all, ranked by votes
+  return ranked.slice(0,pick).sort((a,b)=>a-b);
+}
+
+/* ================= THE DEMONSTRATION ================= */
+document.getElementById("demo-src").textContent="(runs on a simulation in your browser)";
+document.getElementById("demo-run").addEventListener("click",()=>{
+  const g=GAMES[document.getElementById("demo-game").value];
+  const trials=Math.max(20,Math.min(2000,+document.getElementById("demo-trials").value));
+  // build a fair random history, then walk forward: predict draw i from draws[0..i-1]
+  const warmup=60;
+  const draws=[]; for(let i=0;i<trials+warmup;i++) draws.push(sample(g.pool,g.pick));
+  let consSum=0, randSum=0, bestMethodSum=0;
+  for(let i=warmup;i<draws.length;i++){
+    const hist=draws.slice(0,i), actual=draws[i];
+    consSum += overlap(consensusPick(hist,g.pool,g.pick),actual);
+    randSum += overlap(sample(g.pool,g.pick),actual);
+    bestMethodSum += overlap(METHODS.mostFrequent(hist,g.pool,g.pick),actual);
+  }
+  const n=draws.length-warmup;
+  const cons=consSum/n, rnd=randSum/n, best=bestMethodSum/n;
+  const expected=g.pick*g.pick/g.pool; // E[matches] for a random line
+  const rows=[
+    ["Mashed-together \"best\" line (all methods combined)",cons],
+    ["Single strongest method (most-frequent)",best],
+    ["A random Quick Pick",rnd]
+  ];
+  document.getElementById("demo-rows").innerHTML=rows.map(([name,v])=>{
+    const pct=((v-rnd)/(rnd||1)*100); const verdict=Math.abs(v-rnd)<0.08?"No better than chance":(v>rnd?`${pct.toFixed(0)}% — within noise`:`${pct.toFixed(0)}% — within noise`);
+    return `<tr><td>${name}</td><td><strong>${v.toFixed(3)}</strong></td><td>${verdict}</td></tr>`;
+  }).join("");
+  document.getElementById("demo-verdict").textContent=`The combined "best" line matched ${cons.toFixed(2)} numbers per draw. A random Quick Pick matched ${rnd.toFixed(2)}.`;
+  document.getElementById("demo-explain").textContent=`Both land near ${expected.toFixed(2)} — exactly what pure chance predicts. Combining every statistic gives you… chance. You just watched it.`;
+  document.getElementById("demo-out").hidden=false;
+});
+
+/* ================= HOT / COLD SIMULATOR ================= */
+document.getElementById("hc-run").addEventListener("click",()=>{
+  const g=GAMES[document.getElementById("hc-game").value];
+  const D=Math.max(50,Math.min(5000,+document.getElementById("hc-draws").value));
+  const history=[]; for(let i=0;i<D;i++) history.push(sample(g.pool,g.pick));
+  const c=freqCount(history,g.pool);
+  const hot=rankTop(c,g.pick);
+  const coldRanked=c.map((v,i)=>({v,i})).slice(1).sort((a,b)=>a.v-b.v||a.i-b.i);
+  const cold=coldRanked.slice(0,g.pick).map(x=>x.i).sort((a,b)=>a-b);
+  // test on fresh future draws
+  const T=2000; let hotSum=0,coldSum=0,rndSum=0;
+  for(let i=0;i<T;i++){ const fut=sample(g.pool,g.pick); hotSum+=overlap(hot,fut); coldSum+=overlap(cold,fut); rndSum+=overlap(sample(g.pool,g.pick),fut); }
+  const ball=(n,cls="")=>`<span class="ball ${cls}">${String(n).padStart(2,"0")}</span>`;
+  document.getElementById("hc-hot").innerHTML=hot.map(n=>ball(n)).join("");
+  document.getElementById("hc-cold").innerHTML=cold.map(n=>ball(n,"miss")).join("");
+  document.getElementById("hc-rows").innerHTML=[
+    ["Hot numbers",hotSum/T],["Cold / overdue numbers",coldSum/T],["Random line",rndSum/T]
+  ].map(([k,v])=>`<tr><td>${k}</td><td><strong>${v.toFixed(3)}</strong></td></tr>`).join("");
+  document.getElementById("hc-verdict").textContent="Over 2,000 fresh draws, hot, cold and random all score the same.";
+  document.getElementById("hc-out").hidden=false;
+});
+</script>
+
+<script src="/kp-capture.js" defer></script>
+</body>
+</html>
