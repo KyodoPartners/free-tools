@@ -9,22 +9,11 @@
 <style>
 /* ---- Kyodo Partners brand tokens (match kp-chrome) ---- */
 :root{
-  --brand:#166534;        /* primary brand green */
-  --brand-2:#15803D;      /* lighter green: links/hover */
-  --ink:#1c2733;          /* body text */
-  --muted:#6b7280;        /* labels/captions */
-  --page:#f8fafc;         /* page canvas */
-  --card:#ffffff;         /* card surface */
-  --line:#e2e8f0;         /* borders/dividers */
-  --callout-bg:#dcfce7;   /* success/callout box */
-  --callout-ink:#14532d;
-  --callout-line:#bbf7d0;
-  --warn-bg:#fef3c7;      /* amber note */
-  --warn-ink:#92400e;
-  --warn-line:#fcd34d;
-  --cta:#e8820e;          /* orange = money CTA only */
-  --cta-ink:#111111;
-  --cta-line:#b8660a;
+  --brand:#166534; --brand-2:#15803D; --ink:#1c2733; --muted:#6b7280;
+  --page:#f8fafc; --card:#ffffff; --line:#e2e8f0;
+  --callout-bg:#dcfce7; --callout-ink:#14532d; --callout-line:#bbf7d0;
+  --warn-bg:#fef3c7; --warn-ink:#92400e; --warn-line:#fcd34d;
+  --cta:#e8820e; --cta-ink:#111111; --cta-line:#b8660a;
   --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
   --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
 }
@@ -34,18 +23,12 @@ body{margin:0;font-family:var(--font);color:var(--ink);background:var(--page);li
 a{color:var(--brand-2)}
 h1,h2,h3{line-height:1.2;margin:0}
 .wrap{max-width:1040px;margin:0 auto;padding:0 20px}
-
-
-/* ---- hero ---- */
 .hero{background:var(--brand);color:#fff;padding:26px 0 30px}
-.hero .wrap{max-width:1040px}
 .hero h1{font-size:clamp(1.8rem,4.4vw,2.6rem);font-weight:800;letter-spacing:-.01em}
 .hero p.lead{margin:12px 0 0;max-width:62ch;font-size:1.06rem;color:#eafbf0}
 .hero .honest{margin-top:14px;max-width:66ch;color:#d6f5e0;font-size:.98rem}
 .rp{display:flex;gap:10px;align-items:flex-start;margin-top:18px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.3);border-radius:10px;padding:11px 14px;max-width:66ch;font-size:.9rem;color:#eafbf0}
 .rp a{color:#fff;font-weight:700}
-
-/* ---- section + card ---- */
 section{padding:30px 0}
 section + section{border-top:1px solid var(--line)}
 .sec-head{margin-bottom:6px;font-size:1.5rem;font-weight:800;color:var(--brand)}
@@ -53,45 +36,26 @@ section + section{border-top:1px solid var(--line)}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px}
 .grid2{display:grid;gap:22px;grid-template-columns:1fr 1fr}
 @media(max-width:760px){.grid2{grid-template-columns:1fr}}
-
-/* ---- form controls ---- */
 label{display:block;font-size:.82rem;font-weight:600;color:var(--muted);margin:0 0 5px}
 input[type=number],select{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:9px;font:inherit;color:var(--ink);background:#fff}
 input:focus-visible,select:focus-visible,button:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
 .field{margin-bottom:14px}
 .row{display:grid;gap:12px;grid-template-columns:1fr 1fr}
 @media(max-width:520px){.row{grid-template-columns:1fr}}
-.seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden;flex-wrap:wrap}
-.seg button{border:0;background:#fff;color:var(--ink);padding:8px 13px;font:600 .85rem/1 var(--font);cursor:pointer}
-.seg button[aria-pressed=true]{background:var(--brand);color:#fff}
-
-/* buttons: green = action/nav, orange reserved for money (not used here) */
 .btn{appearance:none;border:1px solid var(--brand);background:var(--brand);color:#fff;font:700 .95rem/1 var(--font);padding:12px 20px;border-radius:9px;cursor:pointer;min-height:46px}
 .btn:hover{background:var(--brand-2);border-color:var(--brand-2)}
-.btn.sec{background:#fff;color:var(--brand)}
-
-/* result + math readout */
 .result{margin-top:16px;background:var(--callout-bg);border:1px solid var(--callout-line);color:var(--callout-ink);border-radius:11px;padding:16px}
 .result .big{font-size:clamp(1.3rem,3vw,1.9rem);font-weight:800;line-height:1.1}
 .steps{margin-top:12px;font-family:var(--mono);font-size:.82rem;color:var(--ink);background:#0f172a08;border:1px solid var(--line);border-radius:9px;padding:12px;white-space:pre-wrap;overflow-x:auto}
 .note{font-size:.82rem;color:var(--muted);margin-top:10px}
 .callout{background:var(--callout-bg);border:1px solid var(--callout-line);color:var(--callout-ink);border-radius:11px;padding:16px}
 .warn{background:var(--warn-bg);border:1px solid var(--warn-line);color:var(--warn-ink);border-radius:11px;padding:14px;font-size:.9rem}
-
-/* number balls (data display, not a bet surface) */
 .balls{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
 .ball{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:#1d4ed8;color:#fff;font-weight:700;font-size:.9rem}
-.ball.special{background:#7c3aed}
 .ball.miss{background:#e2e8f0;color:#64748b}
-.ball.hit{box-shadow:0 0 0 3px var(--brand)}
-
-/* comparison table */
 .cmp{width:100%;border-collapse:collapse;margin-top:14px;font-size:.92rem}
 .cmp th,.cmp td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
 .cmp th{color:var(--muted);font-size:.78rem;font-weight:700}
-.tag{display:inline-block;font-size:.72rem;font-weight:700;padding:3px 8px;border-radius:999px;background:var(--callout-bg);color:var(--callout-ink);border:1px solid var(--callout-line)}
-.tag.sim{background:var(--warn-bg);color:var(--warn-ink);border-color:var(--warn-line)}
-
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 <style id="kp-chrome">
@@ -131,14 +95,13 @@ input:focus-visible,select:focus-visible,button:focus-visible{outline:3px solid 
   </nav>
 </div></header>
 
-<!-- =============== HERO =============== -->
 <div class="hero">
   <div class="wrap">
     <h1>The honest lottery math</h1>
     <p class="lead">Real odds, what a ticket is actually worth, and a simple demonstration of something the whole industry would rather you didn't test: no amount of statistics picks better numbers than pure chance.</p>
     <p class="honest">Everything here is plain math you can check. There are no predictions and no "systems" — because for a fair, independently drawn lottery, no way of choosing numbers makes any number more likely to come up.</p>
     <div class="rp" role="note">
-      <span aria-hidden="true">♦</span>
+      <span aria-hidden="true">&#9830;</span>
       <span>Play for fun, within a budget you'd be fine losing. If the fun stops, call the National Problem Gambling Helpline: <a href="tel:18005224700">1-800-522-4700</a> (24/7, free, confidential).</span>
     </div>
   </div>
@@ -146,10 +109,9 @@ input:focus-visible,select:focus-visible,button:focus-visible{outline:3px solid 
 
 <main class="wrap">
 
-<!-- =============== 1. THE DEMONSTRATION (centerpiece) =============== -->
 <section id="demo">
   <h2 class="sec-head">The "best system" vs. a real draw</h2>
-  <p class="sec-sub">Here's the experiment people run when they're sure numbers can be beaten: take every statistical method — most-frequent, hot, cold, pairs, balanced — mash them together into one "best" combined line, then check it against what actually came up. Run it across many past draws and compare it to a plain random Quick Pick. Watch what happens.</p>
+  <p class="sec-sub">Here's the experiment people run when they're sure numbers can be beaten: take every statistical method — most-frequent, hot, cold, pairs, and balanced (odd/even) — mash them together into one "best" combined line, then check it against what actually came up. Run it across many past draws and compare it to a plain random Quick Pick. Watch what happens.</p>
   <div class="card">
     <div class="row" style="align-items:end">
       <div class="field">
@@ -157,8 +119,8 @@ input:focus-visible,select:focus-visible,button:focus-visible{outline:3px solid 
         <select id="demo-game"></select>
       </div>
       <div class="field">
-        <label for="demo-trials">Past draws to test against</label>
-        <input id="demo-trials" type="number" min="20" max="2000" step="10" value="300">
+        <label for="demo-trials">Past draws to test against (up to 1,000)</label>
+        <input id="demo-trials" type="number" min="20" max="1000" step="10" value="300">
       </div>
     </div>
     <button class="btn" id="demo-run">Run the comparison</button>
@@ -177,16 +139,12 @@ input:focus-visible,select:focus-visible,button:focus-visible{outline:3px solid 
   </div>
 </section>
 
-<!-- =============== 2. ODDS =============== -->
 <section id="odds">
   <h2 class="sec-head">Odds for any game</h2>
   <p class="sec-sub">Pick a game, or set your own: how many numbers you choose, from how large a pool, plus an optional separate bonus ball. The jackpot odds are just one divided by the number of possible tickets.</p>
   <div class="grid2">
     <div class="card">
-      <div class="field">
-        <label for="odds-game">Game</label>
-        <select id="odds-game"></select>
-      </div>
+      <div class="field"><label for="odds-game">Game</label><select id="odds-game"></select></div>
       <div class="row">
         <div class="field"><label for="odds-pick">Numbers you pick (N)</label><input id="odds-pick" type="number" min="1" max="20" value="5"></div>
         <div class="field"><label for="odds-pool">From a pool of (M)</label><input id="odds-pool" type="number" min="2" max="100" value="69"></div>
@@ -196,7 +154,7 @@ input:focus-visible,select:focus-visible,button:focus-visible{outline:3px solid 
     </div>
     <div class="card">
       <div class="result">
-        <div class="big" id="odds-big">—</div>
+        <div class="big" id="odds-big">&mdash;</div>
         <div class="steps" id="odds-steps">Choose a game or enter your own numbers.</div>
       </div>
       <p class="note">These are jackpot (match-everything) odds. Matching fewer numbers is more likely, but every single ticket — however the numbers are chosen — carries exactly these odds.</p>
@@ -204,7 +162,6 @@ input:focus-visible,select:focus-visible,button:focus-visible{outline:3px solid 
   </div>
 </section>
 
-<!-- =============== 3. TICKET VALUE / EV =============== -->
 <section id="value">
   <h2 class="sec-head">What a ticket is actually worth</h2>
   <p class="sec-sub">The "expected value" of a ticket is what you'd win on average per ticket if you played forever. It folds in the real odds, the cash-vs-annuity choice, taxes, and the chance you'd have to split the jackpot with other winners.</p>
@@ -224,7 +181,7 @@ input:focus-visible,select:focus-visible,button:focus-visible{outline:3px solid 
     </div>
     <div class="card">
       <div class="result">
-        <div class="big" id="ev-big">—</div>
+        <div class="big" id="ev-big">&mdash;</div>
         <div class="steps" id="ev-steps">Enter the jackpot and press calculate.</div>
       </div>
       <p class="note">This uses the jackpot only; small fixed prizes add a few cents and don't change the conclusion. A negative number means the ticket is worth less than it costs — which, for essentially every big lottery, it is.</p>
@@ -232,10 +189,9 @@ input:focus-visible,select:focus-visible,button:focus-visible{outline:3px solid 
   </div>
 </section>
 
-<!-- =============== 4. ABOVE-31 SPLIT =============== -->
 <section id="split">
   <h2 class="sec-head">The "numbers above 31" effect</h2>
-  <p class="sec-sub">Choosing numbers above 31 does <em>not</em> improve your odds — nothing does. But most people play birthdays, so their numbers cluster in 1–31. If you win on a line that includes higher numbers, you're less likely to be sharing the prize. Same chance of winning; a bigger slice if you do.</p>
+  <p class="sec-sub">Choosing numbers above 31 does <em>not</em> improve your odds — nothing does. But most people play birthdays, so their picks crowd into the 1&ndash;31 range. A birthday-style line is one many others may be holding too, so a win there is often split many ways. A line using higher numbers wins just as rarely, but you'd share it with far fewer people.</p>
   <div class="grid2">
     <div class="card">
       <div class="field"><label for="sp-game">Game</label><select id="sp-game"></select></div>
@@ -243,27 +199,26 @@ input:focus-visible,select:focus-visible,button:focus-visible{outline:3px solid 
         <div class="field"><label for="sp-jackpot">Jackpot, after cash &amp; tax ($)</label><input id="sp-jackpot" type="number" min="0" step="1000000" value="126000000"></div>
         <div class="field"><label for="sp-sold">Tickets sold</label><input id="sp-sold" type="number" min="0" step="1000000" value="250000000"></div>
       </div>
-      <div class="field"><label for="sp-birthday">Share of players who only use birthday numbers (1–31), %</label><input id="sp-birthday" type="number" min="0" max="100" value="55"></div>
+      <div class="field"><label for="sp-birthday">Share of players using only birthday numbers 1&ndash;31 (estimate &mdash; most tickets are random Quick Picks)</label><input id="sp-birthday" type="number" min="0" max="100" value="15"></div>
       <button class="btn" id="sp-run">Compare the two lines</button>
     </div>
     <div class="card">
       <div class="result">
-        <div class="big" id="sp-big">—</div>
+        <div class="big" id="sp-big">&mdash;</div>
         <div class="steps" id="sp-steps">Compare a birthday-style line against one that uses higher numbers.</div>
       </div>
-      <p class="note">The birthday share is an estimate you can adjust — real figures vary by game. The win probability is identical for both lines; only the expected split changes.</p>
+      <p class="note">The birthday share is an estimate you can adjust. The win probability is identical for both lines; only the expected split changes.</p>
     </div>
   </div>
 </section>
 
-<!-- =============== 5. HOT / COLD SIMULATOR =============== -->
 <section id="hotcold">
   <h2 class="sec-head">Hot &amp; cold numbers: a simulator</h2>
   <p class="sec-sub">"Hot" numbers come up a lot; "cold" ones are "overdue." This runs real random draws in your browser, finds the hot and cold numbers from that history, then tests whether betting on them beats a random line on the <em>next</em> draws. Because each draw is independent, it never does.</p>
   <div class="card">
     <div class="row" style="align-items:end">
       <div class="field"><label for="hc-game">Game</label><select id="hc-game"></select></div>
-      <div class="field"><label for="hc-draws">Draws of history to generate</label><input id="hc-draws" type="number" min="50" max="5000" step="50" value="500"></div>
+      <div class="field"><label for="hc-draws">Draws of history to generate (up to 2,000)</label><input id="hc-draws" type="number" min="50" max="2000" step="50" value="500"></div>
     </div>
     <button class="btn" id="hc-run">Run the simulation</button>
     <div id="hc-out" hidden style="margin-top:18px">
@@ -287,12 +242,11 @@ input:focus-visible,select:focus-visible,button:focus-visible{outline:3px solid 
   </div>
 </section>
 
-<!-- =============== CLOSER =============== -->
 <section id="closer">
   <div class="callout">
     <h3 style="margin-bottom:8px;font-size:1.15rem">So what's the takeaway?</h3>
     <p style="margin:0 0 10px">Every tool on this page agrees on one thing: a lottery ticket is entertainment with a known, negative expected value, and no method of picking numbers changes your odds. If you play, play for the fun of it, with money you can afford to lose.</p>
-    <p style="margin:0">The interesting part isn't beating luck — it's seeing clearly what's luck and what isn't. Deciding where to put money when the odds <em>can</em> be studied is a different skill. That's what the rest of our <a href="https://www.kyodopartners.com#tools">free business calculators</a> are for.</p>
+    <p style="margin:0">The interesting part isn't beating luck — it's seeing clearly what's luck and what isn't. Deciding where to put money when the odds <em>can</em> be studied is a different skill. That's what the rest of our <a href="https://kyodopartners.com#tools">free business calculators</a> are for.</p>
   </div>
   <div class="warn" style="margin-top:16px">
     This page is for education and entertainment. It does not predict winning numbers, it does not improve anyone's odds, and nothing here is financial advice. Must be of legal age to play the lottery.
@@ -337,162 +291,167 @@ input:focus-visible,select:focus-visible,button:focus-visible{outline:3px solid 
 <script>(function(){var net=location.hostname.indexOf("kyodopartners.net")>=0;var home=net?"/":"https://www.kyodopartners.com/";["kpHome","kpBrand"].forEach(function(id){var e=document.getElementById(id);if(e)e.setAttribute("href",home);});var b=document.getElementById("kpBack");if(b){b.removeAttribute("onclick");b.addEventListener("click",function(e){e.preventDefault();if(history.length>1){history.back();}else{location.href=home;}});}})();</script>
 
 <script>
-/* =====================================================================
-   Lottery honest-math engine. Pure client-side. No predictions.
-   Games default to standard formats; verify current rules on deploy.
-   ===================================================================== */
 "use strict";
+/* Game formats verified against official sources, Oct 2026:
+   Powerball 5/69 + 1/26 ($2); Mega Millions 5/70 + 1/24 ($5, Apr-2025 format);
+   CA SuperLotto Plus 5/47 + 1/27 ($1). Cash-option % are editable estimates — re-check at merge. */
 const GAMES = {
-  powerball:   {label:"Powerball",            pick:5, pool:69, bonus:26, price:2,  cashPct:50},
-  mega:        {label:"Mega Millions",        pick:5, pool:70, bonus:24, price:5,  cashPct:50},
-  superlotto:  {label:"CA SuperLotto Plus",   pick:5, pool:47, bonus:27, price:1,  cashPct:60},
-  custom:      {label:"Custom game",          pick:5, pool:69, bonus:26, price:2,  cashPct:50}
+  powerball:   {label:"Powerball",          pick:5, pool:69, bonus:26, price:2, cashPct:50},
+  mega:        {label:"Mega Millions",      pick:5, pool:70, bonus:24, price:5, cashPct:50},
+  superlotto:  {label:"CA SuperLotto Plus", pick:5, pool:47, bonus:27, price:1, cashPct:60},
+  custom:      {label:"Custom game",        pick:5, pool:69, bonus:26, price:2, cashPct:50}
 };
 
-/* ---- math helpers ---- */
 function nCr(n,k){ if(k<0||k>n) return 0; k=Math.min(k,n-k); let r=1; for(let i=0;i<k;i++){ r=r*(n-i)/(i+1);} return Math.round(r); }
 function fmt(n){ return n.toLocaleString("en-US"); }
 function money(n){ return (n<0?"-$":"$")+Math.abs(n).toLocaleString("en-US",{maximumFractionDigits:2}); }
+function pct(x){ return (+(x*100).toFixed(2)).toString(); } /* 0.15 -> "15", 0.555 -> "55.5" (no float noise) */
 function totalCombos(g){ return nCr(g.pool,g.pick) * (g.bonus>0?g.bonus:1); }
-/* For K ~ Poisson(lambda), E[1/(1+K)] = (1 - e^-lambda)/lambda  (lambda>0) */
+/* K ~ Poisson(lambda): E[1/(1+K)] = (1 - e^-lambda)/lambda */
 function expShare(lambda){ return lambda<=0 ? 1 : (1-Math.exp(-lambda))/lambda; }
-function sample(poolSize,pick){ const s=new Set(); while(s.size<pick){ s.add(1+Math.floor(Math.random()*poolSize)); } return [...s].sort((a,b)=>a-b); }
+function sample(pool,pick){ const s=new Set(); while(s.size<pick){ s.add(1+Math.floor(Math.random()*pool)); } return [...s]; }
 function overlap(a,b){ const B=new Set(b); let c=0; for(const x of a) if(B.has(x)) c++; return c; }
+function clampInt(v,lo,hi){ v=Math.floor(+v||lo); return Math.max(lo,Math.min(hi,v)); }
+function stats(sum,sumsq,n){ const mean=sum/n; const varr=n>1?Math.max(0,(sumsq/n-mean*mean))*n/(n-1):0; return {mean, se:Math.sqrt(varr/n)}; }
+function within2SE(a,b){ const seDiff=Math.sqrt(a.se*a.se+b.se*b.se); return {within:Math.abs(a.mean-b.mean)<2*seDiff, seDiff}; }
 
-/* ---- populate game selects ---- */
-function fillGames(sel, withCustom=true){
-  for(const [k,g] of Object.entries(GAMES)){
-    if(k==="custom" && !withCustom) continue;
-    const o=document.createElement("option"); o.value=k; o.textContent=g.label; sel.appendChild(o);
-  }
+function fillGames(sel, withCustom){
+  for(const [k,g] of Object.entries(GAMES)){ if(k==="custom" && !withCustom) continue;
+    const o=document.createElement("option"); o.value=k; o.textContent=g.label; sel.appendChild(o); }
 }
-["demo-game","odds-game","ev-game","sp-game","hc-game"].forEach(id=>{
-  const el=document.getElementById(id); fillGames(el, id==="odds-game");
-});
+fillGames(document.getElementById("demo-game"),false);
+fillGames(document.getElementById("odds-game"),true);
+fillGames(document.getElementById("ev-game"),false);
+fillGames(document.getElementById("sp-game"),false);
+fillGames(document.getElementById("hc-game"),false);
 
-/* ================= ODDS ================= */
+/* ---------- ODDS ---------- */
 const oddsGame=document.getElementById("odds-game");
 function syncOdds(){ const g=GAMES[oddsGame.value]; document.getElementById("odds-pick").value=g.pick; document.getElementById("odds-pool").value=g.pool; document.getElementById("odds-bonus").value=g.bonus; }
 oddsGame.addEventListener("change",syncOdds); syncOdds();
 document.getElementById("odds-run").addEventListener("click",()=>{
   const N=+document.getElementById("odds-pick").value, M=+document.getElementById("odds-pool").value, B=+document.getElementById("odds-bonus").value;
   if(N<1||M<N){ document.getElementById("odds-steps").textContent="Check your inputs: you can't pick more numbers than the pool holds."; return; }
-  const main=nCr(M,N); const total=main*(B>0?B:1);
+  const main=nCr(M,N), total=main*(B>0?B:1);
   document.getElementById("odds-big").textContent="1 in "+fmt(total);
-  let s=`C(${M},${N}) = ${M}! / (${N}! × ${M-N}!) = ${fmt(main)} ways to pick the main numbers`;
-  if(B>0) s+=`\n× ${B} bonus-ball options = ${fmt(total)} possible tickets`;
-  s+=`\n\nJackpot odds = 1 / ${fmt(total)} = 1 in ${fmt(total)}`;
+  let s="C("+M+","+N+") = "+M+"! / ("+N+"! \u00d7 "+(M-N)+"!) = "+fmt(main)+" ways to pick the main numbers";
+  if(B>0) s+="\n\u00d7 "+B+" bonus-ball options = "+fmt(total)+" possible tickets";
+  s+="\n\nJackpot odds = 1 / "+fmt(total)+" = 1 in "+fmt(total);
   document.getElementById("odds-steps").textContent=s;
 });
 
-/* ================= EXPECTED VALUE ================= */
+/* ---------- EXPECTED VALUE ---------- */
 document.getElementById("ev-game").addEventListener("change",e=>{ const g=GAMES[e.target.value]; document.getElementById("ev-price").value=g.price; document.getElementById("ev-cash").value=g.cashPct; });
 document.getElementById("ev-run").addEventListener("click",()=>{
   const g=GAMES[document.getElementById("ev-game").value];
   const J=+document.getElementById("ev-jackpot").value, price=+document.getElementById("ev-price").value;
   const cash=+document.getElementById("ev-cash").value/100, tax=+document.getElementById("ev-tax").value/100, sold=+document.getElementById("ev-sold").value;
-  const total=totalCombos(g); const p=1/total;
-  const net=J*cash*(1-tax);
-  const lambda=sold*p;                 // expected total jackpot winners
-  const share=expShare(lambda);        // expected fraction of jackpot you'd keep if you win
-  const ev=p*net*share - price;
-  document.getElementById("ev-big").textContent="Expected value ≈ "+money(ev)+" per ticket";
-  let s=`Jackpot odds: 1 in ${fmt(total)}  (p = ${p.toExponential(3)})\n`;
-  s+=`Cash value: ${money(J)} × ${(cash*100)}% = ${money(J*cash)}\n`;
-  s+=`After ${(tax*100)}% tax: ${money(net)}\n`;
-  s+=`Expected jackpot winners (${fmt(sold)} tickets): ${lambda.toFixed(3)}\n`;
-  s+=`Your expected share if you win: ${(share*100).toFixed(1)}%  →  ${money(net*share)}\n`;
-  s+=`\nEV = p × (shared, taxed payout) − price\n   = ${money(p*net*share)} − ${money(price)} = ${money(ev)}`;
+  const total=totalCombos(g), p=1/total, net=J*cash*(1-tax), lambda=sold*p, share=expShare(lambda), ev=p*net*share - price;
+  document.getElementById("ev-big").textContent="Expected value \u2248 "+money(ev)+" per ticket";
+  let s="Jackpot odds: 1 in "+fmt(total)+"  (p = "+p.toExponential(3)+")\n";
+  s+="Cash value: "+money(J)+" \u00d7 "+pct(cash)+"% = "+money(J*cash)+"\n";
+  s+="After "+pct(tax)+"% tax: "+money(net)+"\n";
+  s+="Expected jackpot winners ("+fmt(sold)+" tickets): "+lambda.toFixed(3)+"\n";
+  s+="Your expected share if you win: "+(share*100).toFixed(1)+"%  \u2192  "+money(net*share)+"\n\n";
+  s+="EV = p \u00d7 (shared, taxed payout) \u2212 price\n   = "+money(p*net*share)+" \u2212 "+money(price)+" = "+money(ev);
   document.getElementById("ev-steps").textContent=s;
 });
 
-/* ================= ABOVE-31 SPLIT ================= */
+/* ---------- ABOVE-31 SPLIT (corrected) ---------- */
 document.getElementById("sp-run").addEventListener("click",()=>{
   const g=GAMES[document.getElementById("sp-game").value];
   const J=+document.getElementById("sp-jackpot").value, sold=+document.getElementById("sp-sold").value, f=+document.getElementById("sp-birthday").value/100;
-  const total=totalCombos(g); const p=1/total;
-  const lambdaBirthday=sold*p;                 // everyone can share a 1–31 line
-  const lambdaHigh=sold*(1-f)*p;               // birthday-only players can't share a line with a high number
-  const shareB=expShare(lambdaBirthday), shareH=expShare(lambdaHigh);
+  const total=totalCombos(g), p=1/total;
+  const birthdayCombos=nCr(Math.min(31,g.pool),g.pick)*(g.bonus>0?g.bonus:1); // space birthday-only players crowd into
+  const lambdaHigh=(1-f)*sold*p;                                   // only random players can share a high line
+  const lambdaB=(1-f)*sold*p + (birthdayCombos>0 ? f*sold/birthdayCombos : 0); // random players + crowded birthday players
+  const shareB=expShare(lambdaB), shareH=expShare(lambdaHigh);
   const payB=J*shareB, payH=J*shareH;
-  document.getElementById("sp-big").textContent="Higher-number line keeps ≈ "+money(payH-payB)+" more, on average";
-  let s=`Win probability: 1 in ${fmt(total)} — identical for both lines.\n\n`;
-  s+=`Birthday-style line (1–31):\n  co-winners ~ ${lambdaBirthday.toFixed(3)}, expected share ${(shareB*100).toFixed(1)}%  →  ${money(payB)}\n\n`;
-  s+=`Line including numbers above 31:\n  ${(f*100)}% of players can't match it, co-winners ~ ${lambdaHigh.toFixed(3)}, expected share ${(shareH*100).toFixed(1)}%  →  ${money(payH)}\n\n`;
-  s+=`Same odds. The only difference is how many people you'd split with.`;
+  document.getElementById("sp-big").textContent="Higher-number line keeps \u2248 "+money(payH-payB)+" more, on average";
+  let s="Win probability: 1 in "+fmt(total)+" \u2014 identical for both lines.\n\n";
+  s+="Birthday-only players crowd into just C("+Math.min(31,g.pool)+","+g.pick+")"+(g.bonus>0?" \u00d7 "+g.bonus:"")+" = "+fmt(birthdayCombos)+" combinations.\n\n";
+  s+="Birthday-style line (within 1\u201331):\n  expected co-winners \u03bb = "+lambdaB.toFixed(3)+", expected share "+(shareB*100).toFixed(1)+"%  \u2192  "+money(payB)+"\n\n";
+  s+="Line including numbers above 31:\n  "+pct(f)+"% of players can't match it, \u03bb = "+lambdaHigh.toFixed(3)+", expected share "+(shareH*100).toFixed(1)+"%  \u2192  "+money(payH)+"\n\n";
+  s+="Same odds. The only difference is how many people you'd split with.";
   document.getElementById("sp-steps").textContent=s;
 });
 
-/* ================= METHODS (for demo) ================= */
-/* each method takes a history of draws (arrays of main numbers) + pool size, returns a pick of `pick` numbers */
-function freqCount(history,pool){ const c=new Array(pool+1).fill(0); for(const d of history) for(const n of d) c[n]++; return c; }
-const METHODS = {
-  mostFrequent:(h,pool,pick)=>{ const c=freqCount(h,pool); return rankTop(c,pick); },
-  hot:(h,pool,pick)=>{ const recent=h.slice(-Math.max(10,Math.floor(h.length*0.2))); const c=freqCount(recent,pool); return rankTop(c,pick); },
-  overdue:(h,pool,pick)=>{ const last=new Array(pool+1).fill(-1); h.forEach((d,i)=>d.forEach(n=>last[n]=i)); const gap=last.map((v,i)=>({i,v})).slice(1); gap.sort((a,b)=>a.v-b.v); return gap.slice(0,pick).map(x=>x.i).sort((a,b)=>a-b); },
-  pairs:(h,pool,pick)=>{ const c=freqCount(h,pool); return rankTop(c,pick); } // simplified companion-style; same family
-};
-function rankTop(c,pick){ const idx=c.map((v,i)=>({v,i})).slice(1); idx.sort((a,b)=>b.v-a.v||a.i-b.i); return idx.slice(0,pick).map(x=>x.i).sort((a,b)=>a-b); }
+/* ---------- DEMO ENGINE (incremental, five real methods) ---------- */
+function rankTopArr(arr,pool,k){ const idx=[]; for(let n=1;n<=pool;n++) idx.push({n,v:arr[n]}); idx.sort((a,b)=>b.v-a.v||a.n-b.n); return idx.slice(0,k).map(o=>o.n); }
 
-/* consensus = numbers most-endorsed across all methods, topped up by frequency */
-function consensusPick(history,pool,pick){
-  const votes=new Array(pool+1).fill(0);
-  for(const m of Object.values(METHODS)) for(const n of m(history,pool,pick)) votes[n]++;
-  const ranked=rankTop(votes,pool); // all, ranked by votes
-  return ranked.slice(0,pick).sort((a,b)=>a-b);
-}
-
-/* ================= THE DEMONSTRATION ================= */
 document.getElementById("demo-src").textContent="(runs on a simulation in your browser)";
 document.getElementById("demo-run").addEventListener("click",()=>{
-  const g=GAMES[document.getElementById("demo-game").value];
-  const trials=Math.max(20,Math.min(2000,+document.getElementById("demo-trials").value));
-  // build a fair random history, then walk forward: predict draw i from draws[0..i-1]
-  const warmup=60;
-  const draws=[]; for(let i=0;i<trials+warmup;i++) draws.push(sample(g.pool,g.pick));
-  let consSum=0, randSum=0, bestMethodSum=0;
-  for(let i=warmup;i<draws.length;i++){
-    const hist=draws.slice(0,i), actual=draws[i];
-    consSum += overlap(consensusPick(hist,g.pool,g.pick),actual);
-    randSum += overlap(sample(g.pool,g.pick),actual);
-    bestMethodSum += overlap(METHODS.mostFrequent(hist,g.pool,g.pick),actual);
+  const g=GAMES[document.getElementById("demo-game").value], pool=g.pool, pick=g.pick;
+  const trials=clampInt(document.getElementById("demo-trials").value,20,1000);
+  document.getElementById("demo-trials").value=trials;
+  const warmup=60, N=trials+warmup;
+  const draws=[]; for(let i=0;i<N;i++) draws.push(sample(pool,pick));
+
+  // incremental state (no re-counting the whole history each step)
+  const cum=new Float64Array(pool+1), lastSeen=new Int32Array(pool+1).fill(-1), pairMat=new Float64Array((pool+1)*(pool+1)); let count=0;
+  function addDraw(d,i){ for(const n of d){ cum[n]++; lastSeen[n]=i; } for(let a=0;a<d.length;a++)for(let b=a+1;b<d.length;b++){ const x=d[a],y=d[b]; pairMat[x*(pool+1)+y]++; pairMat[y*(pool+1)+x]++; } count++; }
+  const pickMost =()=>rankTopArr(cum,pool,pick);
+  function pickHot(hist){ const w=Math.max(10,Math.floor(hist.length*0.2)), f=new Float64Array(pool+1); for(let j=Math.max(0,hist.length-w);j<hist.length;j++) for(const n of hist[j]) f[n]++; return rankTopArr(f,pool,pick); }
+  function pickCold(){ const a=[]; for(let n=1;n<=pool;n++) a.push({n,v:lastSeen[n]}); a.sort((x,y)=>x.v-y.v||x.n-y.n); return a.slice(0,pick).map(o=>o.n); }
+  function pickPairs(){ let seed=rankTopArr(cum,pool,1)[0]||1; const chosen=[seed], inSet=new Set(chosen);
+    while(chosen.length<pick){ let best=-1,bs=-1; for(let c=1;c<=pool;c++){ if(inSet.has(c))continue; let sc=0; for(const q of chosen) sc+=pairMat[c*(pool+1)+q]; if(sc>bs||(sc===bs&&(best<0||cum[c]>cum[best]))){bs=sc;best=c;} } chosen.push(best); inSet.add(best);} return chosen; }
+  function pickBalanced(){ const oddN=Math.ceil(pick/2), evenN=pick-oddN, odds=[],evens=[]; for(let n=1;n<=pool;n++){ (n%2?odds:evens).push({n,v:cum[n]}); } odds.sort((a,b)=>b.v-a.v||a.n-b.n); evens.sort((a,b)=>b.v-a.v||a.n-b.n); return [...odds.slice(0,oddN),...evens.slice(0,evenN)].map(o=>o.n); }
+  function consensusFrom(picks){ const votes=new Float64Array(pool+1); for(const p of picks) for(const n of p) votes[n]++; const idx=[]; for(let n=1;n<=pool;n++) idx.push({n,v:votes[n]+cum[n]*1e-9}); idx.sort((a,b)=>b.v-a.v||a.n-b.n); return idx.slice(0,pick).map(o=>o.n); }
+
+  const hist=[];
+  for(let i=0;i<warmup;i++){ addDraw(draws[i],i); hist.push(draws[i]); }
+  let cS=0,cSq=0,bS=0,bSq=0,rS=0,rSq=0;
+  for(let i=warmup;i<N;i++){
+    const actual=draws[i];
+    const pM=pickMost(), pH=pickHot(hist), pC=pickCold(), pP=pickPairs(), pB=pickBalanced();
+    const cons=consensusFrom([pM,pH,pC,pP,pB]);
+    let m=overlap(cons,actual);  cS+=m; cSq+=m*m;
+    m=overlap(pM,actual);        bS+=m; bSq+=m*m;
+    m=overlap(sample(pool,pick),actual); rS+=m; rSq+=m*m;
+    addDraw(actual,i); hist.push(actual);
   }
-  const n=draws.length-warmup;
-  const cons=consSum/n, rnd=randSum/n, best=bestMethodSum/n;
-  const expected=g.pick*g.pick/g.pool; // E[matches] for a random line
-  const rows=[
-    ["Mashed-together \"best\" line (all methods combined)",cons],
-    ["Single strongest method (most-frequent)",best],
-    ["A random Quick Pick",rnd]
-  ];
-  document.getElementById("demo-rows").innerHTML=rows.map(([name,v])=>{
-    const pct=((v-rnd)/(rnd||1)*100); const verdict=Math.abs(v-rnd)<0.08?"No better than chance":(v>rnd?`${pct.toFixed(0)}% — within noise`:`${pct.toFixed(0)}% — within noise`);
-    return `<tr><td>${name}</td><td><strong>${v.toFixed(3)}</strong></td><td>${verdict}</td></tr>`;
-  }).join("");
-  document.getElementById("demo-verdict").textContent=`The combined "best" line matched ${cons.toFixed(2)} numbers per draw. A random Quick Pick matched ${rnd.toFixed(2)}.`;
-  document.getElementById("demo-explain").textContent=`Both land near ${expected.toFixed(2)} — exactly what pure chance predicts. Combining every statistic gives you… chance. You just watched it.`;
+  const n=trials, C=stats(cS,cSq,n), B=stats(bS,bSq,n), R=stats(rS,rSq,n);
+  const expected=pick*pick/pool;
+  function row(name,X){ const d=X.mean-R.mean, {within,seDiff}=within2SE(X,R);
+    const verdict = within ? "Within normal random variation"
+      : (d>0?"+":"")+d.toFixed(2)+" this run ("+(d/seDiff).toFixed(1)+" SE) \u2014 rerun; it regresses to chance";
+    return "<tr><td>"+name+"</td><td><strong>"+X.mean.toFixed(3)+"</strong></td><td>"+verdict+"</td></tr>"; }
+  document.getElementById("demo-rows").innerHTML =
+      row("Mashed-together \u201cbest\u201d line (all five methods)",C)
+    + row("Single strongest method (most-frequent)",B)
+    + row("A random Quick Pick",R);
+  const cvR=within2SE(C,R);
+  document.getElementById("demo-verdict").textContent =
+    "The combined \u201cbest\u201d line matched "+C.mean.toFixed(2)+" numbers per draw; a random Quick Pick matched "+R.mean.toFixed(2)+".";
+  document.getElementById("demo-explain").textContent =
+    "Both sit near "+expected.toFixed(2)+", what pure chance predicts. Their gap of "+Math.abs(C.mean-R.mean).toFixed(2)+" is within the \u00b1"+(2*cvR.seDiff).toFixed(2)+" you'd expect from randomness alone (2 SE). Combining every statistic gives you\u2026 chance.";
   document.getElementById("demo-out").hidden=false;
 });
 
-/* ================= HOT / COLD SIMULATOR ================= */
+/* ---------- HOT / COLD SIMULATOR (computed verdict) ---------- */
 document.getElementById("hc-run").addEventListener("click",()=>{
-  const g=GAMES[document.getElementById("hc-game").value];
-  const D=Math.max(50,Math.min(5000,+document.getElementById("hc-draws").value));
-  const history=[]; for(let i=0;i<D;i++) history.push(sample(g.pool,g.pick));
-  const c=freqCount(history,g.pool);
-  const hot=rankTop(c,g.pick);
-  const coldRanked=c.map((v,i)=>({v,i})).slice(1).sort((a,b)=>a.v-b.v||a.i-b.i);
-  const cold=coldRanked.slice(0,g.pick).map(x=>x.i).sort((a,b)=>a-b);
-  // test on fresh future draws
-  const T=2000; let hotSum=0,coldSum=0,rndSum=0;
-  for(let i=0;i<T;i++){ const fut=sample(g.pool,g.pick); hotSum+=overlap(hot,fut); coldSum+=overlap(cold,fut); rndSum+=overlap(sample(g.pool,g.pick),fut); }
-  const ball=(n,cls="")=>`<span class="ball ${cls}">${String(n).padStart(2,"0")}</span>`;
-  document.getElementById("hc-hot").innerHTML=hot.map(n=>ball(n)).join("");
+  const g=GAMES[document.getElementById("hc-game").value], pool=g.pool, pick=g.pick;
+  const D=clampInt(document.getElementById("hc-draws").value,50,2000); document.getElementById("hc-draws").value=D;
+  const cum=new Float64Array(pool+1);
+  for(let i=0;i<D;i++){ const d=sample(pool,pick); for(const n of d) cum[n]++; }
+  const hot=rankTopArr(cum,pool,pick).sort((a,b)=>a-b);
+  const coldArr=[]; for(let n=1;n<=pool;n++) coldArr.push({n,v:cum[n]}); coldArr.sort((a,b)=>a.v-b.v||a.n-b.n);
+  const cold=coldArr.slice(0,pick).map(o=>o.n).sort((a,b)=>a-b);
+  const T=1500; let hS=0,hSq=0,cS=0,cSq=0,rS=0,rSq=0;
+  for(let i=0;i<T;i++){ const fut=sample(pool,pick);
+    let m=overlap(hot,fut); hS+=m; hSq+=m*m;
+    m=overlap(cold,fut); cS+=m; cSq+=m*m;
+    m=overlap(sample(pool,pick),fut); rS+=m; rSq+=m*m; }
+  const H=stats(hS,hSq,T), Cd=stats(cS,cSq,T), R=stats(rS,rSq,T);
+  const ball=(n,cls)=>"<span class=\"ball "+(cls||"")+"\">"+String(n).padStart(2,"0")+"</span>";
+  document.getElementById("hc-hot").innerHTML=hot.map(n=>ball(n,"")).join("");
   document.getElementById("hc-cold").innerHTML=cold.map(n=>ball(n,"miss")).join("");
-  document.getElementById("hc-rows").innerHTML=[
-    ["Hot numbers",hotSum/T],["Cold / overdue numbers",coldSum/T],["Random line",rndSum/T]
-  ].map(([k,v])=>`<tr><td>${k}</td><td><strong>${v.toFixed(3)}</strong></td></tr>`).join("");
-  document.getElementById("hc-verdict").textContent="Over 2,000 fresh draws, hot, cold and random all score the same.";
+  document.getElementById("hc-rows").innerHTML=[["Hot numbers",H],["Cold / overdue numbers",Cd],["Random line",R]]
+    .map(([k,X])=>"<tr><td>"+k+"</td><td><strong>"+X.mean.toFixed(3)+"</strong></td></tr>").join("");
+  const allClose = within2SE(H,R).within && within2SE(Cd,R).within;
+  document.getElementById("hc-verdict").textContent = allClose
+    ? "Over "+T+" fresh draws, hot ("+H.mean.toFixed(2)+"), cold ("+Cd.mean.toFixed(2)+") and random ("+R.mean.toFixed(2)+") all land within normal random variation \u2014 no better than chance."
+    : "Over "+T+" fresh draws the averages are hot "+H.mean.toFixed(2)+", cold "+Cd.mean.toFixed(2)+", random "+R.mean.toFixed(2)+" \u2014 any gap this run is noise; rerun and it regresses to chance.";
   document.getElementById("hc-out").hidden=false;
 });
 </script>
